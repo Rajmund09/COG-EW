@@ -18,7 +18,7 @@ def main():
     args = parser.parse_args()
 
     print("==========================================================================")
-    print("     COGNITIVE MULTI-DOMAIN EW–GUIDANCE CO-DESIGNER (EVALUATION)         ")
+    print("     COGNITIVE MULTI-DOMAIN EW-GUIDANCE CO-DESIGNER (EVALUATION)         ")
     print("==========================================================================")
 
     env = HypersonicEWEnv()
