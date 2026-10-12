@@ -7,15 +7,37 @@ __pycache__/
 *.py[cod]
 *$py.class
 *.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
 .pytest_cache/
 .coverage
 htmlcov/
+.ipynb_checkpoints
 
 # Virtual Environments
 .venv/
 venv/
 env/
 ENV/
+env.bak/
+venv.bak/
 
 # Large Datasets & Storage (HDF5, DuckDB, NumPy Arrays)
 # These files exceed GitHub file size limits and are generated via scripts
@@ -41,8 +63,11 @@ reports/dataset_inspection.json
 reports/dataset_inspection.md
 reports/rf_dataset_inventory.json
 
-# Intermediate Model Training Checkpoints (Keep best 1.5MB model if desired)
+# PyTorch checkpoints and large models
+checkpoints/
 models/checkpoints/*.pt
+*.pth
+*.onnx
 
 # Temporary & Dump Files
 outputs/complete_files_dump.txt
@@ -55,6 +80,8 @@ outputs/complete_files_dump.txt
 # IDE & OS Specific
 .vscode/
 .idea/
+*.swp
+*.swo
 .DS_Store
 Thumbs.db
 desktop.ini

@@ -1,0 +1,27 @@
+# Reinforcement Learning & Training Hyperparameters
+
+rl_algorithm: "PPO"
+
+ppo:
+  learning_rate_actor: 3.0e-4
+  learning_rate_critic: 1.0e-3
+  gamma: 0.99
+  gae_lambda: 0.95
+  clip_eps: 0.2
+  ppo_epochs: 10
+  batch_size: 64
+  entropy_coef: 0.01
+  value_loss_coef: 0.5
+  max_grad_norm: 0.5
+
+network:
+  state_dim: 64
+  hidden_dims: [256, 256, 128]
+  guidance_action_dim: 2       # [angle of attack, bank angle]
+  ew_action_dim: 4             # [jamming mode, power level, center frequency, bandwidth]
+
+training:
+  total_timesteps: 1000000
+  checkpoint_interval: 50000
+  curriculum_stages: 3
+  seed: 42

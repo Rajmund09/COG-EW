@@ -1,0 +1,45 @@
+# Simulation & Environment Parameters for Hypersonic EW-Guidance Co-Designer
+
+vehicle:
+  mass: 1000.0                # kg
+  max_thrust: 50000.0          # N
+  reference_area: 0.5          # m^2
+  mach_min: 5.0
+  mach_max: 8.0
+  altitude_min: 20000.0        # meters
+  altitude_max: 40000.0        # meters
+  max_g_load: 10.0            # g-force constraint
+  max_thermal_flux: 1500.0     # kW/m^2 thermal limit
+
+radar_iads:
+  num_emitters: 4
+  emitters:
+    - id: "search_radar_1"
+      type: "search"
+      freq_ghz: 3.0
+      prf_hz: 1000
+      max_range_km: 250.0
+      position: [150000.0, 100000.0]
+    - id: "track_radar_1"
+      type: "tracking"
+      freq_ghz: 8.0
+      prf_hz: 3000
+      max_range_km: 120.0
+      position: [200000.0, 50000.0]
+    - id: "fire_control_1"
+      type: "fire_control"
+      freq_ghz: 12.0
+      prf_hz: 5000
+      max_range_km: 60.0
+      position: [250000.0, 0.0]
+
+ew_system:
+  max_jamming_power_dbw: 30.0
+  spoofing_modes: ["none", "noise_jamming", "range_gate_pull_off", "angle_deception"]
+  response_time_ms: 10.0
+
+mission:
+  target_position: [300000.0, 0.0]
+  target_radius_m: 50.0
+  max_time_steps: 1000
+  dt: 0.1  # time step in seconds
