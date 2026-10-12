@@ -1,0 +1,32 @@
+{
+  "archive": "D:\\Datasets\\NIST SEA-DATA compressed dataset\\NIST-Data-2026-09-19T22-19-1.zip",
+  "compressed_size_gb": 0.151,
+  "member_count": 3,
+  "extension_counts": {
+    ".txt": 2,
+    ".duckdb": 1
+  },
+  "members": [
+    {
+      "name": "mds2-4289/4289_README.txt",
+      "extension": ".txt",
+      "compressed_bytes": 626,
+      "uncompressed_bytes": 1303,
+      "directory": false
+    },
+    {
+      "name": "mds2-4289/iq.duckdb",
+      "extension": ".duckdb",
+      "compressed_bytes": 161967012,
+      "uncompressed_bytes": 194260992,
+      "directory": false
+    },
+    {
+      "name": "/DownloadSuccessful.txt",
+      "extension": ".txt",
+      "compressed_bytes": 96,
+      "uncompressed_bytes": 119,
+      "directory": false
+    }
+  ]
+}

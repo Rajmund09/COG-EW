@@ -1,0 +1,199 @@
+{
+  "project": "COG-EW",
+  "experiment": "RadioML ResNet Controlled Interference Robustness",
+  "dataset": "RadioML 2018.01A",
+  "model": "RadioMLResNet",
+  "checkpoint": "D:\\COG-EW\\models\\checkpoints\\radioml_resnet_best.pt",
+  "evaluation_split": "baseline_test_split.npy",
+  "test_samples": 9000,
+  "num_classes": 24,
+  "seed": 42,
+  "interference_levels": [
+    0.0,
+    0.05,
+    0.1,
+    0.2,
+    0.35
+  ],
+  "baseline_accuracy_percent": 36.544444444444444,
+  "results": [
+    {
+      "strength": 0.0,
+      "accuracy_percent": 36.544444444444444,
+      "average_confidence_percent": 35.006409883499146,
+      "accuracy_drop_percentage_points": 0.0,
+      "relative_accuracy_drop_percent": 0.0,
+      "samples": 9000
+    },
+    {
+      "strength": 0.05,
+      "accuracy_percent": 36.477777777777774,
+      "average_confidence_percent": 34.99480485916138,
+      "accuracy_drop_percentage_points": 0.06666666666666998,
+      "relative_accuracy_drop_percent": 0.18242626938280018,
+      "samples": 9000
+    },
+    {
+      "strength": 0.1,
+      "accuracy_percent": 36.577777777777776,
+      "average_confidence_percent": 34.93104875087738,
+      "accuracy_drop_percentage_points": -0.03333333333333144,
+      "relative_accuracy_drop_percent": -0.09121313469139038,
+      "samples": 9000
+    },
+    {
+      "strength": 0.2,
+      "accuracy_percent": 36.63333333333333,
+      "average_confidence_percent": 34.65800881385803,
+      "accuracy_drop_percentage_points": -0.08888888888888857,
+      "relative_accuracy_drop_percent": -0.24323502584372064,
+      "samples": 9000
+    },
+    {
+      "strength": 0.35,
+      "accuracy_percent": 35.855555555555554,
+      "average_confidence_percent": 33.97650718688965,
+      "accuracy_drop_percentage_points": 0.68888888888889,
+      "relative_accuracy_drop_percent": 1.8850714502888448,
+      "samples": 9000
+    }
+  ],
+  "snr_results": {
+    "0.00": {
+      "-20": {
+        "accuracy": 0.03590568060021436,
+        "accuracy_percent": 3.590568060021436,
+        "samples": 1866
+      },
+      "-10": {
+        "accuracy": 0.06253553155201819,
+        "accuracy_percent": 6.253553155201819,
+        "samples": 1759
+      },
+      "0": {
+        "accuracy": 0.4482366325369738,
+        "accuracy_percent": 44.82366325369738,
+        "samples": 1758
+      },
+      "10": {
+        "accuracy": 0.6520532741398446,
+        "accuracy_percent": 65.20532741398446,
+        "samples": 1802
+      },
+      "20": {
+        "accuracy": 0.6330578512396694,
+        "accuracy_percent": 63.30578512396694,
+        "samples": 1815
+      }
+    },
+    "0.05": {
+      "-20": {
+        "accuracy": 0.03536977491961415,
+        "accuracy_percent": 3.536977491961415,
+        "samples": 1866
+      },
+      "-10": {
+        "accuracy": 0.0648095508811825,
+        "accuracy_percent": 6.480955088118249,
+        "samples": 1759
+      },
+      "0": {
+        "accuracy": 0.4431171786120592,
+        "accuracy_percent": 44.31171786120592,
+        "samples": 1758
+      },
+      "10": {
+        "accuracy": 0.6531631520532741,
+        "accuracy_percent": 65.31631520532741,
+        "samples": 1802
+      },
+      "20": {
+        "accuracy": 0.6319559228650138,
+        "accuracy_percent": 63.19559228650138,
+        "samples": 1815
+      }
+    },
+    "0.10": {
+      "-20": {
+        "accuracy": 0.03751339764201501,
+        "accuracy_percent": 3.751339764201501,
+        "samples": 1866
+      },
+      "-10": {
+        "accuracy": 0.0648095508811825,
+        "accuracy_percent": 6.480955088118249,
+        "samples": 1759
+      },
+      "0": {
+        "accuracy": 0.4465301478953356,
+        "accuracy_percent": 44.653014789533565,
+        "samples": 1758
+      },
+      "10": {
+        "accuracy": 0.6498335183129855,
+        "accuracy_percent": 64.98335183129855,
+        "samples": 1802
+      },
+      "20": {
+        "accuracy": 0.6347107438016529,
+        "accuracy_percent": 63.47107438016529,
+        "samples": 1815
+      }
+    },
+    "0.20": {
+      "-20": {
+        "accuracy": 0.03644158628081458,
+        "accuracy_percent": 3.644158628081458,
+        "samples": 1866
+      },
+      "-10": {
+        "accuracy": 0.06935758953951109,
+        "accuracy_percent": 6.935758953951108,
+        "samples": 1759
+      },
+      "0": {
+        "accuracy": 0.4465301478953356,
+        "accuracy_percent": 44.653014789533565,
+        "samples": 1758
+      },
+      "10": {
+        "accuracy": 0.6531631520532741,
+        "accuracy_percent": 65.31631520532741,
+        "samples": 1802
+      },
+      "20": {
+        "accuracy": 0.6308539944903582,
+        "accuracy_percent": 63.08539944903582,
+        "samples": 1815
+      }
+    },
+    "0.35": {
+      "-20": {
+        "accuracy": 0.03536977491961415,
+        "accuracy_percent": 3.536977491961415,
+        "samples": 1866
+      },
+      "-10": {
+        "accuracy": 0.06083001705514497,
+        "accuracy_percent": 6.083001705514497,
+        "samples": 1759
+      },
+      "0": {
+        "accuracy": 0.43742889647326505,
+        "accuracy_percent": 43.74288964732651,
+        "samples": 1758
+      },
+      "10": {
+        "accuracy": 0.6398446170921198,
+        "accuracy_percent": 63.984461709211985,
+        "samples": 1802
+      },
+      "20": {
+        "accuracy": 0.6236914600550965,
+        "accuracy_percent": 62.36914600550965,
+        "samples": 1815
+      }
+    }
+  },
+  "figure": "D:\\COG-EW\\reports\\figures\\rf_interference_robustness.png"
+}

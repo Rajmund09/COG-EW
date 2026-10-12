@@ -1,0 +1,130 @@
+{
+    "project": "COG-EW",
+    "checkpoint_time": "2026-10-08T18:41:37.349927",
+    "status": "READY_FOR_BREAK",
+    "artifact_count": 13,
+    "available_artifacts": 13,
+    "missing_artifacts": 0,
+    "completed_modules": [
+        "RadioML 2016.10A harmonization",
+        "RadioML 2018.01A harmonization",
+        "Controlled dataset merge",
+        "Leakage-safe train/validation/test split",
+        "Training-only RF augmentation",
+        "Augmentation quality analysis",
+        "1D CNN RF modulation classifier",
+        "Validation-based model selection",
+        "Untouched test-set evaluation",
+        "Classification metrics",
+        "Confusion matrix",
+        "Accuracy-by-SNR analysis",
+        "Dataset-source analysis",
+        "RF prediction service",
+        "Signal quality analysis",
+        "RF decision engine",
+        "Model card generation"
+    ],
+    "next_stage": [
+        "Dashboard integration",
+        "RF live/sample inference interface",
+        "Radar range visualization",
+        "EW simulation environment",
+        "Safe simulation decision layer",
+        "Auto-pilot simulation logic",
+        "Missile-threat simulation",
+        "End-to-end COG-EW simulation"
+    ],
+    "artifacts": [
+        {
+            "name": "Best RF CNN model",
+            "path": "D:\\COG-EW\\models\\cogew_rf_cnn_best.pt",
+            "exists": true,
+            "size_mb": 1.43,
+            "sha256": "8fc9246a65ff5ad4b38b840f87c8c95528ba5efcf1afaf0c3b222c73a4af80df"
+        },
+        {
+            "name": "Final RF CNN model",
+            "path": "D:\\COG-EW\\models\\cogew_rf_cnn_final.pt",
+            "exists": true,
+            "size_mb": 1.43,
+            "sha256": "0b2f9e424522c3bdeba563d422c73d2a2c4ed510f9acab3410f2f59f8833cd9e"
+        },
+        {
+            "name": "Merged RF dataset",
+            "path": "D:\\COG-EW\\data\\processed\\cogew_common_rf.h5",
+            "exists": true,
+            "size_mb": 180.73,
+            "sha256": "d6f6aff451ff570b202ccbff8eee67602dd94ebf6f26879528ccdfd4253ac074"
+        },
+        {
+            "name": "Training split",
+            "path": "D:\\COG-EW\\data\\splits\\cogew_train.h5",
+            "exists": true,
+            "size_mb": 132.29,
+            "sha256": "4780eb20ba1c696cc285e29e864adba1920ba2ddc3c3555c2ea730c0c7194fdd"
+        },
+        {
+            "name": "Validation split",
+            "path": "D:\\COG-EW\\data\\splits\\cogew_validation.h5",
+            "exists": true,
+            "size_mb": 28.35,
+            "sha256": "0fec377089fa6e9960d1f2180c558520d0ffec7cc215e02cb0c3933fb17fc871"
+        },
+        {
+            "name": "Test split",
+            "path": "D:\\COG-EW\\data\\splits\\cogew_test.h5",
+            "exists": true,
+            "size_mb": 28.36,
+            "sha256": "1b196506e8f7e66ac76b86966a7bf9c3fae33cbc76ff0388028f2b486f338fd6"
+        },
+        {
+            "name": "Augmented training dataset",
+            "path": "D:\\COG-EW\\data\\augmented\\cogew_train_augmented.h5",
+            "exists": true,
+            "size_mb": 253.29,
+            "sha256": "cd0df8014c5195b2a8347a35b1d1dd620ae8d1852cdc61704c80f2f5a14c3838"
+        },
+        {
+            "name": "Test evaluation",
+            "path": "D:\\COG-EW\\reports\\cogew_rf_cnn_test_evaluation.json",
+            "exists": true,
+            "size_mb": 0.01,
+            "sha256": "6b18b7985bd60e9b854c96b753a27cb979e6beed0701e9eb066dc009ecd56ed3"
+        },
+        {
+            "name": "Model summary",
+            "path": "D:\\COG-EW\\reports\\cogew_rf_model_summary.json",
+            "exists": true,
+            "size_mb": 0.0,
+            "sha256": "26e4517bfc5745ce689c3ca0acf0d13a47f27fa8d9a1a7b87f7a24fc40b4def6"
+        },
+        {
+            "name": "Model card",
+            "path": "D:\\COG-EW\\reports\\rf_model_card.json",
+            "exists": true,
+            "size_mb": 0.0,
+            "sha256": "7cde5195eb4c2b5cc8e55319d0dc9cc1d94f69cd8630b4913f57bca1185300a5"
+        },
+        {
+            "name": "Signal quality analysis",
+            "path": "D:\\COG-EW\\reports\\rf_signal_quality_analysis.json",
+            "exists": true,
+            "size_mb": 0.0,
+            "sha256": "ba37e1e55559bf1b3d93ea655bb43e1ed71dd36635fd7240ba09f2d33283292d"
+        },
+        {
+            "name": "Decision engine output",
+            "path": "D:\\COG-EW\\reports\\cogew_decision.json",
+            "exists": true,
+            "size_mb": 0.0,
+            "sha256": "f4a73bcf803c3fcffddf6051b901edcdf52af2a792593825e8e3d0c22424bc09"
+        },
+        {
+            "name": "Test prediction",
+            "path": "D:\\COG-EW\\reports\\test_prediction.json",
+            "exists": true,
+            "size_mb": 0.0,
+            "sha256": "eebb05997313eb3744f2781b971ccb3a803b40619c5cc29c14468c8052cf6f71"
+        }
+    ]
+}

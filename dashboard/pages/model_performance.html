@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COG-EW | Model Performance</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/dashboard.css">
+    <style>
+        :root {
+            --font-mono: 'JetBrains Mono', monospace;
+            --color-8psk: #38bdf8;
+            --color-bpsk: #10b981;
+            --color-qpsk: #818cf8;
+            --color-16qam: #f59e0b;
+            --color-64qam: #ec4899;
+            --color-prec: #00f2fe;
+            --color-rec: #a855f7;
+            --color-f1: #10b981;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        .perf-layout {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .cards-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+
+        .metric-card {
+            background: rgba(18, 24, 38, 0.85);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 22px;
+            backdrop-filter: blur(12px);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(0, 242, 254, 0.3);
+        }
+
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-blue));
+            opacity: 0.8;
+        }
+
+        .metric-card.accent-purple::before {
+            background: linear-gradient(90deg, #818cf8, #c084fc);
+        }
+
+        .metric-card.accent-green::before {
+            background: linear-gradient(90deg, #059669, #10b981);
+        }
+
+        .metric-card.accent-amber::before {
+            background: linear-gradient(90deg, #d97706, #fbbf24);
+        }
+
+        .metric-label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .metric-value {
+            font-size: 32px;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -0.5px;
+            font-family: var(--font-mono);
+            line-height: 1.1;
+        }
+
+        .metric-value.highlight {
+            background: linear-gradient(135deg, #00f2fe, #4facfe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .metric-sub {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .badge-verified {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(16, 185, 129, 0.15);
+            color: #10b981;
+            font-size: 10px;
+            padding: 2px 7px;
+            border-radius: 999px;
+            font-weight: 600;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .grid-2col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .grid-full {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .panel-box {
+            background: rgba(18, 24, 38, 0.85);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 26px;
+            backdrop-filter: blur(12px);
+        }
+
+        .panel-header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 16px;
+        }
+
+        .panel-title {
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.2px;
+        }
+
+        .panel-subtitle {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .legend-group {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 3px;
+        }
+
+        /* Class-wise grouped bar chart */
+        .class-chart-container {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .class-row {
+            display: grid;
+            grid-template-columns: 80px 1fr 180px;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .class-name-badge {
+            font-family: var(--font-mono);
+            font-size: 13px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            text-align: center;
+        }
+
+        .bar-group-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .metric-bar-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            height: 14px;
+        }
+
+        .metric-bar-bg {
+            flex: 1;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 999px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .metric-bar-fill {
+            height: 100%;
+            border-radius: 999px;
+            transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .metric-bar-tag {
+            font-size: 10px;
+            font-weight: 700;
+            font-family: var(--font-mono);
+            width: 32px;
+            color: var(--text-secondary);
+            text-align: right;
+        }
+
+        .metric-bar-val {
+            font-size: 11px;
+            font-weight: 600;
+            font-family: var(--font-mono);
+            width: 50px;
+            color: #fff;
+        }
+
+        .class-stats-pill {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            font-family: var(--font-mono);
+            background: rgba(0, 0, 0, 0.25);
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        /* SNR Line Chart Container */
+        .snr-svg-wrap {
+            position: relative;
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .snr-svg {
+            width: 100%;
+            height: 260px;
+            overflow: visible;
+        }
+
+        .snr-point {
+            cursor: pointer;
+            transition: r 0.2s ease, filter 0.2s ease;
+        }
+
+        .snr-point:hover {
+            r: 7 !important;
+            filter: drop-shadow(0 0 6px #00f2fe);
+        }
+
+        .snr-tooltip {
+            position: absolute;
+            display: none;
+            background: rgba(13, 17, 26, 0.95);
+            border: 1px solid rgba(0, 242, 254, 0.4);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            pointer-events: none;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+            transform: translate(-50%, -120%);
+            white-space: nowrap;
+            z-index: 20;
+            font-family: var(--font-mono);
+        }
+
+        /* Source Chart */
+        .source-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .source-card {
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            position: relative;
+        }
+
+        .source-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .source-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .source-acc {
+            font-size: 26px;
+            font-weight: 800;
+            font-family: var(--font-mono);
+        }
+
+        .source-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* Confusion Matrix */
+        .cm-wrapper {
+            overflow-x: auto;
+        }
+
+        .cm-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 6px;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        .cm-table th {
+            padding: 10px 8px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-secondary);
+        }
+
+        .cm-table th.cm-corner {
+            text-align: left;
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .cm-row-label {
+            font-family: var(--font-mono);
+            font-weight: 700;
+            color: var(--accent-cyan);
+            padding: 8px 12px;
+            text-align: left;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 8px;
+        }
+
+        .cm-cell {
+            padding: 12px 8px;
+            border-radius: 8px;
+            font-family: var(--font-mono);
+            font-weight: 700;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+            position: relative;
+            cursor: default;
+        }
+
+        .cm-cell:hover {
+            transform: scale(1.06);
+            z-index: 5;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+        }
+
+        .cm-cell-count {
+            font-size: 15px;
+            color: #fff;
+            display: block;
+        }
+
+        .cm-cell-pct {
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.65);
+            display: block;
+            margin-top: 2px;
+        }
+
+        .cm-cell.diagonal {
+            border: 1px solid rgba(0, 242, 254, 0.35);
+        }
+
+        .audit-strip {
+            background: rgba(16, 185, 129, 0.05);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 10px;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .audit-strip strong {
+            color: #10b981;
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="brand-icon">C</div>
+                <div>
+                    <h1>COG-EW</h1>
+                    <span>RF Intelligence</span>
+                </div>
+            </div>
+
+            <nav>
+                <a href="/">Overview</a>
+                <a href="/pages/rf_classification.html">RF Classification</a>
+                <a href="/pages/signal_analysis.html">Signal Analysis</a>
+                <a href="/pages/decision_support.html">Decision Support</a>
+                <a href="/pages/performance.html" class="active">Model Performance</a>
+            </nav>
+        </aside>
+
+        <main class="main">
+            <header class="topbar">
+                <div>
+                    <h2>RF CNN Performance & Benchmarks</h2>
+                    <p>Untouched Test-Set Evaluation and Multi-Scheme Diagnostic Metrics</p>
+                </div>
+                <div id="systemStatus" class="status online">● Online</div>
+            </header>
+
+            <div class="perf-layout">
+                <!-- Row 1: KPI Cards -->
+                <section class="cards-row">
+                    <div class="metric-card" id="overallAccuracyCard">
+                        <div class="metric-label">
+                            <span>Overall Accuracy</span>
+                            <span class="badge-verified">Verified</span>
+                        </div>
+                        <div class="metric-value highlight" id="overallAccuracyVal">64.75%</div>
+                        <div class="metric-sub">Untouched Test Split (30,005 samples)</div>
+                    </div>
+
+                    <div class="metric-card accent-purple">
+                        <div class="metric-label">
+                            <span>Macro F1-Score</span>
+                            <span>5 Classes</span>
+                        </div>
+                        <div class="metric-value" id="macroF1Val">65.34%</div>
+                        <div class="metric-sub">Precision: 71.60% | Recall: 64.75%</div>
+                    </div>
+
+                    <div class="metric-card accent-green">
+                        <div class="metric-label">
+                            <span>SNR Range</span>
+                            <span class="badge-verified" id="snrPointCountBadge">26 Points</span>
+                        </div>
+                        <div class="metric-value" style="color: #10b981;" id="snrRangeVal">−20 to +30 dB</div>
+                        <div class="metric-sub">Step size: 2 dB continuous</div>
+                    </div>
+
+                    <div class="metric-card accent-amber">
+                        <div class="metric-label">
+                            <span>Dataset Sources</span>
+                            <span>Harmonized</span>
+                        </div>
+                        <div class="metric-value" style="color: #fbbf24;">2 Benchmarks</div>
+                        <div class="metric-sub">RadioML 2016 & RadioML 2018</div>
+                    </div>
+                </section>
+
+                <!-- Audit info banner -->
+                <div class="audit-strip">
+                    <div>
+                        <span>Evaluation Integrity: <strong>Untouched Test Split</strong> (Pre-computed Evaluation Artifact)</span>
+                        <span style="margin-left: 14px;">Sha256: <code style="font-family: var(--font-mono); color: var(--accent-cyan);">1b196506...</code></span>
+                    </div>
+                    <div>
+                        <span class="badge-verified">✓ No Training or Evaluation Process Triggered On Page Load</span>
+                    </div>
+                </div>
+
+                <!-- Row 2: Class-Wise Performance & Dataset Sources -->
+                <div class="grid-2col">
+                    <!-- Class-Wise Precision, Recall, F1 Chart -->
+                    <div class="panel-box">
+                        <div class="panel-header-bar">
+                            <div>
+                                <h3 class="panel-title">Class-Wise Chart: Precision, Recall & F1-Score</h3>
+                                <p class="panel-subtitle">Comparative modulation performance across all five classes</p>
+                            </div>
+                            <div class="legend-group">
+                                <div class="legend-item">
+                                    <div class="legend-dot" style="background: var(--color-prec);"></div>
+                                    <span>Precision</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-dot" style="background: var(--color-rec);"></div>
+                                    <span>Recall</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-dot" style="background: var(--color-f1);"></div>
+                                    <span>F1-Score</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="class-chart-container" id="classChartContainer">
+                            <!-- Populated dynamically via JS -->
+                        </div>
+                    </div>
+
+                    <!-- Dataset Source Performance Chart -->
+                    <div class="panel-box">
+                        <div class="panel-header-bar">
+                            <div>
+                                <h3 class="panel-title">Source Chart: RadioML 2016 vs RadioML 2018</h3>
+                                <p class="panel-subtitle">Harmonized evaluation accuracy across benchmark sources</p>
+                            </div>
+                            <span class="badge-verified">30,005 Samples</span>
+                        </div>
+
+                        <div class="source-grid" id="sourceChartContainer">
+                            <!-- Populated dynamically via JS -->
+                        </div>
+
+                        <div style="margin-top: 20px; background: rgba(0,0,0,0.2); border-radius: 10px; padding: 14px; border: 1px solid rgba(255,255,255,0.04);">
+                            <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 8px;">
+                                <span style="color: var(--text-secondary);">Source Distribution Ratio</span>
+                                <span style="color: #fff; font-family: var(--font-mono);">RadioML 2016 (49.99%) : RadioML 2018 (50.01%)</span>
+                            </div>
+                            <div style="height: 8px; width: 100%; border-radius: 999px; overflow: hidden; display: flex;">
+                                <div style="width: 49.99%; background: #38bdf8;" title="RadioML 2016: 15,000 samples"></div>
+                                <div style="width: 50.01%; background: #a855f7;" title="RadioML 2018: 15,005 samples"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Row 3: SNR Chart (26 points: -20 dB through +30 dB) -->
+                <div class="panel-box">
+                    <div class="panel-header-bar">
+                        <div>
+                            <h3 class="panel-title">SNR Chart: Accuracy vs Signal-to-Noise Ratio (26 Points, −20 dB to +30 dB)</h3>
+                            <p class="panel-subtitle">Classification accuracy profile as a function of channel noise level</p>
+                        </div>
+                        <div class="legend-group">
+                            <span style="font-family: var(--font-mono); font-size: 12px; color: var(--accent-cyan);" id="snrPointCountIndicator">26 Data Points (−20 dB &rarr; +30 dB)</span>
+                        </div>
+                    </div>
+
+                    <div class="snr-svg-wrap" id="snrChartWrap">
+                        <div class="snr-tooltip" id="snrTooltip"></div>
+                        <svg class="snr-svg" id="snrSvg" viewBox="0 0 1000 260" preserveAspectRatio="none">
+                            <!-- Rendered by JavaScript -->
+                        </svg>
+                    </div>
+
+                    <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--text-secondary); margin-top: 12px; padding: 0 40px; font-family: var(--font-mono);">
+                        <span>Low SNR Regime (−20 to −6 dB): Noise-limited</span>
+                        <span>Transition Regime (−4 to +4 dB): Steep Gain</span>
+                        <span>High SNR Regime (+6 to +30 dB): Peak Accuracy (~93.4%)</span>
+                    </div>
+                </div>
+
+                <!-- Row 4: Confusion Matrix (5 Actual x 5 Predicted Classes) -->
+                <div class="panel-box">
+                    <div class="panel-header-bar">
+                        <div>
+                            <h3 class="panel-title">Confusion Matrix: All Five Actual and Predicted Classes</h3>
+                            <p class="panel-subtitle">Actual modulation vs Predicted modulation count matrix (Total: 30,005 samples)</p>
+                        </div>
+                        <div class="legend-group">
+                            <div class="legend-item">
+                                <div class="legend-dot" style="background: rgba(0, 242, 254, 0.4); border: 1px solid var(--accent-cyan);"></div>
+                                <span>Correct Predictions (Diagonal)</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-dot" style="background: rgba(239, 68, 68, 0.25);"></div>
+                                <span>Misclassifications</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="cm-wrapper">
+                        <table class="cm-table" id="confusionMatrixTable">
+                            <!-- Populated dynamically via JS -->
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Pre-computed fallback metrics directly from reports/cogew_rf_cnn_test_evaluation.json
+        // Guarantees immediate zero-lag display with NO training or evaluation running.
+        const FALLBACK_METRICS = {
+            "overall": {
+                "accuracy": 0.6474587568738543,
+                "accuracy_percent": 64.74587568738544
+            },
+            "class_metrics": {
+                "8PSK": {
+                    "precision": 0.44401257029440955,
+                    "recall": 0.8948333333333334,
+                    "f1_score": 0.5935219986734469,
+                    "support": 6000
+                },
+                "BPSK": {
+                    "precision": 0.8485338725985845,
+                    "recall": 0.6992167972004666,
+                    "f1_score": 0.7666727571715696,
+                    "support": 6001
+                },
+                "QPSK": {
+                    "precision": 0.7937859118961481,
+                    "recall": 0.6216666666666667,
+                    "f1_score": 0.6972614263015235,
+                    "support": 6000
+                },
+                "16QAM": {
+                    "precision": 0.6987374836743578,
+                    "recall": 0.535,
+                    "f1_score": 0.6060033981498961,
+                    "support": 6000
+                },
+                "64QAM": {
+                    "precision": 0.7951020408163265,
+                    "recall": 0.4866755496335776,
+                    "f1_score": 0.6037813823742122,
+                    "support": 6004
+                }
+            },
+            "snr_accuracy": {
+                "-20": { "samples": 1332, "accuracy": 0.21546546546546547 },
+                "-18": { "samples": 1319, "accuracy": 0.19939347990902198 },
+                "-16": { "samples": 1321, "accuracy": 0.19530658591975775 },
+                "-14": { "samples": 1321, "accuracy": 0.22255866767600302 },
+                "-12": { "samples": 1340, "accuracy": 0.24029850746268658 },
+                "-10": { "samples": 1328, "accuracy": 0.26656626506024095 },
+                "-8":  { "samples": 1327, "accuracy": 0.3180105501130369 },
+                "-6":  { "samples": 1314, "accuracy": 0.4383561643835616 },
+                "-4":  { "samples": 1316, "accuracy": 0.5547112462006079 },
+                "-2":  { "samples": 1323, "accuracy": 0.6621315192743764 },
+                "0":   { "samples": 1329, "accuracy": 0.7667419112114372 },
+                "2":   { "samples": 1325, "accuracy": 0.8422641509433962 },
+                "4":   { "samples": 1329, "accuracy": 0.9051918735891648 },
+                "6":   { "samples": 1322, "accuracy": 0.9046898638426626 },
+                "8":   { "samples": 1324, "accuracy": 0.918429003021148 },
+                "10":  { "samples": 1333, "accuracy": 0.932483120780195 },
+                "12":  { "samples": 1330, "accuracy": 0.9210526315789473 },
+                "14":  { "samples": 1337, "accuracy": 0.9281974569932685 },
+                "16":  { "samples": 1325, "accuracy": 0.9343396226415094 },
+                "18":  { "samples": 1328, "accuracy": 0.9216867469879518 },
+                "20":  { "samples": 587,  "accuracy": 0.889267461669506 },
+                "22":  { "samples": 590,  "accuracy": 0.8966101694915254 },
+                "24":  { "samples": 578,  "accuracy": 0.8875432525951558 },
+                "26":  { "samples": 564,  "accuracy": 0.8936170212765957 },
+                "28":  { "samples": 574,  "accuracy": 0.8972125435540069 },
+                "30":  { "samples": 589,  "accuracy": 0.9185059422750425 }
+            },
+            "source_accuracy": {
+                "RadioML2016": {
+                    "source_id": 0,
+                    "samples": 15000,
+                    "accuracy": 0.6670666666666667
+                },
+                "RadioML2018": {
+                    "source_id": 1,
+                    "samples": 15005,
+                    "accuracy": 0.6278573808730423
+                }
+            },
+            "confusion_matrix": {
+                "raw": [
+                    [5369, 182, 331, 66, 52],
+                    [1617, 4196, 173, 9, 6],
+                    [1957, 198, 3730, 66, 49],
+                    [1709, 187, 248, 3210, 646],
+                    [1440, 182, 217, 1243, 2922]
+                ]
+            }
+        };
+
+        const CLASS_NAMES = ["8PSK", "BPSK", "QPSK", "16QAM", "64QAM"];
+
+        document.addEventListener("DOMContentLoaded", async () => {
+            let data = FALLBACK_METRICS;
+            try {
+                // Fetch pre-computed metrics without triggering any training or evaluation
+                const res = await fetch("/api/metrics");
+                if (res.ok) {
+                    const json = await res.json();
+                    if (json && json.overall) {
+                        data = json;
+                    }
+                }
+            } catch (err) {
+                console.warn("Using embedded verified evaluation metrics:", err);
+            }
+
+            renderDashboard(data);
+        });
+
+        function renderDashboard(data) {
+            // 1. Overall Accuracy Card
+            const accPct = data.overall.accuracy_percent || (data.overall.accuracy * 100);
+            document.getElementById("overallAccuracyVal").textContent = `${accPct.toFixed(2)}%`;
+
+            // 2. Class-Wise Chart (Precision, Recall, F1 for all five classes)
+            renderClassWiseChart(data.class_metrics);
+
+            // 3. SNR Chart (26 points: -20 dB to +30 dB)
+            renderSnrChart(data.snr_accuracy);
+
+            // 4. Source Chart (RadioML 2016 and RadioML 2018)
+            renderSourceChart(data.source_accuracy);
+
+            // 5. Confusion Matrix (All five actual and predicted classes)
+            renderConfusionMatrix(data.confusion_matrix.raw);
+        }
+
+        function renderClassWiseChart(classMetrics) {
+            const container = document.getElementById("classChartContainer");
+            container.innerHTML = "";
+
+            CLASS_NAMES.forEach(cls => {
+                const m = classMetrics[cls] || { precision: 0, recall: 0, f1_score: 0, support: 0 };
+                const pPct = (m.precision * 100).toFixed(1);
+                const rPct = (m.recall * 100).toFixed(1);
+                const fPct = (m.f1_score * 100).toFixed(1);
+
+                const row = document.createElement("div");
+                row.className = "class-row";
+                row.innerHTML = `
+                    <div class="class-name-badge">${cls}</div>
+                    <div class="bar-group-stack">
+                        <!-- Precision -->
+                        <div class="metric-bar-wrap">
+                            <span class="metric-bar-tag" style="color: var(--color-prec);">P</span>
+                            <div class="metric-bar-bg">
+                                <div class="metric-bar-fill" style="width: ${pPct}%; background: var(--color-prec);" title="${cls} Precision: ${pPct}%"></div>
+                            </div>
+                            <span class="metric-bar-val">${pPct}%</span>
+                        </div>
+                        <!-- Recall -->
+                        <div class="metric-bar-wrap">
+                            <span class="metric-bar-tag" style="color: var(--color-rec);">R</span>
+                            <div class="metric-bar-bg">
+                                <div class="metric-bar-fill" style="width: ${rPct}%; background: var(--color-rec);" title="${cls} Recall: ${rPct}%"></div>
+                            </div>
+                            <span class="metric-bar-val">${rPct}%</span>
+                        </div>
+                        <!-- F1-Score -->
+                        <div class="metric-bar-wrap">
+                            <span class="metric-bar-tag" style="color: var(--color-f1);">F1</span>
+                            <div class="metric-bar-bg">
+                                <div class="metric-bar-fill" style="width: ${fPct}%; background: var(--color-f1);" title="${cls} F1-Score: ${fPct}%"></div>
+                            </div>
+                            <span class="metric-bar-val">${fPct}%</span>
+                        </div>
+                    </div>
+                    <div class="class-stats-pill">
+                        <span style="color: var(--text-secondary);">Support:</span>
+                        <strong style="color: #fff;">${m.support.toLocaleString()}</strong>
+                    </div>
+                `;
+                container.appendChild(row);
+            });
+        }
+
+        function renderSnrChart(snrData) {
+            const svg = document.getElementById("snrSvg");
+            const tooltip = document.getElementById("snrTooltip");
+
+            // Sort keys numerically: -20 through +30
+            const sortedKeys = Object.keys(snrData).sort((a, b) => parseInt(a, 10) - parseInt(b, 10));
+            const pointCount = sortedKeys.length;
+            document.getElementById("snrPointCountIndicator").textContent = `${pointCount} Data Points (−20 dB through +30 dB)`;
+            document.getElementById("snrPointCountBadge").textContent = `${pointCount} Points`;
+
+            const W = 1000;
+            const H = 260;
+            const padL = 60;
+            const padR = 40;
+            const padT = 30;
+            const padB = 40;
+
+            const plotW = W - padL - padR;
+            const plotH = H - padT - padB;
+
+            // X-scale from index 0 to pointCount - 1
+            const getX = i => padL + (i / (pointCount - 1)) * plotW;
+            // Y-scale from 0.0 to 1.0 (accuracy)
+            const getY = acc => padT + plotH - (acc * plotH);
+
+            let gridLines = "";
+            // Horizontal grid lines: 0%, 25%, 50%, 75%, 100%
+            [0, 0.25, 0.5, 0.75, 1.0].forEach(acc => {
+                const y = getY(acc);
+                gridLines += `
+                    <line x1="${padL}" y1="${y}" x2="${W - padR}" y2="${y}" stroke="rgba(255,255,255,0.08)" stroke-dasharray="4" />
+                    <text x="${padL - 10}" y="${y + 4}" fill="#94a3b8" font-size="11" font-family="'JetBrains Mono', monospace" text-anchor="end">${(acc * 100).toFixed(0)}%</text>
+                `;
+            });
+
+            // Vertical guideline at 0 dB
+            const zeroIdx = sortedKeys.indexOf("0");
+            if (zeroIdx >= 0) {
+                const zeroX = getX(zeroIdx);
+                gridLines += `
+                    <line x1="${zeroX}" y1="${padT}" x2="${zeroX}" y2="${padT + plotH}" stroke="rgba(0, 242, 254, 0.25)" stroke-dasharray="2" />
+                    <text x="${zeroX}" y="${padT - 8}" fill="#00f2fe" font-size="10" font-family="'JetBrains Mono', monospace" text-anchor="middle">0 dB Baseline</text>
+                `;
+            }
+
+            // Generate Path & Points
+            const pointsCoords = [];
+            sortedKeys.forEach((key, idx) => {
+                const item = snrData[key];
+                const acc = item.accuracy !== undefined ? item.accuracy : item;
+                const x = getX(idx);
+                const y = getY(acc);
+                pointsCoords.push({ x, y, snr: key, acc, samples: item.samples || 'N/A' });
+            });
+
+            let linePathD = `M ${pointsCoords[0].x} ${pointsCoords[0].y}`;
+            pointsCoords.slice(1).forEach(pt => {
+                linePathD += ` L ${pt.x} ${pt.y}`;
+            });
+
+            const areaPathD = `${linePathD} L ${pointsCoords[pointsCoords.length - 1].x} ${padT + plotH} L ${pointsCoords[0].x} ${padT + plotH} Z`;
+
+            let xAxisTicks = "";
+            pointsCoords.forEach((pt, idx) => {
+                const snrNum = parseInt(pt.snr, 10);
+                // Label every even index or every 2nd tick to keep clean readability
+                const showLabel = idx % 2 === 0 || idx === pointCount - 1;
+                if (showLabel) {
+                    xAxisTicks += `
+                        <text x="${pt.x}" y="${padT + plotH + 20}" fill="#94a3b8" font-size="10" font-family="'JetBrains Mono', monospace" text-anchor="middle">${snrNum > 0 ? '+' + snrNum : snrNum}</text>
+                    `;
+                }
+            });
+
+            let circlesSvg = "";
+            pointsCoords.forEach((pt, idx) => {
+                circlesSvg += `
+                    <circle class="snr-point" cx="${pt.x}" cy="${pt.y}" r="4.5" fill="#00f2fe" stroke="#0b0f19" stroke-width="2" data-idx="${idx}" />
+                `;
+            });
+
+            svg.innerHTML = `
+                <defs>
+                    <linearGradient id="snrAreaGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#00f2fe" stop-opacity="0.35"/>
+                        <stop offset="100%" stop-color="#00f2fe" stop-opacity="0.0"/>
+                    </linearGradient>
+                    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+                        <feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="#00f2fe" flood-opacity="0.6"/>
+                    </filter>
+                </defs>
+                ${gridLines}
+                <path d="${areaPathD}" fill="url(#snrAreaGrad)" />
+                <path d="${linePathD}" fill="none" stroke="#00f2fe" stroke-width="2.5" filter="url(#glow)" />
+                ${xAxisTicks}
+                ${circlesSvg}
+            `;
+
+            // Setup hover tooltip
+            const chartWrap = document.getElementById("snrChartWrap");
+            svg.querySelectorAll(".snr-point").forEach(circle => {
+                circle.addEventListener("mouseenter", e => {
+                    const idx = parseInt(e.target.getAttribute("data-idx"), 10);
+                    const pt = pointsCoords[idx];
+                    const snrFormatted = parseInt(pt.snr, 10) > 0 ? `+${pt.snr} dB` : `${pt.snr} dB`;
+
+                    tooltip.innerHTML = `
+                        <div style="color: var(--accent-cyan); font-weight: 700; margin-bottom: 2px;">SNR: ${snrFormatted}</div>
+                        <div>Accuracy: <strong style="color: #fff;">${(pt.acc * 100).toFixed(2)}%</strong></div>
+                        <div style="color: var(--text-secondary); font-size: 11px;">Samples: ${pt.samples}</div>
+                    `;
+                    tooltip.style.display = "block";
+
+                    const rect = chartWrap.getBoundingClientRect();
+                    const svgRect = svg.getBoundingClientRect();
+                    const scaleX = svgRect.width / W;
+                    const scaleY = svgRect.height / H;
+
+                    tooltip.style.left = `${pt.x * scaleX}px`;
+                    tooltip.style.top = `${pt.y * scaleY}px`;
+                });
+
+                circle.addEventListener("mouseleave", () => {
+                    tooltip.style.display = "none";
+                });
+            });
+        }
+
+        function renderSourceChart(sourceData) {
+            const container = document.getElementById("sourceChartContainer");
+            container.innerHTML = "";
+
+            const sources = [
+                {
+                    key: "RadioML2016",
+                    display: "RadioML 2016",
+                    accent: "#38bdf8",
+                    badge: "RML2016.10a"
+                },
+                {
+                    key: "RadioML2018",
+                    display: "RadioML 2018",
+                    accent: "#a855f7",
+                    badge: "RML2018.01a"
+                }
+            ];
+
+            sources.forEach(src => {
+                const s = sourceData[src.key] || { accuracy: 0, samples: 0, source_id: 0 };
+                const accPct = (s.accuracy * 100).toFixed(2);
+
+                const card = document.createElement("div");
+                card.className = "source-card";
+                card.innerHTML = `
+                    <div class="source-card-header">
+                        <span class="source-name">${src.display}</span>
+                        <span class="badge-verified" style="color: ${src.accent}; border-color: ${src.accent};">${src.badge}</span>
+                    </div>
+                    <div class="source-acc" style="color: ${src.accent};">${accPct}%</div>
+                    <div style="height: 6px; background: rgba(255,255,255,0.06); border-radius: 999px; overflow: hidden;">
+                        <div style="height: 100%; width: ${accPct}%; background: ${src.accent}; border-radius: 999px;"></div>
+                    </div>
+                    <div class="source-meta">
+                        <span>Test Samples: <strong style="color: #fff;">${s.samples.toLocaleString()}</strong></span>
+                        <span>Source ID: <strong style="color: #fff;">${s.source_id}</strong></span>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function renderConfusionMatrix(rawMatrix) {
+            const table = document.getElementById("confusionMatrixTable");
+            table.innerHTML = "";
+
+            // Header Row: Predicted classes
+            let theadHtml = `
+                <thead>
+                    <tr>
+                        <th class="cm-corner">Actual \\ Predicted</th>
+                        ${CLASS_NAMES.map(c => `<th>${c}</th>`).join("")}
+                        <th>Total (Actual)</th>
+                    </tr>
+                </thead>
+            `;
+
+            // Body Rows: Actual classes
+            let tbodyHtml = "<tbody>";
+            rawMatrix.forEach((row, rIdx) => {
+                const actualName = CLASS_NAMES[rIdx];
+                const rowTotal = row.reduce((sum, val) => sum + val, 0);
+
+                let cellsHtml = "";
+                row.forEach((count, cIdx) => {
+                    const isDiagonal = (rIdx === cIdx);
+                    const pctOfRow = ((count / rowTotal) * 100).toFixed(1);
+
+                    // Compute background opacity proportional to max in matrix
+                    let bgStyle = "";
+                    if (isDiagonal) {
+                        const alpha = Math.min(0.85, 0.2 + (count / rowTotal) * 0.6);
+                        bgStyle = `background: rgba(0, 242, 254, ${alpha}); border: 1px solid rgba(0, 242, 254, 0.4);`;
+                    } else if (count > 0) {
+                        const alpha = Math.min(0.6, 0.05 + (count / rowTotal) * 0.8);
+                        bgStyle = `background: rgba(239, 68, 68, ${alpha});`;
+                    } else {
+                        bgStyle = `background: rgba(255, 255, 255, 0.02);`;
+                    }
+
+                    cellsHtml += `
+                        <td class="cm-cell ${isDiagonal ? 'diagonal' : ''}" style="${bgStyle}" title="Actual: ${actualName} &rarr; Predicted: ${CLASS_NAMES[cIdx]} (${count.toLocaleString()} samples, ${pctOfRow}%)">
+                            <span class="cm-cell-count">${count.toLocaleString()}</span>
+                            <span class="cm-cell-pct">${pctOfRow}%</span>
+                        </td>
+                    `;
+                });
+
+                tbodyHtml += `
+                    <tr>
+                        <td class="cm-row-label">${actualName}</td>
+                        ${cellsHtml}
+                        <td style="font-family: var(--font-mono); font-size: 12px; color: var(--text-secondary);">${rowTotal.toLocaleString()}</td>
+                    </tr>
+                `;
+            });
+            tbodyHtml += "</tbody>";
+
+            table.innerHTML = theadHtml + tbodyHtml;
+        }
+    </script>
+</body>
+</html>

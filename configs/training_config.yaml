@@ -1,0 +1,70 @@
+training:
+
+  seed: 42
+
+  device: auto
+
+  mixed_precision:
+    enabled: true
+
+  rf:
+    epochs: 20
+    batch_size: 32
+    learning_rate: 0.001
+    weight_decay: 0.0001
+
+  telemetry:
+    epochs: 30
+    batch_size: 64
+    learning_rate: 0.001
+    weight_decay: 0.0001
+
+  reinforcement_learning:
+
+    algorithm: PPO
+
+    total_timesteps: 100000
+
+    learning_rate: 0.0003
+
+    batch_size: 64
+
+    gamma: 0.99
+
+    gae_lambda: 0.95
+
+    clip_range: 0.2
+
+
+checkpointing:
+
+  directory: models
+
+  save_best: true
+  save_latest: true
+
+  monitor:
+    metric: validation_loss
+    mode: min
+
+
+evaluation:
+
+  metrics:
+
+    classification:
+      - accuracy
+      - precision
+      - recall
+      - f1
+
+    regression:
+      - mae
+      - rmse
+      - r2
+
+    rl:
+      - episode_reward
+      - constraint_violations
+      - trajectory_smoothness
+      - inference_latency

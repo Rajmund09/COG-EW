@@ -1,0 +1,58 @@
+{
+    "project": "COG-EW",
+    "stage": "controlled_rf_augmentation",
+    "input_file": "D:\\COG-EW\\data\\splits\\cogew_train.h5",
+    "output_file": "D:\\COG-EW\\data\\augmented\\cogew_train_augmented.h5",
+    "input_sha256_before": "4780eb20ba1c696cc285e29e864adba1920ba2ddc3c3555c2ea730c0c7194fdd",
+    "input_sha256_after": "4780eb20ba1c696cc285e29e864adba1920ba2ddc3c3555c2ea730c0c7194fdd",
+    "original_training_samples": 139996,
+    "augmented_samples": 139996,
+    "final_samples": 279992,
+    "augmentation_factor": 2,
+    "batch_size": 2048,
+    "random_seed": 42,
+    "augmentation_methods": [
+        "phase_rotation",
+        "amplitude_scaling",
+        "time_shift",
+        "iq_imbalance",
+        "frequency_offset",
+        "awgn"
+    ],
+    "augmentation_parameters": {
+        "phase_range_rad": [
+            -3.141592653589793,
+            3.141592653589793
+        ],
+        "amplitude_range": [
+            0.8,
+            1.2
+        ],
+        "max_time_shift": 12,
+        "iq_gain_range": [
+            0.9,
+            1.1
+        ],
+        "max_iq_phase_error_deg": 5.0,
+        "max_frequency_offset": 0.02,
+        "awgn_snr_range_db": [
+            20.0,
+            35.0
+        ]
+    },
+    "validation_augmented": false,
+    "test_augmented": false,
+    "label_preserving": true,
+    "source_dataset_modified": false,
+    "original_training_file_unchanged": true,
+    "output_validation": {
+        "finite_values": true,
+        "x_shape": [
+            279992,
+            128,
+            2
+        ],
+        "class_count": 5
+    },
+    "status": "SUCCESS"
+}

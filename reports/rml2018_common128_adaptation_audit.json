@@ -1,0 +1,92 @@
+{
+  "project": "COG-EW",
+  "operation": "RadioML 2018.01A common 128-IQ adaptation",
+  "source": {
+    "dataset": "RadioML 2018.01A",
+    "path": "D:\\Datasets\\RadioML 2018.01A \u2b50 Main RF benchmark\\GOLD_XYZ_OSC.0001_1024.hdf5",
+    "original_shape": [
+      2555904,
+      1024,
+      2
+    ]
+  },
+  "output": {
+    "path": "D:\\COG-EW\\data\\intermediate\\rml2018_common128.h5",
+    "shape": [
+      532480,
+      128,
+      2
+    ]
+  },
+  "class_mapping": {
+    "8PSK": {
+      "source_class_id": 5,
+      "common_class_id": 0
+    },
+    "BPSK": {
+      "source_class_id": 3,
+      "common_class_id": 1
+    },
+    "QPSK": {
+      "source_class_id": 4,
+      "common_class_id": 2
+    },
+    "16QAM": {
+      "source_class_id": 12,
+      "common_class_id": 3
+    },
+    "64QAM": {
+      "source_class_id": 14,
+      "common_class_id": 4
+    }
+  },
+  "selected_class_counts": {
+    "8PSK": 106496,
+    "BPSK": 106496,
+    "QPSK": 106496,
+    "16QAM": 106496,
+    "64QAM": 106496
+  },
+  "output_class_counts": {
+    "8PSK": 106496,
+    "BPSK": 106496,
+    "QPSK": 106496,
+    "16QAM": 106496,
+    "64QAM": 106496
+  },
+  "excluded_classes": [
+    "OOK",
+    "4ASK",
+    "8ASK",
+    "16PSK",
+    "32PSK",
+    "16APSK",
+    "32APSK",
+    "64APSK",
+    "128APSK",
+    "32QAM",
+    "128QAM",
+    "256QAM",
+    "AM-SSB-WC",
+    "AM-SSB-SC",
+    "AM-DSB-WC",
+    "AM-DSB-SC",
+    "FM",
+    "GMSK",
+    "OQPSK"
+  ],
+  "quality": {
+    "invalid_nan": 0,
+    "invalid_inf": 0,
+    "invalid_shape": 0
+  },
+  "processing": {
+    "source_modified": false,
+    "augmentation_performed": false,
+    "merge_performed": false,
+    "training_performed": false,
+    "representation_conversion": "1024 IQ samples -> first 128 IQ samples",
+    "normalization_performed": false
+  },
+  "next_stage": "Perform independent harmonization, leakage-safe split, merge, and training-only augmentation."
+}

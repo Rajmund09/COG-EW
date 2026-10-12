@@ -1,0 +1,51 @@
+project:
+  name: COG-EW
+  version: "0.1.0"
+
+data:
+  root: "${DATA_ROOT:D:\\Datasets}"
+
+  datasets:
+    radioml2016:
+      enabled: true
+      expected_formats:
+        - pkl
+
+    radioml2018:
+      enabled: true
+      expected_formats:
+        - h5
+        - hdf5
+
+    nist_sea_data:
+      enabled: true
+      expected_formats:
+        - sigmf
+        - sigmf-data
+        - duckdb
+        - zip
+
+    idf_ds:
+      enabled: true
+      expected_formats:
+        - csv
+        - parquet
+        - zip
+
+  processing:
+    random_seed: 42
+    validation_fraction: 0.15
+    test_fraction: 0.15
+
+  development:
+    sample_limit: 10000
+
+  rf:
+    batch_size: 32
+    num_workers: 2
+    pin_memory: true
+
+  telemetry:
+    batch_size: 64
+    num_workers: 2
+    pin_memory: true

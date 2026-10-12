@@ -1,0 +1,123 @@
+{
+  "project": "COG-EW",
+  "source_dataset": "D:\\Datasets\\DeepSig Dataset RadioML 2016.10A\\RML2016.10a_dict.pkl",
+  "output_dataset": "D:\\COG-EW\\data\\intermediate\\rml2016_common128.h5",
+  "source_format": "RadioML 2016.10A dictionary PKL",
+  "output_format": "HDF5",
+  "source_sample_shape": [
+    2,
+    128
+  ],
+  "output_sample_shape": [
+    128,
+    2
+  ],
+  "target_classes": [
+    "8PSK",
+    "BPSK",
+    "QPSK",
+    "16QAM",
+    "64QAM"
+  ],
+  "class_mapping": {
+    "8PSK": "8PSK",
+    "BPSK": "BPSK",
+    "QPSK": "QPSK",
+    "QAM16": "16QAM",
+    "QAM64": "64QAM"
+  },
+  "excluded_classes": [
+    "AM-DSB",
+    "AM-SSB",
+    "CPFSK",
+    "GFSK",
+    "PAM4",
+    "WBFM"
+  ],
+  "excluded_class_reason": "No exact/common semantic label in RadioML 2018.01A for the first conservative merge experiment.",
+  "normalization": "none at adaptation stage",
+  "augmentation": false,
+  "resampling": false,
+  "source_modified": false,
+  "nan_rejected": 0,
+  "inf_rejected": 0,
+  "shape_rejected": 0,
+  "output_shape": {
+    "X": [
+      100000,
+      128,
+      2
+    ],
+    "Y": [
+      100000
+    ],
+    "Z": [
+      100000
+    ]
+  },
+  "kept_samples": 100000,
+  "kept_class_counts": {
+    "QPSK": 20000,
+    "64QAM": 20000,
+    "8PSK": 20000,
+    "16QAM": 20000,
+    "BPSK": 20000
+  },
+  "kept_snr_counts": {
+    "-20": 5000,
+    "-18": 5000,
+    "-16": 5000,
+    "-14": 5000,
+    "-12": 5000,
+    "-10": 5000,
+    "-8": 5000,
+    "-6": 5000,
+    "-4": 5000,
+    "-2": 5000,
+    "0": 5000,
+    "2": 5000,
+    "4": 5000,
+    "6": 5000,
+    "8": 5000,
+    "10": 5000,
+    "12": 5000,
+    "14": 5000,
+    "16": 5000,
+    "18": 5000
+  },
+  "source_class_counts": {
+    "QPSK": 20000,
+    "PAM4": 20000,
+    "AM-DSB": 20000,
+    "GFSK": 20000,
+    "QAM64": 20000,
+    "AM-SSB": 20000,
+    "8PSK": 20000,
+    "QAM16": 20000,
+    "WBFM": 20000,
+    "CPFSK": 20000,
+    "BPSK": 20000
+  },
+  "source_snr_counts": {
+    "-20": 11000,
+    "-18": 11000,
+    "-16": 11000,
+    "-14": 11000,
+    "-12": 11000,
+    "-10": 11000,
+    "-8": 11000,
+    "-6": 11000,
+    "-4": 11000,
+    "-2": 11000,
+    "0": 11000,
+    "2": 11000,
+    "4": 11000,
+    "6": 11000,
+    "8": 11000,
+    "10": 11000,
+    "12": 11000,
+    "14": 11000,
+    "16": 11000,
+    "18": 11000
+  }
+}

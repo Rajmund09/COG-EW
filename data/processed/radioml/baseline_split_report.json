@@ -1,0 +1,16 @@
+{
+  "seed": 42,
+  "total": 60000,
+  "train": {
+    "samples": 42000,
+    "percentage": 70.0
+  },
+  "validation": {
+    "samples": 9000,
+    "percentage": 15.0
+  },
+  "test": {
+    "samples": 9000,
+    "percentage": 15.0
+  }
+}

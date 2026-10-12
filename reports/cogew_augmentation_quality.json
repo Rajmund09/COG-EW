@@ -1,0 +1,88 @@
+{
+  "status": "PASS",
+  "input_dataset": "D:\\COG-EW\\data\\augmented\\cogew_train_augmented.h5",
+  "original_training_dataset": "D:\\COG-EW\\data\\splits\\cogew_train.h5",
+  "original_sha256": "4780eb20ba1c696cc285e29e864adba1920ba2ddc3c3555c2ea730c0c7194fdd",
+  "augmented_sha256": "cd0df8014c5195b2a8347a35b1d1dd620ae8d1852cdc61704c80f2f5a14c3838",
+  "original_samples": 139996,
+  "augmented_dataset_samples": 279992,
+  "expected_augmented_samples": 279992,
+  "class_distribution": {
+    "8PSK": 56000,
+    "BPSK": 55998,
+    "QPSK": 56000,
+    "16QAM": 55998,
+    "64QAM": 55996
+  },
+  "augmentation_source_distribution": {
+    "Original": 139996,
+    "Augmented": 139996
+  },
+  "snr_distribution": {
+    "-20": 12428,
+    "-18": 12314,
+    "-16": 12326,
+    "-14": 12328,
+    "-12": 12494,
+    "-10": 12364,
+    "-8": 12380,
+    "-6": 12284,
+    "-4": 12294,
+    "-2": 12348,
+    "0": 12408,
+    "2": 12356,
+    "4": 12424,
+    "6": 12332,
+    "8": 12362,
+    "10": 12418,
+    "12": 12420,
+    "14": 12462,
+    "16": 12372,
+    "18": 12384,
+    "20": 5482,
+    "22": 5504,
+    "24": 5396,
+    "26": 5276,
+    "28": 5352,
+    "30": 5484
+  },
+  "nan_values": 0,
+  "inf_values": 0,
+  "invalid_source_indices": 0,
+  "label_errors": 0,
+  "pair_probe_size": 10000,
+  "pair_correlation": {
+    "mean": 0.2390194396916244,
+    "median": 0.08912160394113527,
+    "minimum": -0.9999950312913087,
+    "maximum": 1.0000000000000002
+  },
+  "near_identical_percentage": 0.08,
+  "power_ratio": {
+    "mean": 1.0111180543899536,
+    "median": 1.0,
+    "minimum": 0.5856267809867859,
+    "maximum": 1.6014769077301025
+  },
+  "extreme_low_power_percentage": 0.0,
+  "extreme_high_power_percentage": 0.0,
+  "signal_statistics": {
+    "power_mean": 1.0036290884017944,
+    "power_std": 0.11655312776565552,
+    "power_min": 0.5853277444839478,
+    "power_max": 1.7177717685699463,
+    "amplitude": {
+      "mean": 1.2930412292480469,
+      "std": 0.5790532231330872,
+      "min": 0.0007167606963776052,
+      "max": 10.17629337310791,
+      "median": 1.3034145832061768
+    },
+    "phase": {
+      "mean": -0.0015763519331812859,
+      "std": 1.8119889497756958,
+      "min": -3.1415905952453613,
+      "max": 3.141590118408203
+    }
+  }
+}

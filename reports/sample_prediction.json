@@ -1,0 +1,20 @@
+{
+  "dataset": "D:\\COG-EW\\data\\splits\\cogew_test.h5",
+  "sample_index": 5000,
+  "model": "D:\\COG-EW\\models\\cogew_rf_cnn_best.pt",
+  "result": {
+    "prediction_id": 1,
+    "prediction": "BPSK",
+    "confidence": 0.9046017527580261,
+    "probabilities": {
+      "8PSK": 0.026330091059207916,
+      "BPSK": 0.9046017527580261,
+      "QPSK": 0.016215097159147263,
+      "16QAM": 0.030915414914488792,
+      "64QAM": 0.021937591955065727
+    }
+  },
+  "true_label": 1,
+  "true_class": "BPSK",
+  "snr_db": -4
+}

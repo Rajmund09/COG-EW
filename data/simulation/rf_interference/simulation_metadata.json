@@ -1,0 +1,21 @@
+{
+  "project": "COG-EW",
+  "stage": "controlled_rf_interference_simulation",
+  "dataset": "RadioML 2018.01A",
+  "sample_index": 100,
+  "class_id": 10,
+  "snr_db": -10,
+  "signal_shape": [
+    2,
+    1024
+  ],
+  "seed": 42,
+  "interference_levels": [
+    0.0,
+    0.05,
+    0.1,
+    0.2,
+    0.35
+  ],
+  "description": "Synthetic signal-domain disturbances for ML robustness evaluation."
+}

@@ -1,0 +1,16 @@
+{
+  "random_seed": 42,
+  "train": {
+    "samples": 1789008,
+    "percentage": 69.9951171875
+  },
+  "validation": {
+    "samples": 383760,
+    "percentage": 15.0146484375
+  },
+  "test": {
+    "samples": 383136,
+    "percentage": 14.990234375
+  },
+  "total": 2555904
+}

@@ -1,0 +1,722 @@
+{
+  "project": "COG-EW",
+  "experiment": "Baseline vs Robust RadioML Diagnostic Analysis",
+  "dataset": "RadioML 2018.01A",
+  "test_samples": 9000,
+  "num_classes": 24,
+  "baseline": {
+    "checkpoint": "D:\\COG-EW\\models\\checkpoints\\radioml_resnet_best.pt",
+    "accuracy_percent": 36.544444444444444,
+    "average_confidence_percent": 35.00640869140625,
+    "snr_results": {
+      "-20": {
+        "accuracy": 0.03590568060021436,
+        "accuracy_percent": 3.590568060021436,
+        "samples": 1866
+      },
+      "-10": {
+        "accuracy": 0.06253553155201819,
+        "accuracy_percent": 6.253553155201819,
+        "samples": 1759
+      },
+      "0": {
+        "accuracy": 0.4482366325369738,
+        "accuracy_percent": 44.82366325369738,
+        "samples": 1758
+      },
+      "10": {
+        "accuracy": 0.6520532741398446,
+        "accuracy_percent": 65.20532741398446,
+        "samples": 1802
+      },
+      "20": {
+        "accuracy": 0.6330578512396694,
+        "accuracy_percent": 63.30578512396694,
+        "samples": 1815
+      }
+    },
+    "per_class": {
+      "0": {
+        "class_name": "Class 00",
+        "accuracy": 0.4625322997416021,
+        "accuracy_percent": 46.253229974160206,
+        "samples": 387
+      },
+      "1": {
+        "class_name": "Class 01",
+        "accuracy": 0.46736292428198434,
+        "accuracy_percent": 46.73629242819843,
+        "samples": 383
+      },
+      "2": {
+        "class_name": "Class 02",
+        "accuracy": 0.4654255319148936,
+        "accuracy_percent": 46.54255319148936,
+        "samples": 376
+      },
+      "3": {
+        "class_name": "Class 03",
+        "accuracy": 0.5094339622641509,
+        "accuracy_percent": 50.943396226415096,
+        "samples": 371
+      },
+      "4": {
+        "class_name": "Class 04",
+        "accuracy": 0.5118733509234829,
+        "accuracy_percent": 51.187335092348285,
+        "samples": 379
+      },
+      "5": {
+        "class_name": "Class 05",
+        "accuracy": 0.06199460916442048,
+        "accuracy_percent": 6.199460916442049,
+        "samples": 371
+      },
+      "6": {
+        "class_name": "Class 06",
+        "accuracy": 0.5794871794871795,
+        "accuracy_percent": 57.948717948717956,
+        "samples": 390
+      },
+      "7": {
+        "class_name": "Class 07",
+        "accuracy": 0.0,
+        "accuracy_percent": 0.0,
+        "samples": 369
+      },
+      "8": {
+        "class_name": "Class 08",
+        "accuracy": 0.44148936170212766,
+        "accuracy_percent": 44.148936170212764,
+        "samples": 376
+      },
+      "9": {
+        "class_name": "Class 09",
+        "accuracy": 0.448,
+        "accuracy_percent": 44.800000000000004,
+        "samples": 375
+      },
+      "10": {
+        "class_name": "Class 10",
+        "accuracy": 0.17553191489361702,
+        "accuracy_percent": 17.5531914893617,
+        "samples": 376
+      },
+      "11": {
+        "class_name": "Class 11",
+        "accuracy": 0.329700272479564,
+        "accuracy_percent": 32.9700272479564,
+        "samples": 367
+      },
+      "12": {
+        "class_name": "Class 12",
+        "accuracy": 0.3269230769230769,
+        "accuracy_percent": 32.69230769230769,
+        "samples": 364
+      },
+      "13": {
+        "class_name": "Class 13",
+        "accuracy": 0.09183673469387756,
+        "accuracy_percent": 9.183673469387756,
+        "samples": 392
+      },
+      "14": {
+        "class_name": "Class 14",
+        "accuracy": 0.0972972972972973,
+        "accuracy_percent": 9.72972972972973,
+        "samples": 370
+      },
+      "15": {
+        "class_name": "Class 15",
+        "accuracy": 0.060453400503778336,
+        "accuracy_percent": 6.045340050377834,
+        "samples": 397
+      },
+      "16": {
+        "class_name": "Class 16",
+        "accuracy": 0.128,
+        "accuracy_percent": 12.8,
+        "samples": 375
+      },
+      "17": {
+        "class_name": "Class 17",
+        "accuracy": 0.5424657534246575,
+        "accuracy_percent": 54.24657534246575,
+        "samples": 365
+      },
+      "18": {
+        "class_name": "Class 18",
+        "accuracy": 0.4625668449197861,
+        "accuracy_percent": 46.25668449197861,
+        "samples": 374
+      },
+      "19": {
+        "class_name": "Class 19",
+        "accuracy": 0.5149051490514905,
+        "accuracy_percent": 51.490514905149055,
+        "samples": 369
+      },
+      "20": {
+        "class_name": "Class 20",
+        "accuracy": 0.32124352331606215,
+        "accuracy_percent": 32.12435233160622,
+        "samples": 386
+      },
+      "21": {
+        "class_name": "Class 21",
+        "accuracy": 0.6495956873315364,
+        "accuracy_percent": 64.95956873315365,
+        "samples": 371
+      },
+      "22": {
+        "class_name": "Class 22",
+        "accuracy": 0.5614525139664804,
+        "accuracy_percent": 56.14525139664804,
+        "samples": 358
+      },
+      "23": {
+        "class_name": "Class 23",
+        "accuracy": 0.5933147632311978,
+        "accuracy_percent": 59.33147632311978,
+        "samples": 359
+      }
+    }
+  },
+  "robust": {
+    "checkpoint": "D:\\COG-EW\\models\\checkpoints\\radioml_resnet_robust_best.pt",
+    "accuracy_percent": 37.17777777777778,
+    "average_confidence_percent": 36.527767181396484,
+    "snr_results": {
+      "-20": {
+        "accuracy": 0.04233654876741694,
+        "accuracy_percent": 4.233654876741694,
+        "samples": 1866
+      },
+      "-10": {
+        "accuracy": 0.0648095508811825,
+        "accuracy_percent": 6.480955088118249,
+        "samples": 1759
+      },
+      "0": {
+        "accuracy": 0.46075085324232085,
+        "accuracy_percent": 46.075085324232084,
+        "samples": 1758
+      },
+      "10": {
+        "accuracy": 0.6492785793562708,
+        "accuracy_percent": 64.92785793562707,
+        "samples": 1802
+      },
+      "20": {
+        "accuracy": 0.6462809917355372,
+        "accuracy_percent": 64.62809917355372,
+        "samples": 1815
+      }
+    },
+    "per_class": {
+      "0": {
+        "class_name": "Class 00",
+        "accuracy": 0.5322997416020672,
+        "accuracy_percent": 53.229974160206716,
+        "samples": 387
+      },
+      "1": {
+        "class_name": "Class 01",
+        "accuracy": 0.46475195822454307,
+        "accuracy_percent": 46.47519582245431,
+        "samples": 383
+      },
+      "2": {
+        "class_name": "Class 02",
+        "accuracy": 0.4946808510638298,
+        "accuracy_percent": 49.46808510638298,
+        "samples": 376
+      },
+      "3": {
+        "class_name": "Class 03",
+        "accuracy": 0.4123989218328841,
+        "accuracy_percent": 41.23989218328841,
+        "samples": 371
+      },
+      "4": {
+        "class_name": "Class 04",
+        "accuracy": 0.5593667546174143,
+        "accuracy_percent": 55.93667546174142,
+        "samples": 379
+      },
+      "5": {
+        "class_name": "Class 05",
+        "accuracy": 0.33962264150943394,
+        "accuracy_percent": 33.9622641509434,
+        "samples": 371
+      },
+      "6": {
+        "class_name": "Class 06",
+        "accuracy": 0.3769230769230769,
+        "accuracy_percent": 37.69230769230769,
+        "samples": 390
+      },
+      "7": {
+        "class_name": "Class 07",
+        "accuracy": 0.0,
+        "accuracy_percent": 0.0,
+        "samples": 369
+      },
+      "8": {
+        "class_name": "Class 08",
+        "accuracy": 0.48138297872340424,
+        "accuracy_percent": 48.138297872340424,
+        "samples": 376
+      },
+      "9": {
+        "class_name": "Class 09",
+        "accuracy": 0.49066666666666664,
+        "accuracy_percent": 49.06666666666666,
+        "samples": 375
+      },
+      "10": {
+        "class_name": "Class 10",
+        "accuracy": 0.05585106382978723,
+        "accuracy_percent": 5.585106382978723,
+        "samples": 376
+      },
+      "11": {
+        "class_name": "Class 11",
+        "accuracy": 0.2970027247956403,
+        "accuracy_percent": 29.70027247956403,
+        "samples": 367
+      },
+      "12": {
+        "class_name": "Class 12",
+        "accuracy": 0.3708791208791209,
+        "accuracy_percent": 37.08791208791209,
+        "samples": 364
+      },
+      "13": {
+        "class_name": "Class 13",
+        "accuracy": 0.2755102040816326,
+        "accuracy_percent": 27.55102040816326,
+        "samples": 392
+      },
+      "14": {
+        "class_name": "Class 14",
+        "accuracy": 0.0,
+        "accuracy_percent": 0.0,
+        "samples": 370
+      },
+      "15": {
+        "class_name": "Class 15",
+        "accuracy": 0.0,
+        "accuracy_percent": 0.0,
+        "samples": 397
+      },
+      "16": {
+        "class_name": "Class 16",
+        "accuracy": 0.216,
+        "accuracy_percent": 21.6,
+        "samples": 375
+      },
+      "17": {
+        "class_name": "Class 17",
+        "accuracy": 0.273972602739726,
+        "accuracy_percent": 27.397260273972602,
+        "samples": 365
+      },
+      "18": {
+        "class_name": "Class 18",
+        "accuracy": 0.6711229946524064,
+        "accuracy_percent": 67.11229946524064,
+        "samples": 374
+      },
+      "19": {
+        "class_name": "Class 19",
+        "accuracy": 0.43360433604336046,
+        "accuracy_percent": 43.360433604336045,
+        "samples": 369
+      },
+      "20": {
+        "class_name": "Class 20",
+        "accuracy": 0.36787564766839376,
+        "accuracy_percent": 36.787564766839374,
+        "samples": 386
+      },
+      "21": {
+        "class_name": "Class 21",
+        "accuracy": 0.6819407008086253,
+        "accuracy_percent": 68.19407008086253,
+        "samples": 371
+      },
+      "22": {
+        "class_name": "Class 22",
+        "accuracy": 0.5558659217877095,
+        "accuracy_percent": 55.58659217877096,
+        "samples": 358
+      },
+      "23": {
+        "class_name": "Class 23",
+        "accuracy": 0.596100278551532,
+        "accuracy_percent": 59.610027855153206,
+        "samples": 359
+      }
+    }
+  },
+  "overall_gain_percentage_points": 0.6333333333333329,
+  "per_class_comparison": [
+    {
+      "class_id": 0,
+      "class_name": "Class 00",
+      "samples": 387,
+      "baseline_accuracy_percent": 46.253229974160206,
+      "robust_accuracy_percent": 53.229974160206716,
+      "gain_percentage_points": 6.97674418604651
+    },
+    {
+      "class_id": 1,
+      "class_name": "Class 01",
+      "samples": 383,
+      "baseline_accuracy_percent": 46.73629242819843,
+      "robust_accuracy_percent": 46.47519582245431,
+      "gain_percentage_points": -0.26109660574412175
+    },
+    {
+      "class_id": 2,
+      "class_name": "Class 02",
+      "samples": 376,
+      "baseline_accuracy_percent": 46.54255319148936,
+      "robust_accuracy_percent": 49.46808510638298,
+      "gain_percentage_points": 2.925531914893618
+    },
+    {
+      "class_id": 3,
+      "class_name": "Class 03",
+      "samples": 371,
+      "baseline_accuracy_percent": 50.943396226415096,
+      "robust_accuracy_percent": 41.23989218328841,
+      "gain_percentage_points": -9.703504043126685
+    },
+    {
+      "class_id": 4,
+      "class_name": "Class 04",
+      "samples": 379,
+      "baseline_accuracy_percent": 51.187335092348285,
+      "robust_accuracy_percent": 55.93667546174142,
+      "gain_percentage_points": 4.749340369393138
+    },
+    {
+      "class_id": 5,
+      "class_name": "Class 05",
+      "samples": 371,
+      "baseline_accuracy_percent": 6.199460916442049,
+      "robust_accuracy_percent": 33.9622641509434,
+      "gain_percentage_points": 27.762803234501348
+    },
+    {
+      "class_id": 6,
+      "class_name": "Class 06",
+      "samples": 390,
+      "baseline_accuracy_percent": 57.948717948717956,
+      "robust_accuracy_percent": 37.69230769230769,
+      "gain_percentage_points": -20.256410256410263
+    },
+    {
+      "class_id": 7,
+      "class_name": "Class 07",
+      "samples": 369,
+      "baseline_accuracy_percent": 0.0,
+      "robust_accuracy_percent": 0.0,
+      "gain_percentage_points": 0.0
+    },
+    {
+      "class_id": 8,
+      "class_name": "Class 08",
+      "samples": 376,
+      "baseline_accuracy_percent": 44.148936170212764,
+      "robust_accuracy_percent": 48.138297872340424,
+      "gain_percentage_points": 3.9893617021276597
+    },
+    {
+      "class_id": 9,
+      "class_name": "Class 09",
+      "samples": 375,
+      "baseline_accuracy_percent": 44.800000000000004,
+      "robust_accuracy_percent": 49.06666666666666,
+      "gain_percentage_points": 4.266666666666659
+    },
+    {
+      "class_id": 10,
+      "class_name": "Class 10",
+      "samples": 376,
+      "baseline_accuracy_percent": 17.5531914893617,
+      "robust_accuracy_percent": 5.585106382978723,
+      "gain_percentage_points": -11.96808510638298
+    },
+    {
+      "class_id": 11,
+      "class_name": "Class 11",
+      "samples": 367,
+      "baseline_accuracy_percent": 32.9700272479564,
+      "robust_accuracy_percent": 29.70027247956403,
+      "gain_percentage_points": -3.269754768392371
+    },
+    {
+      "class_id": 12,
+      "class_name": "Class 12",
+      "samples": 364,
+      "baseline_accuracy_percent": 32.69230769230769,
+      "robust_accuracy_percent": 37.08791208791209,
+      "gain_percentage_points": 4.395604395604394
+    },
+    {
+      "class_id": 13,
+      "class_name": "Class 13",
+      "samples": 392,
+      "baseline_accuracy_percent": 9.183673469387756,
+      "robust_accuracy_percent": 27.55102040816326,
+      "gain_percentage_points": 18.367346938775505
+    },
+    {
+      "class_id": 14,
+      "class_name": "Class 14",
+      "samples": 370,
+      "baseline_accuracy_percent": 9.72972972972973,
+      "robust_accuracy_percent": 0.0,
+      "gain_percentage_points": -9.72972972972973
+    },
+    {
+      "class_id": 15,
+      "class_name": "Class 15",
+      "samples": 397,
+      "baseline_accuracy_percent": 6.045340050377834,
+      "robust_accuracy_percent": 0.0,
+      "gain_percentage_points": -6.045340050377834
+    },
+    {
+      "class_id": 16,
+      "class_name": "Class 16",
+      "samples": 375,
+      "baseline_accuracy_percent": 12.8,
+      "robust_accuracy_percent": 21.6,
+      "gain_percentage_points": 8.8
+    },
+    {
+      "class_id": 17,
+      "class_name": "Class 17",
+      "samples": 365,
+      "baseline_accuracy_percent": 54.24657534246575,
+      "robust_accuracy_percent": 27.397260273972602,
+      "gain_percentage_points": -26.84931506849315
+    },
+    {
+      "class_id": 18,
+      "class_name": "Class 18",
+      "samples": 374,
+      "baseline_accuracy_percent": 46.25668449197861,
+      "robust_accuracy_percent": 67.11229946524064,
+      "gain_percentage_points": 20.85561497326203
+    },
+    {
+      "class_id": 19,
+      "class_name": "Class 19",
+      "samples": 369,
+      "baseline_accuracy_percent": 51.490514905149055,
+      "robust_accuracy_percent": 43.360433604336045,
+      "gain_percentage_points": -8.13008130081301
+    },
+    {
+      "class_id": 20,
+      "class_name": "Class 20",
+      "samples": 386,
+      "baseline_accuracy_percent": 32.12435233160622,
+      "robust_accuracy_percent": 36.787564766839374,
+      "gain_percentage_points": 4.663212435233156
+    },
+    {
+      "class_id": 21,
+      "class_name": "Class 21",
+      "samples": 371,
+      "baseline_accuracy_percent": 64.95956873315365,
+      "robust_accuracy_percent": 68.19407008086253,
+      "gain_percentage_points": 3.2345013477088855
+    },
+    {
+      "class_id": 22,
+      "class_name": "Class 22",
+      "samples": 358,
+      "baseline_accuracy_percent": 56.14525139664804,
+      "robust_accuracy_percent": 55.58659217877096,
+      "gain_percentage_points": -0.5586592178770857
+    },
+    {
+      "class_id": 23,
+      "class_name": "Class 23",
+      "samples": 359,
+      "baseline_accuracy_percent": 59.33147632311978,
+      "robust_accuracy_percent": 59.610027855153206,
+      "gain_percentage_points": 0.27855153203342553
+    }
+  ],
+  "snr_comparison": [
+    {
+      "snr_db": -20,
+      "baseline_accuracy_percent": 3.590568060021436,
+      "robust_accuracy_percent": 4.233654876741694,
+      "gain_percentage_points": 0.6430868167202579
+    },
+    {
+      "snr_db": -10,
+      "baseline_accuracy_percent": 6.253553155201819,
+      "robust_accuracy_percent": 6.480955088118249,
+      "gain_percentage_points": 0.22740193291643074
+    },
+    {
+      "snr_db": 0,
+      "baseline_accuracy_percent": 44.82366325369738,
+      "robust_accuracy_percent": 46.075085324232084,
+      "gain_percentage_points": 1.2514220705347014
+    },
+    {
+      "snr_db": 10,
+      "baseline_accuracy_percent": 65.20532741398446,
+      "robust_accuracy_percent": 64.92785793562707,
+      "gain_percentage_points": -0.2774694783573892
+    },
+    {
+      "snr_db": 20,
+      "baseline_accuracy_percent": 63.30578512396694,
+      "robust_accuracy_percent": 64.62809917355372,
+      "gain_percentage_points": 1.3223140495867796
+    }
+  ],
+  "most_improved_classes": [
+    {
+      "class_id": 5,
+      "class_name": "Class 05",
+      "samples": 371,
+      "baseline_accuracy_percent": 6.199460916442049,
+      "robust_accuracy_percent": 33.9622641509434,
+      "gain_percentage_points": 27.762803234501348
+    },
+    {
+      "class_id": 18,
+      "class_name": "Class 18",
+      "samples": 374,
+      "baseline_accuracy_percent": 46.25668449197861,
+      "robust_accuracy_percent": 67.11229946524064,
+      "gain_percentage_points": 20.85561497326203
+    },
+    {
+      "class_id": 13,
+      "class_name": "Class 13",
+      "samples": 392,
+      "baseline_accuracy_percent": 9.183673469387756,
+      "robust_accuracy_percent": 27.55102040816326,
+      "gain_percentage_points": 18.367346938775505
+    },
+    {
+      "class_id": 16,
+      "class_name": "Class 16",
+      "samples": 375,
+      "baseline_accuracy_percent": 12.8,
+      "robust_accuracy_percent": 21.6,
+      "gain_percentage_points": 8.8
+    },
+    {
+      "class_id": 0,
+      "class_name": "Class 00",
+      "samples": 387,
+      "baseline_accuracy_percent": 46.253229974160206,
+      "robust_accuracy_percent": 53.229974160206716,
+      "gain_percentage_points": 6.97674418604651
+    }
+  ],
+  "largest_regressions": [
+    {
+      "class_id": 17,
+      "class_name": "Class 17",
+      "samples": 365,
+      "baseline_accuracy_percent": 54.24657534246575,
+      "robust_accuracy_percent": 27.397260273972602,
+      "gain_percentage_points": -26.84931506849315
+    },
+    {
+      "class_id": 6,
+      "class_name": "Class 06",
+      "samples": 390,
+      "baseline_accuracy_percent": 57.948717948717956,
+      "robust_accuracy_percent": 37.69230769230769,
+      "gain_percentage_points": -20.256410256410263
+    },
+    {
+      "class_id": 10,
+      "class_name": "Class 10",
+      "samples": 376,
+      "baseline_accuracy_percent": 17.5531914893617,
+      "robust_accuracy_percent": 5.585106382978723,
+      "gain_percentage_points": -11.96808510638298
+    },
+    {
+      "class_id": 14,
+      "class_name": "Class 14",
+      "samples": 370,
+      "baseline_accuracy_percent": 9.72972972972973,
+      "robust_accuracy_percent": 0.0,
+      "gain_percentage_points": -9.72972972972973
+    },
+    {
+      "class_id": 3,
+      "class_name": "Class 03",
+      "samples": 371,
+      "baseline_accuracy_percent": 50.943396226415096,
+      "robust_accuracy_percent": 41.23989218328841,
+      "gain_percentage_points": -9.703504043126685
+    }
+  ],
+  "lowest_accuracy_classes": [
+    {
+      "class_id": 7,
+      "class_name": "Class 07",
+      "samples": 369,
+      "baseline_accuracy_percent": 0.0,
+      "robust_accuracy_percent": 0.0,
+      "gain_percentage_points": 0.0
+    },
+    {
+      "class_id": 14,
+      "class_name": "Class 14",
+      "samples": 370,
+      "baseline_accuracy_percent": 9.72972972972973,
+      "robust_accuracy_percent": 0.0,
+      "gain_percentage_points": -9.72972972972973
+    },
+    {
+      "class_id": 15,
+      "class_name": "Class 15",
+      "samples": 397,
+      "baseline_accuracy_percent": 6.045340050377834,
+      "robust_accuracy_percent": 0.0,
+      "gain_percentage_points": -6.045340050377834
+    },
+    {
+      "class_id": 10,
+      "class_name": "Class 10",
+      "samples": 376,
+      "baseline_accuracy_percent": 17.5531914893617,
+      "robust_accuracy_percent": 5.585106382978723,
+      "gain_percentage_points": -11.96808510638298
+    },
+    {
+      "class_id": 16,
+      "class_name": "Class 16",
+      "samples": 375,
+      "baseline_accuracy_percent": 12.8,
+      "robust_accuracy_percent": 21.6,
+      "gain_percentage_points": 8.8
+    }
+  ],
+  "figures": {
+    "per_class": "D:\\COG-EW\\reports\\figures\\radioml_baseline_vs_robust_per_class.png",
+    "snr": "D:\\COG-EW\\reports\\figures\\radioml_baseline_vs_robust_snr.png",
+    "baseline_confusion_matrix": "D:\\COG-EW\\reports\\figures\\radioml_baseline_confusion_matrix.png",
+    "robust_confusion_matrix": "D:\\COG-EW\\reports\\figures\\radioml_robust_confusion_matrix.png"
+  }
+}

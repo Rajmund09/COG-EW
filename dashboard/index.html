@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>COG-EW | RF Intelligence</title>
+
+    <link rel="stylesheet" href="/assets/css/dashboard.css">
+
+</head>
+
+<body>
+
+    <div class="app">
+
+        <aside class="sidebar">
+
+            <div class="brand">
+
+                <div class="brand-icon">
+                    C
+                </div>
+
+                <div>
+
+                    <h1>COG-EW</h1>
+
+                    <span>
+                        RF Intelligence
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <nav>
+
+                <a href="/" class="active">
+                    Overview
+                </a>
+
+                <a href="/pages/rf_classification.html">
+                    RF Classification
+                </a>
+
+                <a href="/pages/signal_analysis.html">
+                    Signal Analysis
+                </a>
+
+                <a href="/pages/decision_support.html">
+                    Decision Support
+                </a>
+
+                <a href="/pages/performance.html">
+                    Model Performance
+                </a>
+
+            </nav>
+
+        </aside>
+
+
+        <main class="main">
+
+            <header class="topbar">
+
+                <div>
+
+                    <h2>
+                        RF Electronic Warfare Intelligence
+                    </h2>
+
+                    <p>
+                        Automatic Modulation Classification
+                    </p>
+
+                </div>
+
+                <div id="systemStatus" class="status">
+                    ● Connecting
+                </div>
+
+            </header>
+
+
+            <section class="hero">
+
+                <div>
+
+                    <span class="eyebrow">
+                        COG-EW RF CNN
+                    </span>
+
+                    <h1>
+                        Real-Time RF Signal Intelligence
+                    </h1>
+
+                    <p>
+                        Fast RF modulation classification,
+                        signal quality analysis and
+                        decision-support visualization.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <section class="cards">
+
+                <div class="card">
+
+                    <span>
+                        Model
+                    </span>
+
+                    <strong>
+                        RF CNN
+                    </strong>
+
+                </div>
+
+
+                <div class="card">
+
+                    <span>
+                        Test Accuracy
+                    </span>
+
+                    <strong>
+                        64.75%
+                    </strong>
+
+                </div>
+
+
+                <div class="card">
+
+                    <span>
+                        Classes
+                    </span>
+
+                    <strong>
+                        5
+                    </strong>
+
+                </div>
+
+
+                <div class="card">
+
+                    <span>
+                        Backend
+                    </span>
+
+                    <strong>
+                        FastAPI
+                    </strong>
+
+                </div>
+
+            </section>
+
+
+            <section class="prediction-panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            LIVE TEST SAMPLE
+                        </span>
+
+                        <h2>
+                            RF Classification
+                        </h2>
+
+                    </div>
+
+                    <div>
+
+                        <input id="sampleIndex" type="number" value="5000" min="0">
+
+                        <button onclick="predictSample()">
+                            Analyze
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div id="predictionResult" class="prediction-result">
+
+                    <div class="loading">
+
+                        Select a sample and
+                        click Analyze.
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <script src="/assets/js/dashboard.js"></script>
+
+</body>
+
+</html>

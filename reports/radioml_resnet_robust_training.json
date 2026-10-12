@@ -1,0 +1,25 @@
+{
+  "project": "COG-EW",
+  "experiment": "RadioML interference-aware robust training",
+  "dataset": "RadioML 2018.01A",
+  "model": "RadioMLResNet",
+  "benchmark_split": {
+    "train": 42000,
+    "validation": 9000,
+    "test": 9000
+  },
+  "interference_probability": 0.6,
+  "maximum_interference_level": 0.35,
+  "interference_types": [
+    "gaussian",
+    "tone",
+    "multitone",
+    "burst"
+  ],
+  "best_validation_accuracy": 0.38077777777777777,
+  "best_validation_accuracy_percent": 38.077777777777776,
+  "clean_test_accuracy": 0.37177777777777776,
+  "clean_test_accuracy_percent": 37.17777777777778,
+  "checkpoint": "D:\\COG-EW\\models\\checkpoints\\radioml_resnet_robust_best.pt",
+  "history": "D:\\COG-EW\\reports\\radioml_resnet_robust_history.json"
+}

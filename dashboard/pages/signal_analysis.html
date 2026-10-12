@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COG-EW | Signal Analysis</title>
+    <link rel="stylesheet" href="/assets/css/dashboard.css">
+</head>
+<body>
+    <div class="app">
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="brand-icon">C</div>
+                <div>
+                    <h1>COG-EW</h1>
+                    <span>RF Intelligence</span>
+                </div>
+            </div>
+
+            <nav>
+                <a href="/">Overview</a>
+                <a href="/pages/rf_classification.html">RF Classification</a>
+                <a href="/pages/signal_analysis.html" class="active">Signal Analysis</a>
+                <a href="/pages/decision_support.html">Decision Support</a>
+                <a href="/pages/performance.html">Model Performance</a>
+            </nav>
+        </aside>
+
+        <main class="main">
+            <header class="topbar">
+                <div>
+                    <h2>RF Signal Quality & Analytics</h2>
+                    <p>I/Q Imbalance, DC Offset, Signal Power, and SNR Diagnostics</p>
+                </div>
+                <div id="systemStatus" class="status">● Connecting</div>
+            </header>
+
+            <section class="prediction-panel">
+                <div class="panel-header">
+                    <div>
+                        <span class="eyebrow">QUALITY METRICS</span>
+                        <h2>Signal Quality Diagnostic</h2>
+                    </div>
+                    <div>
+                        <input id="sampleIndex" type="number" value="1000" min="0">
+                        <button onclick="predictSample()">Analyze</button>
+                    </div>
+                </div>
+
+                <div id="predictionResult" class="prediction-result">
+                    <div class="loading">Loading quality diagnostics...</div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="/assets/js/dashboard.js"></script>
+</body>
+</html>

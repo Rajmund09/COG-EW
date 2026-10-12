@@ -1,0 +1,22 @@
+COG-EW MODEL EVALUATION REFERENCE
+======================================================================
+
+Model:
+D:\COG-EW\models\cogew_rf_cnn_best.pt
+
+Model SHA256:
+8fc9246a65ff5ad4b38b840f87c8c95528ba5efcf1afaf0c3b222c73a4af80df
+
+Test dataset:
+D:\COG-EW\data\splits\cogew_test.h5
+
+Test dataset SHA256:
+1b196506e8f7e66ac76b86966a7bf9c3fae33cbc76ff0388028f2b486f338fd6
+
+Test accuracy:
+64.7459%
+
+Test data was untouched.
+Test data was not augmented.
+Test data was not used for training.
+Test data was not used for model selection.

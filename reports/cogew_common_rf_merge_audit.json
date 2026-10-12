@@ -1,0 +1,89 @@
+{
+  "project": "COG-EW",
+  "stage": "harmonization_and_controlled_merge",
+  "seed": 20261008,
+  "inputs": {
+    "RadioML2016": {
+      "samples": 100000,
+      "shape": [
+        100000,
+        128,
+        2
+      ],
+      "classes": {
+        "8PSK": 20000,
+        "BPSK": 20000,
+        "QPSK": 20000,
+        "16QAM": 20000,
+        "64QAM": 20000
+      },
+      "snr_min": -20,
+      "snr_max": 18,
+      "invalid_values": 0
+    },
+    "RadioML2018": {
+      "samples": 532480,
+      "shape": [
+        532480,
+        128,
+        2
+      ],
+      "classes": {
+        "8PSK": 106496,
+        "BPSK": 106496,
+        "QPSK": 106496,
+        "16QAM": 106496,
+        "64QAM": 106496
+      },
+      "snr_min": -20,
+      "snr_max": 30,
+      "invalid_values": 0
+    }
+  },
+  "class_mapping": {
+    "0": "8PSK",
+    "1": "BPSK",
+    "2": "QPSK",
+    "3": "16QAM",
+    "4": "64QAM"
+  },
+  "target_per_class_per_source": 20000,
+  "merged_samples": 200000,
+  "merged_shape": [
+    200000,
+    128,
+    2
+  ],
+  "class_distribution": {
+    "8PSK": 40000,
+    "BPSK": 40000,
+    "QPSK": 40000,
+    "16QAM": 40000,
+    "64QAM": 40000
+  },
+  "source_distribution": {
+    "RadioML2016": 100000,
+    "RadioML2018": 100000
+  },
+  "snr_range": {
+    "minimum": -20,
+    "maximum": 30
+  },
+  "normalization": {
+    "method": "per-sample RMS normalization"
+  },
+  "quality": {
+    "x_finite": true,
+    "y_finite": true,
+    "z_finite": true,
+    "mean": -0.004086840897798538,
+    "std": 0.9999916553497314,
+    "minimum": -9.89201831817627,
+    "maximum": 10.2586088180542
+  },
+  "augmentation": false,
+  "split_performed": false,
+  "training_performed": false,
+  "source_datasets_modified": false,
+  "output": "D:\\COG-EW\\data\\processed\\cogew_common_rf.h5"
+}

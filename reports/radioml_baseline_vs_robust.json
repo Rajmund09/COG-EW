@@ -1,0 +1,336 @@
+{
+  "project": "COG-EW",
+  "experiment": "Baseline vs Robust RadioML classifier",
+  "dataset": "RadioML 2018.01A",
+  "test_samples": 9000,
+  "seed": 42,
+  "baseline_checkpoint": "D:\\COG-EW\\models\\checkpoints\\radioml_resnet_best.pt",
+  "robust_checkpoint": "D:\\COG-EW\\models\\checkpoints\\radioml_resnet_robust_best.pt",
+  "interference_levels": [
+    0.0,
+    0.05,
+    0.1,
+    0.2,
+    0.35
+  ],
+  "comparison": [
+    {
+      "strength": 0.0,
+      "baseline_accuracy_percent": 36.544444444444444,
+      "robust_accuracy_percent": 37.17777777777778,
+      "robust_accuracy_gain_pp": 0.6333333333333329,
+      "baseline_confidence_percent": 35.00640869140625,
+      "robust_confidence_percent": 36.527767181396484,
+      "robust_confidence_gain_pp": 1.5213584899902344
+    },
+    {
+      "strength": 0.05,
+      "baseline_accuracy_percent": 36.477777777777774,
+      "robust_accuracy_percent": 37.144444444444446,
+      "robust_accuracy_gain_pp": 0.6666666666666714,
+      "baseline_confidence_percent": 34.99480438232422,
+      "robust_confidence_percent": 36.506046295166016,
+      "robust_confidence_gain_pp": 1.5112419128417969
+    },
+    {
+      "strength": 0.1,
+      "baseline_accuracy_percent": 36.577777777777776,
+      "robust_accuracy_percent": 37.077777777777776,
+      "robust_accuracy_gain_pp": 0.5,
+      "baseline_confidence_percent": 34.93104934692383,
+      "robust_confidence_percent": 36.457359313964844,
+      "robust_confidence_gain_pp": 1.5263099670410156
+    },
+    {
+      "strength": 0.2,
+      "baseline_accuracy_percent": 36.63333333333333,
+      "robust_accuracy_percent": 37.18888888888889,
+      "robust_accuracy_gain_pp": 0.5555555555555571,
+      "baseline_confidence_percent": 34.65800857543945,
+      "robust_confidence_percent": 36.22138595581055,
+      "robust_confidence_gain_pp": 1.5633773803710938
+    },
+    {
+      "strength": 0.35,
+      "baseline_accuracy_percent": 35.855555555555554,
+      "robust_accuracy_percent": 36.13333333333333,
+      "robust_accuracy_gain_pp": 0.27777777777777857,
+      "baseline_confidence_percent": 33.97650909423828,
+      "robust_confidence_percent": 35.69939041137695,
+      "robust_confidence_gain_pp": 1.7228813171386719
+    }
+  ],
+  "detailed_results": {
+    "0.00": {
+      "baseline": {
+        "accuracy_percent": 36.544444444444444,
+        "confidence_percent": 35.00640869140625,
+        "snr": {
+          "-20": {
+            "accuracy_percent": 3.590568060021436,
+            "samples": 1866
+          },
+          "-10": {
+            "accuracy_percent": 6.253553155201819,
+            "samples": 1759
+          },
+          "0": {
+            "accuracy_percent": 44.82366325369738,
+            "samples": 1758
+          },
+          "10": {
+            "accuracy_percent": 65.20532741398446,
+            "samples": 1802
+          },
+          "20": {
+            "accuracy_percent": 63.30578512396694,
+            "samples": 1815
+          }
+        }
+      },
+      "robust": {
+        "accuracy_percent": 37.17777777777778,
+        "confidence_percent": 36.527767181396484,
+        "snr": {
+          "-20": {
+            "accuracy_percent": 4.233654876741694,
+            "samples": 1866
+          },
+          "-10": {
+            "accuracy_percent": 6.480955088118249,
+            "samples": 1759
+          },
+          "0": {
+            "accuracy_percent": 46.075085324232084,
+            "samples": 1758
+          },
+          "10": {
+            "accuracy_percent": 64.92785793562707,
+            "samples": 1802
+          },
+          "20": {
+            "accuracy_percent": 64.62809917355372,
+            "samples": 1815
+          }
+        }
+      }
+    },
+    "0.05": {
+      "baseline": {
+        "accuracy_percent": 36.477777777777774,
+        "confidence_percent": 34.99480438232422,
+        "snr": {
+          "-20": {
+            "accuracy_percent": 3.536977491961415,
+            "samples": 1866
+          },
+          "-10": {
+            "accuracy_percent": 6.480955088118249,
+            "samples": 1759
+          },
+          "0": {
+            "accuracy_percent": 44.31171786120592,
+            "samples": 1758
+          },
+          "10": {
+            "accuracy_percent": 65.31631520532741,
+            "samples": 1802
+          },
+          "20": {
+            "accuracy_percent": 63.19559228650138,
+            "samples": 1815
+          }
+        }
+      },
+      "robust": {
+        "accuracy_percent": 37.144444444444446,
+        "confidence_percent": 36.506046295166016,
+        "snr": {
+          "-20": {
+            "accuracy_percent": 4.233654876741694,
+            "samples": 1866
+          },
+          "-10": {
+            "accuracy_percent": 6.765207504263786,
+            "samples": 1759
+          },
+          "0": {
+            "accuracy_percent": 45.563139931740615,
+            "samples": 1758
+          },
+          "10": {
+            "accuracy_percent": 64.6503884572697,
+            "samples": 1802
+          },
+          "20": {
+            "accuracy_percent": 64.95867768595042,
+            "samples": 1815
+          }
+        }
+      }
+    },
+    "0.10": {
+      "baseline": {
+        "accuracy_percent": 36.577777777777776,
+        "confidence_percent": 34.93104934692383,
+        "snr": {
+          "-20": {
+            "accuracy_percent": 3.751339764201501,
+            "samples": 1866
+          },
+          "-10": {
+            "accuracy_percent": 6.480955088118249,
+            "samples": 1759
+          },
+          "0": {
+            "accuracy_percent": 44.653014789533565,
+            "samples": 1758
+          },
+          "10": {
+            "accuracy_percent": 64.98335183129855,
+            "samples": 1802
+          },
+          "20": {
+            "accuracy_percent": 63.47107438016529,
+            "samples": 1815
+          }
+        }
+      },
+      "robust": {
+        "accuracy_percent": 37.077777777777776,
+        "confidence_percent": 36.457359313964844,
+        "snr": {
+          "-20": {
+            "accuracy_percent": 4.180064308681672,
+            "samples": 1866
+          },
+          "-10": {
+            "accuracy_percent": 6.537805571347357,
+            "samples": 1759
+          },
+          "0": {
+            "accuracy_percent": 45.563139931740615,
+            "samples": 1758
+          },
+          "10": {
+            "accuracy_percent": 64.81687014428414,
+            "samples": 1802
+          },
+          "20": {
+            "accuracy_percent": 64.73829201101928,
+            "samples": 1815
+          }
+        }
+      }
+    },
+    "0.20": {
+      "baseline": {
+        "accuracy_percent": 36.63333333333333,
+        "confidence_percent": 34.65800857543945,
+        "snr": {
+          "-20": {
+            "accuracy_percent": 3.644158628081458,
+            "samples": 1866
+          },
+          "-10": {
+            "accuracy_percent": 6.935758953951108,
+            "samples": 1759
+          },
+          "0": {
+            "accuracy_percent": 44.653014789533565,
+            "samples": 1758
+          },
+          "10": {
+            "accuracy_percent": 65.31631520532741,
+            "samples": 1802
+          },
+          "20": {
+            "accuracy_percent": 63.08539944903582,
+            "samples": 1815
+          }
+        }
+      },
+      "robust": {
+        "accuracy_percent": 37.18888888888889,
+        "confidence_percent": 36.22138595581055,
+        "snr": {
+          "-20": {
+            "accuracy_percent": 4.555198285101822,
+            "samples": 1866
+          },
+          "-10": {
+            "accuracy_percent": 6.878908470722001,
+            "samples": 1759
+          },
+          "0": {
+            "accuracy_percent": 46.13196814562002,
+            "samples": 1758
+          },
+          "10": {
+            "accuracy_percent": 64.37291897891232,
+            "samples": 1802
+          },
+          "20": {
+            "accuracy_percent": 64.46280991735537,
+            "samples": 1815
+          }
+        }
+      }
+    },
+    "0.35": {
+      "baseline": {
+        "accuracy_percent": 35.855555555555554,
+        "confidence_percent": 33.97650909423828,
+        "snr": {
+          "-20": {
+            "accuracy_percent": 3.536977491961415,
+            "samples": 1866
+          },
+          "-10": {
+            "accuracy_percent": 6.083001705514497,
+            "samples": 1759
+          },
+          "0": {
+            "accuracy_percent": 43.74288964732651,
+            "samples": 1758
+          },
+          "10": {
+            "accuracy_percent": 63.984461709211985,
+            "samples": 1802
+          },
+          "20": {
+            "accuracy_percent": 62.36914600550965,
+            "samples": 1815
+          }
+        }
+      },
+      "robust": {
+        "accuracy_percent": 36.13333333333333,
+        "confidence_percent": 35.69939041137695,
+        "snr": {
+          "-20": {
+            "accuracy_percent": 4.501607717041801,
+            "samples": 1866
+          },
+          "-10": {
+            "accuracy_percent": 7.106310403638432,
+            "samples": 1759
+          },
+          "0": {
+            "accuracy_percent": 44.19795221843004,
+            "samples": 1758
+          },
+          "10": {
+            "accuracy_percent": 62.430632630410656,
+            "samples": 1802
+          },
+          "20": {
+            "accuracy_percent": 62.86501377410468,
+            "samples": 1815
+          }
+        }
+      }
+    }
+  },
+  "figure": "D:\\COG-EW\\reports\\figures\\radioml_baseline_vs_robust.png"
+}

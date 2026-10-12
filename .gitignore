@@ -1,0 +1,60 @@
+# ======================================================================
+# COG-EW .gitignore — Clean Repository Configuration
+# ======================================================================
+
+# Python Bytecode & Runtime Caches
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Virtual Environments
+.venv/
+venv/
+env/
+ENV/
+
+# Large Datasets & Storage (HDF5, DuckDB, NumPy Arrays)
+# These files exceed GitHub file size limits and are generated via scripts
+*.h5
+*.hdf5
+*.duckdb
+*.npy
+*.npz
+data/raw/*
+data/intermediate/*
+data/augmented/*
+data/processed/*.h5
+data/splits/*.h5
+!data/**/.gitkeep
+!data/**/index_report.json
+!data/**/baseline_split_report.json
+!data/**/split_report.json
+!data/**/simulation_metadata.json
+
+# Massive Local Machine Inspection Dumps (> 350 MB)
+dataset_inventory.json
+reports/dataset_inspection.json
+reports/dataset_inspection.md
+reports/rf_dataset_inventory.json
+
+# Intermediate Model Training Checkpoints (Keep best 1.5MB model if desired)
+models/checkpoints/*.pt
+
+# Temporary & Dump Files
+outputs/complete_files_dump.txt
+*.log
+
+# Environment & Local Secrets
+.env
+.env.local
+
+# IDE & OS Specific
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini

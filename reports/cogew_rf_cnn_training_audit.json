@@ -1,0 +1,78 @@
+{
+  "project": "COG-EW",
+  "experiment": {
+    "name": "RF Automatic Modulation Classification CNN (PyTorch)",
+    "model": "COGEWRFCNN",
+    "task": "5-class Automatic Modulation Classification",
+    "framework": "PyTorch 2.6.0+cu124"
+  },
+  "timestamp": "2026-10-08T12:39:46.845168",
+  "random_seed": 42,
+  "classes": {
+    "0": "8PSK",
+    "1": "BPSK",
+    "2": "QPSK",
+    "3": "16QAM",
+    "4": "64QAM"
+  },
+  "input": {
+    "iq_length": 128,
+    "iq_channels": 2,
+    "shape": [
+      2,
+      128
+    ]
+  },
+  "training": {
+    "dataset": "D:\\COG-EW\\data\\augmented\\cogew_train_augmented.h5",
+    "samples": 279992,
+    "batch_size": 512,
+    "maximum_epochs": 60,
+    "learning_rate": 0.001,
+    "early_stopping_patience": 10,
+    "lr_reduction_patience": 4,
+    "weight_decay": 0.0001
+  },
+  "validation": {
+    "dataset": "D:\\COG-EW\\data\\splits\\cogew_validation.h5",
+    "samples": 29999
+  },
+  "test_usage": {
+    "used_during_training": false,
+    "used_during_validation": false,
+    "test_dataset_loaded": false
+  },
+  "source_dataset_integrity": {
+    "training_sha256": "cd0df8014c5195b2a8347a35b1d1dd620ae8d1852cdc61704c80f2f5a14c3838",
+    "validation_sha256": "0fec377089fa6e9960d1f2180c558520d0ffec7cc215e02cb0c3933fb17fc871"
+  },
+  "model": {
+    "name": "COGEWRFCNN",
+    "parameter_count": 371717
+  },
+  "results": {
+    "epochs_completed": 60,
+    "best_epoch": 54,
+    "best_validation_accuracy": 0.6487549584986166,
+    "best_validation_loss": 0.7509876786142538,
+    "final_training_accuracy": 0.6434040972599218,
+    "final_validation_accuracy": 0.6472882429414314,
+    "final_training_loss": 0.7573111207744947,
+    "final_validation_loss": 0.751344050922856
+  },
+  "artifacts": {
+    "best_model": "D:\\COG-EW\\models\\cogew_rf_cnn_best.pt",
+    "final_model": "D:\\COG-EW\\models\\cogew_rf_cnn_final.pt",
+    "history": "D:\\COG-EW\\reports\\cogew_rf_cnn_training_history.json",
+    "accuracy_curve": "D:\\COG-EW\\outputs\\training\\cogew_rf_cnn_accuracy.png",
+    "loss_curve": "D:\\COG-EW\\outputs\\training\\cogew_rf_cnn_loss.png"
+  },
+  "integrity": {
+    "source_datasets_modified": false,
+    "validation_augmented": false,
+    "test_augmented": false,
+    "test_used_for_training": false,
+    "test_used_for_model_selection": false
+  },
+  "elapsed_seconds": 467.08281660079956
+}

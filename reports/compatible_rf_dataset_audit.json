@@ -1,0 +1,118 @@
+{
+  "project": "COG-EW",
+  "data_root": "D:\\Datasets",
+  "radioml_2018": [
+    {
+      "dataset": "RadioML 2018.01A",
+      "path": "D:\\Datasets\\RadioML 2018.01A \u2b50 Main RF benchmark\\GOLD_XYZ_OSC.0001_1024.hdf5",
+      "type": "HDF5",
+      "compatible_for_amc": true,
+      "status": "VALIDATED",
+      "shape": {
+        "X": [
+          2555904,
+          1024,
+          2
+        ],
+        "Y": [
+          2555904,
+          24
+        ],
+        "Z": [
+          2555904,
+          1
+        ]
+      },
+      "dtype": {
+        "X": "float32",
+        "Y": "int64",
+        "Z": "int64"
+      },
+      "classes": 24,
+      "iq_length": 1024,
+      "iq_channels": 2,
+      "notes": []
+    }
+  ],
+  "radioml_2016": [
+    {
+      "dataset": "RadioML 2016.10A",
+      "path": "D:\\Datasets\\DeepSig Dataset RadioML 2016.10A\\RML2016.10a_dict.pkl",
+      "type": "PKL",
+      "compatible_for_amc": true,
+      "status": "ADAPTER_REQUIRED",
+      "classes": 20,
+      "iq_length": 128,
+      "iq_channels": 2,
+      "keys": [
+        "('QPSK', 2)",
+        "('PAM4', 8)",
+        "('AM-DSB', -4)",
+        "('GFSK', 6)",
+        "('QAM64', 8)",
+        "('AM-SSB', 12)",
+        "('8PSK', 8)",
+        "('8PSK', 12)",
+        "('QAM64', -6)",
+        "('QAM16', 2)",
+        "('QAM16', -20)",
+        "('PAM4', -6)",
+        "('WBFM', -18)",
+        "('AM-DSB', 16)",
+        "('CPFSK', 10)",
+        "('WBFM', 6)",
+        "('BPSK', 4)",
+        "('BPSK', -2)",
+        "('QPSK', -20)",
+        "('CPFSK', -8)",
+        "('AM-SSB', 6)",
+        "('QAM64', -20)",
+        "('QAM16', 12)",
+        "('GFSK', -20)",
+        "('AM-SSB', -12)",
+        "('CPFSK', 0)",
+        "('AM-DSB', 6)",
+        "('BPSK', -16)",
+        "('QPSK', -6)",
+        "('8PSK', -12)",
+        "('CPFSK', -18)",
+        "('BPSK', -10)",
+        "('QPSK', 8)",
+        "('PAM4', 14)",
+        "('AM-DSB', -10)",
+        "('GFSK', 12)",
+        "('QAM64', 2)",
+        "('WBFM', -4)",
+        "('AM-SSB', -18)",
+        "('QAM64', -4)",
+        "('GFSK', -4)",
+        "('AM-DSB', 8)",
+        "('PAM4', -16)",
+        "('QPSK', -16)",
+        "('BPSK', 16)",
+        "('8PSK', -8)",
+        "('CPFSK', 16)",
+        "('WBFM', 0)",
+        "('QPSK', 6)",
+        "('BPSK', 14)"
+      ],
+      "notes": [
+        "Detected approximately 20 modulation labels.",
+        "RadioML 2016.10A requires an adapter because its class taxonomy and IQ length differ from RadioML 2018.01A."
+      ]
+    }
+  ],
+  "nist_candidates": [],
+  "zip_count": 6,
+  "decision": {
+    "radioml_2018_role": "primary_amc_dataset",
+    "radioml_2016_role": "auxiliary_adapter_dataset",
+    "nist_role": "unavailable"
+  },
+  "safety": {
+    "operational_jamming": false,
+    "weapon_guidance": false,
+    "missile_targeting": false,
+    "real_world_electronic_attack": false
+  }
+}

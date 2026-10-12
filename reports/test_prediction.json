@@ -1,0 +1,31 @@
+{
+  "project": "COG-EW",
+  "prediction_type": "RF Automatic Modulation Classification",
+  "test_index": 5000,
+  "original_index": 55613,
+  "source_id": 1,
+  "source_name": "RadioML2018",
+  "snr_db": -4,
+  "iq_shape": [
+    128,
+    2
+  ],
+  "true_class": "BPSK",
+  "true_class_id": 1,
+  "predicted_class": "BPSK",
+  "predicted_class_id": 1,
+  "confidence": 0.9046017527580261,
+  "confidence_percent": 90.46017527580261,
+  "correct": true,
+  "class_probabilities": {
+    "8PSK": 0.026330091059207916,
+    "BPSK": 0.9046017527580261,
+    "QPSK": 0.016215097159147263,
+    "16QAM": 0.030915414914488792,
+    "64QAM": 0.021937591955065727
+  },
+  "model_path": "D:\\COG-EW\\models\\cogew_rf_cnn_best.pt",
+  "model_sha256": "8fc9246a65ff5ad4b38b840f87c8c95528ba5efcf1afaf0c3b222c73a4af80df",
+  "test_dataset": "D:\\COG-EW\\data\\splits\\cogew_test.h5",
+  "device": "cuda"
+}

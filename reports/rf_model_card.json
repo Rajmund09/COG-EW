@@ -1,0 +1,90 @@
+{
+    "project": "COG-EW",
+    "component": "RF Automatic Modulation Classification",
+    "model": "1D CNN",
+    "framework": "PyTorch",
+    "classes": [
+        "8PSK",
+        "BPSK",
+        "QPSK",
+        "16QAM",
+        "64QAM"
+    ],
+    "input": {
+        "format": "IQ",
+        "shape": [
+            128,
+            2
+        ],
+        "channels": 2,
+        "samples_per_signal": 128
+    },
+    "datasets": [
+        "RadioML 2016.10A",
+        "RadioML 2018.01A"
+    ],
+    "preprocessing": {
+        "common_length": 128,
+        "normalization": true,
+        "augmentation": "training only"
+    },
+    "split": {
+        "train": 0.7,
+        "validation": 0.15,
+        "test": 0.15,
+        "random_seed": 42
+    },
+    "augmentation": {
+        "enabled": true,
+        "factor": 2,
+        "validation_augmented": false,
+        "test_augmented": false
+    },
+    "performance": {
+        "best_validation_accuracy": 0.6488,
+        "test_accuracy": 0.6475,
+        "radio_ml_2016_accuracy": 0.6671,
+        "radio_ml_2018_accuracy": 0.6279
+    },
+    "class_performance": {
+        "8PSK": {
+            "precision": 0.444,
+            "recall": 0.8948,
+            "f1": 0.5935
+        },
+        "BPSK": {
+            "precision": 0.8485,
+            "recall": 0.6992,
+            "f1": 0.7667
+        },
+        "QPSK": {
+            "precision": 0.7938,
+            "recall": 0.6217,
+            "f1": 0.6973
+        },
+        "16QAM": {
+            "precision": 0.6987,
+            "recall": 0.535,
+            "f1": 0.606
+        },
+        "64QAM": {
+            "precision": 0.7951,
+            "recall": 0.4867,
+            "f1": 0.6038
+        }
+    },
+    "limitations": [
+        "Performance decreases substantially at very low SNR.",
+        "8PSK has high recall but relatively low precision.",
+        "16QAM and 64QAM are frequently confused.",
+        "RadioML 2018 performance is lower than RadioML 2016.",
+        "The model is an RF signal classification component and should not be interpreted as a complete electronic-warfare decision system."
+    ],
+    "integrity": {
+        "test_data_augmented": false,
+        "test_data_used_for_training": false,
+        "test_data_used_for_model_selection": false,
+        "source_datasets_modified": false
+    },
+    "generated_at": "2026-10-08T13:23:08.244714"
+}

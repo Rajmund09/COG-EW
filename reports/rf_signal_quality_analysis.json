@@ -1,0 +1,60 @@
+{
+    "project": "COG-EW",
+    "module": "RF Signal Quality Analyzer",
+    "sample": {
+        "test_index": 5000,
+        "original_index": 55613,
+        "source_id": 1,
+        "dataset_snr_db": -4,
+        "true_class": "BPSK"
+    },
+    "model": {
+        "path": "D:\\COG-EW\\models\\cogew_rf_cnn_best.pt",
+        "sha256": "8fc9246a65ff5ad4b38b840f87c8c95528ba5efcf1afaf0c3b222c73a4af80df"
+    },
+    "signal_metrics": {
+        "signal_power": 2.000000036592837,
+        "iq_amplitude": {
+            "mean": 1.204403740690179,
+            "std": 0.7412230878786364,
+            "min": 0.09922057113739262,
+            "max": 3.448128952910143
+        },
+        "iq_phase": {
+            "mean": 0.06923796597250002,
+            "std": 1.8135917084396456
+        },
+        "i_power": 0.9522506070005514,
+        "q_power": 1.0477494295922858,
+        "iq_power_imbalance": 0.047749410422223984,
+        "dc_offset": 0.11663510837286235,
+        "estimated_noise_power": 1.5622525802968474,
+        "estimated_snr_db": 1.072787529668357
+    },
+    "classification": {
+        "predicted_class": "BPSK",
+        "predicted_index": 1,
+        "confidence": 0.9046017527580261,
+        "correct": true,
+        "class_probabilities": {
+            "8PSK": 0.026330091059207916,
+            "BPSK": 0.9046017527580261,
+            "QPSK": 0.016215097159147263,
+            "16QAM": 0.030915414914488792,
+            "64QAM": 0.021937591955065727
+        }
+    },
+    "quality_assessment": {
+        "signal_quality": "MODERATE",
+        "confidence_level": "HIGH",
+        "classification_reliability": "MEDIUM"
+    },
+    "simulation_decision_support": {
+        "simulation_action": "CLASSIFICATION_REVIEW",
+        "predicted_modulation": "BPSK",
+        "confidence": 0.9046017527580261,
+        "estimated_snr_db": 1.072787529668357,
+        "classification_reliability": "MEDIUM",
+        "explanation": "Classification can be used for simulation, but additional signal evidence is recommended."
+    }
+}

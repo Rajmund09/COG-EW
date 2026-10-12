@@ -1,0 +1,26 @@
+{
+    "project": "COG-EW",
+    "generated_at": "2026-10-08T11:00:45.527012+00:00",
+    "decision_engine": "RF Defensive Decision Support",
+    "classification": {
+        "modulation": "BPSK",
+        "modulation_family": "LOW_ORDER_PSK",
+        "confidence": 0.9046017527580261,
+        "confidence_percent": 90.46
+    },
+    "signal_assessment": {
+        "signal_quality": "MODERATE",
+        "classification_reliability": "MEDIUM"
+    },
+    "decision": {
+        "confidence_state": "CLASSIFICATION_REQUIRES_REVIEW",
+        "simulation_state": "MEDIUM_CONFIDENCE_RF_TRACK",
+        "operator_action": "Continue monitoring and request additional RF evidence before high-impact automated decisions."
+    },
+    "safety_boundary": {
+        "real_world_transmission": false,
+        "real_world_jamming": false,
+        "weapon_control": false,
+        "purpose": "Defensive RF monitoring and simulation"
+    }
+}
