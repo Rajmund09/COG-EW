@@ -1,6 +1,6 @@
 {
   "model": "COG-EW RF Automatic Modulation Classification CNN",
-  "test_accuracy": null,
+  "test_accuracy": 64.75,
   "classes": {
     "8PSK": {
       "precision": 0.44401257029440955,

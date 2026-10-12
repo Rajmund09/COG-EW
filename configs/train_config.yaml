@@ -1,4 +1,6 @@
-# Reinforcement Learning & Training Hyperparameters
+
+# COG-EW reinforcement-learning configuration
+# Interface dimensions aligned with the current simulation environment.
 
 rl_algorithm: "PPO"
 
@@ -15,10 +17,14 @@ ppo:
   max_grad_norm: 0.5
 
 network:
-  state_dim: 64
+  state_dim: 16
   hidden_dims: [256, 256, 128]
-  guidance_action_dim: 2       # [angle of attack, bank angle]
-  ew_action_dim: 4             # [jamming mode, power level, center frequency, bandwidth]
+
+  # Current environment action vector has four values:
+  # two guidance-related entries, one mode entry, one power entry.
+  guidance_action_dim: 2
+  ew_action_dim: 2
+  total_action_dim: 4
 
 training:
   total_timesteps: 1000000
