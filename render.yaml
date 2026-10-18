@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: cog-ew-mission-control
+    runtime: python
+    region: virginia
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn scripts.dashboard_api:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.0
