@@ -1,0 +1,48 @@
+dataset:
+  name: RadioML 2018.01A
+
+  path: "D:/Datasets/RadioML 2018.01A ⭐ Main RF benchmark/GOLD_XYZ_OSC.0001_1024.hdf5"
+
+  samples: 2555904
+
+  signal_length: 1024
+
+  channels: 2
+
+  classes: 24
+
+  snr_min: -20
+
+  snr_max: 30
+
+  snr_step: 2
+
+
+split:
+  train: 0.70
+
+  validation: 0.15
+
+  test: 0.15
+
+  random_seed: 42
+
+
+loader:
+  batch_size: 32
+
+  workers: 2
+
+  pin_memory: true
+
+  persistent_workers: false
+
+
+training:
+  device: cuda
+
+  epochs: 20
+
+  learning_rate: 0.001
+
+  weight_decay: 0.0001

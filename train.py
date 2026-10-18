@@ -2,8 +2,8 @@
 COG-EW training entry point.
 
 The current PPOTrainer collects episode rewards but does not optimize
-policy parameters. This file therefore supports rollout diagnostics only
-and deliberately refuses to create a "trained" checkpoint.
+policy parameters. This script supports explicitly requested rollout
+diagnostics and prevents them from being mistaken for PPO training.
 """
 
 import argparse
@@ -30,27 +30,34 @@ def main() -> int:
     parser.add_argument(
         "--config",
         default="configs/train_config.yaml",
-        help="YAML configuration path, relative to the project root.",
+        help="Configuration path, relative to the project root.",
     )
     parser.add_argument(
         "--epochs",
         type=int,
         default=1,
-        help="Number of rollout diagnostic rounds.",
+        help="Number of diagnostic rounds.",
     )
     parser.add_argument(
         "--episodes-per-epoch",
         type=int,
         default=2,
-        help="Episodes to collect in each diagnostic round.",
+        help="Episodes collected per diagnostic round.",
     )
     parser.add_argument(
         "--rollout-only",
         action="store_true",
-        default=True,
-        help="Run diagnostics without policy weight updates.",
+        help="Explicitly run diagnostics without PPO optimization.",
     )
     args = parser.parse_args()
+
+    # Do not claim to train PPO until the optimizer loop is implemented.
+    if not args.rollout_only:
+        print("[STOP] PPO policy optimization has not been implemented.")
+        print("The current trainer collects rewards but does not update weights.")
+        print("No checkpoint was saved.")
+        print("For an environment-only diagnostic, use " "--rollout-only explicitly.")
+        return 2
 
     if args.epochs < 1 or args.episodes_per_epoch < 1:
         parser.error("--epochs and --episodes-per-epoch must both be at least 1.")
@@ -61,7 +68,7 @@ def main() -> int:
     config_path = config_path.resolve()
 
     if not config_path.is_file():
-        print(f"[ERROR] Configuration file not found: {config_path}")
+        print(f"[ERROR] Configuration not found: {config_path}")
         return 2
 
     try:
@@ -71,11 +78,11 @@ def main() -> int:
         print(f"[ERROR] Could not read configuration: {exc}")
         return 2
 
-    network_config = config.get("network", {})
     env = HypersonicEWEnv()
-
     actual_state_dim = int(env.observation_space.shape[0])
     actual_action_dim = int(env.action_space.shape[0])
+
+    network_config = config.get("network", {})
     configured_state_dim = int(network_config.get("state_dim", actual_state_dim))
     configured_action_dim = int(
         network_config.get(
@@ -87,29 +94,22 @@ def main() -> int:
 
     if configured_state_dim != actual_state_dim:
         print(
-            "[ERROR] State dimension mismatch: "
+            f"[ERROR] State dimension mismatch: "
             f"config={configured_state_dim}, environment={actual_state_dim}"
         )
         return 2
 
     if configured_action_dim != actual_action_dim:
         print(
-            "[ERROR] Action dimension mismatch: "
+            f"[ERROR] Action dimension mismatch: "
             f"config={configured_action_dim}, environment={actual_action_dim}"
         )
         return 2
 
     device = "cuda" if torch is not None and torch.cuda.is_available() else "cpu"
 
-    agent = PPOAgent(
-        state_dim=actual_state_dim,
-        device=device,
-    )
-    trainer = PPOTrainer(
-        env=env,
-        agent=agent,
-        config=config,
-    )
+    agent = PPOAgent(state_dim=actual_state_dim, device=device)
+    trainer = PPOTrainer(env=env, agent=agent, config=config)
 
     print("=" * 68)
     print("COG-EW -- ROLLOUT DIAGNOSTIC ONLY")
@@ -125,7 +125,7 @@ def main() -> int:
         try:
             mean_reward = trainer.train_epoch(num_episodes=args.episodes_per_epoch)
         except Exception as exc:
-            print(f"\n[ERROR] Rollout diagnostic failed: {exc}")
+            print(f"[ERROR] Diagnostic failed: {exc}")
             return 1
 
         print(
@@ -134,10 +134,8 @@ def main() -> int:
         )
 
     print("\n[PASS] Rollout diagnostic completed.")
-    print(
-        "This run did not establish PPO learning and did not save "
-        "a trained-model checkpoint."
-    )
+    print("No PPO learning was performed.")
+    print("No trained-model checkpoint was saved.")
     return 0
 
 

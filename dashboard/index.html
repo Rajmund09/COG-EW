@@ -1,222 +1,493 @@
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COG-EW | Cognitive Electronic Warfare & Hypersonic Strike Command</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #050811;
+      --panel: rgba(11, 18, 33, 0.85);
+      --border: rgba(30, 58, 95, 0.6);
+      --text: #e1ebfa;
+      --muted: #8298b9;
+      --cyan: #00e5ff;
+      --cyan-glow: rgba(0, 229, 255, 0.35);
+      --green: #00e676;
+      --purple: #b388ff;
+      --amber: #ffb300;
+      --red: #ff3d71;
+      --font-display: 'Orbitron', sans-serif;
+      --font-body: 'Rajdhani', sans-serif;
+      --font-mono: 'Share Tech Mono', monospace;
+    }
 
-    <meta charset="UTF-8">
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 15px;
+      line-height: 1.5;
+      min-height: 100vh;
+    }
 
-    <title>COG-EW | RF Intelligence</title>
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 40px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(8, 13, 24, 0.95);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
 
-    <link rel="stylesheet" href="/assets/css/dashboard.css">
+    .brand {
+      font-family: var(--font-display);
+      font-size: 21px;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+    .brand span { color: var(--cyan); text-shadow: 0 0 14px var(--cyan-glow); }
 
+    .status {
+      font-family: var(--font-mono);
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    nav {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      padding: 7px 14px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    nav a:hover,
+    nav a.active {
+      color: var(--cyan);
+      background: rgba(0, 229, 255, 0.12);
+      border: 1px solid rgba(0, 229, 255, 0.25);
+    }
+
+    main {
+      max-width: 1440px;
+      margin: auto;
+      padding: 30px 24px 60px;
+    }
+
+    h1 {
+      font-family: var(--font-display);
+      font-size: clamp(26px, 3.5vw, 36px);
+      margin: 0 0 8px;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 16px;
+      margin-bottom: 25px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      grid-column: span 4;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+      position: relative;
+    }
+
+    .wide { grid-column: span 8; }
+    .full { grid-column: span 12; }
+
+    .label {
+      font-family: var(--font-mono);
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .value {
+      font-family: var(--font-mono);
+      font-size: 32px;
+      font-weight: 750;
+      margin-top: 8px;
+      color: #fff;
+    }
+
+    .small {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 4px;
+    }
+
+    .cyan { color: var(--cyan); }
+    .green { color: var(--green); }
+    .purple { color: var(--purple); }
+    .red { color: var(--red); }
+
+    /* Hero Banner Link to Simulation */
+    .hero-banner {
+      grid-column: span 12;
+      background: linear-gradient(135deg, rgba(16, 28, 54, 0.9) 0%, rgba(10, 19, 36, 0.95) 100%);
+      border: 1px solid var(--cyan);
+      box-shadow: 0 0 30px rgba(0, 229, 255, 0.15);
+      border-radius: 14px;
+      padding: 26px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: 22px;
+      color: #fff;
+    }
+    .hero-desc {
+      color: var(--muted);
+      font-size: 15px;
+      max-width: 800px;
+      margin-top: 6px;
+    }
+    .btn-hero {
+      background: var(--cyan);
+      color: #031017;
+      font-family: var(--font-body);
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      padding: 12px 24px;
+      border-radius: 8px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 0 16px var(--cyan-glow);
+      transition: all 0.2s;
+    }
+    .btn-hero:hover {
+      background: #40efff;
+      transform: translateY(-2px);
+      box-shadow: 0 0 24px rgba(0, 229, 255, 0.5);
+    }
+
+    /* Controls */
+    .controls {
+      display: flex;
+      gap: 10px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+
+    select, input, button {
+      font-family: var(--font-body);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 14px;
+    }
+
+    select, input {
+      background: #080f1d;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    button {
+      cursor: pointer;
+      border: 0;
+      color: #05131a;
+      background: var(--cyan);
+      font-weight: 700;
+      transition: all 0.2s;
+    }
+    button:hover { background: #40efff; }
+
+    .result { margin-top: 18px; }
+
+    .metadata-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .meta-box {
+      padding: 12px;
+      background: rgba(8, 15, 27, 0.7);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-family: var(--font-mono);
+    }
+    .meta-box .k { font-size: 11px; color: var(--muted); text-transform: uppercase; }
+    .meta-box .v { font-size: 14px; font-weight: 700; color: #fff; margin-top: 4px; }
+
+    /* Probability Bars */
+    .prob-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .prob-row {
+      background: rgba(8, 15, 27, 0.6);
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+    }
+    .prob-head {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      margin-bottom: 5px;
+    }
+    .track {
+      height: 6px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.08);
+      overflow: hidden;
+    }
+    .fill {
+      height: 100%;
+      background: linear-gradient(90deg, #1686d9, var(--cyan));
+      border-radius: inherit;
+    }
+
+    @media (max-width: 900px) {
+      .card { grid-column: span 6; }
+      .wide { grid-column: span 12; }
+    }
+    @media (max-width: 600px) {
+      .card { grid-column: span 12; }
+    }
+  </style>
 </head>
 
 <body>
+  <header>
+    <div class="brand">COG<span>-EW</span> / MISSION CONTROL</div>
+    <nav>
+      <a href="/" class="active">Overview</a>
+      <a href="/pages/simulation.html">Tactical Simulation</a>
+      <a href="/pages/rf_classification.html">RF Classification</a>
+      <a href="/pages/signal_analysis.html">Signal Analysis</a>
+      <a href="/pages/model_performance.html">Model Benchmarks</a>
+    </nav>
+    <div class="status" id="apiStatus">Connecting to API…</div>
+  </header>
 
-    <div class="app">
+  <main>
+    <h1>COG-EW Defense Command Center</h1>
+    <p class="subtitle">
+      Cognitive Multi-Domain Electronic Warfare & Hypersonic Auto-Pilot Strike Co-Designer
+    </p>
 
-        <aside class="sidebar">
+    <!-- Top Hero Banner Link to Gaming Simulation -->
+    <section class="grid">
+      <div class="hero-banner">
+        <div>
+          <div class="hero-title">⚡ Interactive Tactical Radar & Gaming Simulation Console</div>
+          <div class="hero-desc">
+            Experience real-time hypersonic ingress, incoming SAM missile launches, radar beam jamming,
+            autonomous auto-pilot evasion maneuvers, and surgical destruction of the strategic enemy command target.
+          </div>
+        </div>
+        <a href="/pages/simulation.html" class="btn-hero">🎮 Launch Combat Simulation →</a>
+      </div>
 
-            <div class="brand">
+      <!-- Core Objective Metric Cards -->
+      <article class="card">
+        <div class="label">Objective 1 · RF Classifier</div>
+        <div class="value cyan" id="accuracy">56.38%</div>
+        <div class="small">Locked 30% Test Set (766,772 samples)</div>
+      </article>
 
-                <div class="brand-icon">
-                    C
-                </div>
+      <article class="card">
+        <div class="label">Objective 2 · Auto-Pilot Speed</div>
+        <div class="value green">Mach 5.2</div>
+        <div class="small">Stratospheric Glide: 29,500 m altitude</div>
+      </article>
 
-                <div>
+      <article class="card">
+        <div class="label">Objective 4 · Target Mission</div>
+        <div class="value purple" id="missionStatus">READY</div>
+        <div class="small">Strategic Radar Command Bunker (Hub-4)</div>
+      </article>
 
-                    <h1>COG-EW</h1>
+      <!-- Interactive RF Emitter Intercept & Jamming Console -->
+      <article class="card wide">
+        <div class="label">Objective 1 · Active RF Signal Reading & Jamming Console</div>
+        <div class="controls">
+          <label>
+            <span class="small">Modulation Class (24 Available):</span>
+            <select id="modSelect">
+              <option value="QPSK" selected>QPSK — Tracking Radar T-1</option>
+              <option value="16QAM">16QAM — Fire-Control Radar (FCR)</option>
+              <option value="32QAM">32QAM — SAM Missile Uplink</option>
+              <option value="BPSK">BPSK — Target Acquisition</option>
+              <option value="8PSK">8PSK — Pulse Compression Radar</option>
+              <option value="8ASK">8ASK — Early Warning Search</option>
+              <option value="OOK">OOK — Coastal Surveillance</option>
+              <option value="GMSK">GMSK — Tactical Command Link</option>
+              <option value="FM">FM — Navigation Beacon</option>
+            </select>
+          </label>
+          <label>
+            <span class="small">Signal SNR:</span>
+            <select id="snrSelect">
+              <option value="18">+18 dB (High Threat / Close)</option>
+              <option value="12" selected>+12 dB (Normal Operating)</option>
+              <option value="4">+4 dB (Faint / Horizon)</option>
+            </select>
+          </label>
+          <button id="classifyBtn" onclick="runClassification()">Analyze & Jam</button>
+        </div>
 
-                    <span>
-                        RF Intelligence
-                    </span>
+        <div id="predictionResult" class="result">
+          <p class="small">Select a radar signal and click Analyze to classify and trigger countermeasures.</p>
+        </div>
+      </article>
 
-                </div>
+      <!-- Selected Model Card -->
+      <article class="card">
+        <div class="label">RadioML ResNet Benchmark</div>
+        <div style="margin-top:10px; font-family:var(--font-mono); font-size:13px">
+          <p style="margin-bottom:6px">Architecture: <strong class="cyan">ResNet-1D</strong></p>
+          <p style="margin-bottom:6px">Classes: <strong>24 Modulation Types</strong></p>
+          <p style="margin-bottom:6px">Val Macro-F1: <strong class="green">0.6063</strong></p>
+          <p style="margin-bottom:6px">Test Macro-F1: <strong class="green">0.6058</strong></p>
+          <p style="margin-bottom:6px">CNN Comparison: <span class="muted">0.5435 F1 (ResNet Selected)</span></p>
+        </div>
+        <div style="margin-top:14px">
+          <a href="/pages/performance.html" style="color:var(--cyan); text-decoration:none; font-size:13px">View Full 24-Class Report & Confusion Matrix →</a>
+        </div>
+      </article>
 
+      <!-- Probability Distribution -->
+      <article class="card full">
+        <div class="label">Top Classified Probability Distribution</div>
+        <div id="probDistribution" class="prob-grid">
+          <p class="small">Class probabilities will be rendered here upon signal analysis.</p>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <script>
+    const $ = id => document.getElementById(id);
+
+    async function checkAPI() {
+      try {
+        const res = await fetch('/api/health');
+        const data = await res.json();
+        $('apiStatus').textContent = data.status === 'ok' ? '● Connected to COG-EW API' : '● Disconnected';
+        $('apiStatus').style.color = data.status === 'ok' ? 'var(--green)' : 'var(--red)';
+      } catch (err) {
+        $('apiStatus').textContent = '● API Offline';
+        $('apiStatus').style.color = 'var(--red)';
+      }
+    }
+
+    async function loadMetrics() {
+      try {
+        const res = await fetch('/api/model-summary');
+        const data = await res.json();
+        if (data.test_accuracy) {
+          $('accuracy').textContent = `${data.test_accuracy}%`;
+        }
+      } catch (err) {}
+    }
+
+    async function runClassification() {
+      const mod = $('modSelect').value;
+      const snr = parseFloat($('snrSelect').value);
+      const btn = $('classifyBtn');
+      btn.disabled = true;
+      btn.textContent = 'Classifying…';
+
+      try {
+        const res = await fetch('/api/predict', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ modulation: mod, snr_db: snr })
+        });
+        const data = await res.json();
+
+        let badgeColor = 'var(--cyan)';
+        if (data.threat_level === 'CRITICAL') badgeColor = 'var(--red)';
+        else if (data.threat_level === 'HIGH') badgeColor = 'var(--amber)';
+
+        $('predictionResult').innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px">
+            <div>
+              <div class="label">Identified Radar Emitter</div>
+              <div class="value" style="color:${badgeColor}">${data.threat_category}</div>
+              <div class="small">Modulation: <strong>${data.predicted_class}</strong> (${data.confidence_percent}% confidence) · Latency: ${data.inference_ms} ms</div>
             </div>
-
-
-            <nav>
-
-                <a href="/" class="active">
-                    Overview
-                </a>
-
-                <a href="/pages/rf_classification.html">
-                    RF Classification
-                </a>
-
-                <a href="/pages/signal_analysis.html">
-                    Signal Analysis
-                </a>
-
-                <a href="/pages/decision_support.html">
-                    Decision Support
-                </a>
-
-                <a href="/pages/performance.html">
-                    Model Performance
-                </a>
-
-            </nav>
-
-        </aside>
-
-
-        <main class="main">
-
-            <header class="topbar">
-
-                <div>
-
-                    <h2>
-                        RF Electronic Warfare Intelligence
-                    </h2>
-
-                    <p>
-                        Automatic Modulation Classification
-                    </p>
-
-                </div>
-
-                <div id="systemStatus" class="status">
-                    ● Connecting
-                </div>
-
-            </header>
-
-
-            <section class="hero">
-
-                <div>
-
-                    <span class="eyebrow">
-                        COG-EW RF CNN
-                    </span>
-
-                    <h1>
-                        Real-Time RF Signal Intelligence
-                    </h1>
-
-                    <p>
-                        Fast RF modulation classification,
-                        signal quality analysis and
-                        decision-support visualization.
-                    </p>
-
-                </div>
-
-            </section>
-
-
-            <section class="cards">
-
-                <div class="card">
-
-                    <span>
-                        Model
-                    </span>
-
-                    <strong>
-                        RF CNN
-                    </strong>
-
-                </div>
-
-
-                <div class="card">
-
-                    <span>
-                        Test Accuracy
-                    </span>
-
-                    <strong>
-                        64.75%
-                    </strong>
-
-                </div>
-
-
-                <div class="card">
-
-                    <span>
-                        Classes
-                    </span>
-
-                    <strong>
-                        5
-                    </strong>
-
-                </div>
-
-
-                <div class="card">
-
-                    <span>
-                        Backend
-                    </span>
-
-                    <strong>
-                        FastAPI
-                    </strong>
-
-                </div>
-
-            </section>
-
-
-            <section class="prediction-panel">
-
-                <div class="panel-header">
-
-                    <div>
-
-                        <span class="eyebrow">
-                            LIVE TEST SAMPLE
-                        </span>
-
-                        <h2>
-                            RF Classification
-                        </h2>
-
-                    </div>
-
-                    <div>
-
-                        <input id="sampleIndex" type="number" value="5000" min="0">
-
-                        <button onclick="predictSample()">
-                            Analyze
-                        </button>
-
-                    </div>
-
-                </div>
-
-
-                <div id="predictionResult" class="prediction-result">
-
-                    <div class="loading">
-
-                        Select a sample and
-                        click Analyze.
-
-                    </div>
-
-                </div>
-
-            </section>
-
-        </main>
-
-    </div>
-
-
-    <script src="/assets/js/dashboard.js"></script>
-
+            <div style="background:rgba(179,136,255,0.15); border:1px solid var(--purple); border-radius:8px; padding:10px 16px; text-align:right">
+              <div class="label" style="color:var(--purple)">Recommended EW Jamming</div>
+              <div style="font-family:var(--font-mono); font-weight:700; color:#fff; font-size:16px; margin-top:4px">${data.recommended_countermeasure}</div>
+            </div>
+          </div>
+
+          <div class="metadata-grid">
+            <div class="meta-box"><span class="k">Threat Level</span><div class="v" style="color:${badgeColor}">${data.threat_level}</div></div>
+            <div class="meta-box"><span class="k">Estimated SNR</span><div class="v">${data.quality.snr_db_estimate} dB</div></div>
+            <div class="meta-box"><span class="k">IQ Imbalance</span><div class="v">${data.quality.iq_imbalance}</div></div>
+            <div class="meta-box"><span class="k">Uncertainty Score</span><div class="v">${data.uncertainty_score}</div></div>
+          </div>
+        `;
+
+        // Sort and render top 8 probabilities
+        const probs = Object.entries(data.probabilities).sort((a,b) => b[1] - a[1]).slice(0, 8);
+        $('probDistribution').innerHTML = probs.map(([cls, p]) => `
+          <div class="prob-row">
+            <div class="prob-head"><span>${cls}</span><strong>${(p * 100).toFixed(1)}%</strong></div>
+            <div class="track"><div class="fill" style="width:${Math.max(2, p * 100)}%"></div></div>
+          </div>
+        `).join('');
+
+      } catch (err) {
+        $('predictionResult').innerHTML = `<p style="color:var(--red)">Classification error: ${err.message}</p>`;
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Analyze & Jam';
+      }
+    }
+
+    checkAPI();
+    loadMetrics();
+    runClassification();
+  </script>
 </body>
-
 </html>

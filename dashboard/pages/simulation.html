@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>COG-EW | Tactical Hypersonic Mission & EW Combat Simulation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #050811;
+      --panel: rgba(11, 18, 33, 0.85);
+      --panel-border: rgba(30, 58, 95, 0.6);
+      --cyan: #00e5ff;
+      --cyan-glow: rgba(0, 229, 255, 0.4);
+      --green: #00e676;
+      --purple: #b388ff;
+      --purple-glow: rgba(179, 136, 255, 0.4);
+      --amber: #ffb300;
+      --red: #ff3d71;
+      --red-glow: rgba(255, 61, 113, 0.45);
+      --text: #e1ebfa;
+      --muted: #8298b9;
+      --font-display: 'Orbitron', sans-serif;
+      --font-body: 'Rajdhani', sans-serif;
+      --font-mono: 'Share Tech Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 15px;
+      line-height: 1.4;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* Scanline effect */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+      background-size: 100% 4px;
+      z-index: 999;
+      pointer-events: none;
+      opacity: 0.35;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 28px;
+      background: rgba(8, 13, 24, 0.95);
+      border-bottom: 1px solid var(--panel-border);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+    .brand span { color: var(--cyan); text-shadow: 0 0 12px var(--cyan-glow); }
+    .badge {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: rgba(0, 229, 255, 0.15);
+      border: 1px solid var(--cyan);
+      color: var(--cyan);
+      letter-spacing: 0.5px;
+    }
+
+    nav { display: flex; gap: 8px; }
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    nav a:hover, nav a.active {
+      color: var(--cyan);
+      background: rgba(0, 229, 255, 0.12);
+      border: 1px solid rgba(0, 229, 255, 0.25);
+    }
+
+    main {
+      max-width: 1540px;
+      margin: 0 auto;
+      padding: 20px 24px 60px;
+    }
+
+    /* Threat Alert Bar */
+    .alert-banner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      margin-bottom: 16px;
+      border-radius: 8px;
+      font-family: var(--font-mono);
+      font-size: 14px;
+      background: rgba(14, 26, 48, 0.8);
+      border: 1px solid var(--panel-border);
+      transition: all 0.3s;
+    }
+    .alert-banner.tracking {
+      background: rgba(255, 179, 0, 0.15);
+      border-color: var(--amber);
+      color: var(--amber);
+    }
+    .alert-banner.missile {
+      background: rgba(255, 61, 113, 0.2);
+      border-color: var(--red);
+      color: var(--red);
+      animation: pulse-red 0.8s infinite alternate;
+    }
+    .alert-banner.evaded {
+      background: rgba(179, 136, 255, 0.18);
+      border-color: var(--purple);
+      color: var(--purple);
+    }
+    .alert-banner.success {
+      background: rgba(0, 230, 118, 0.2);
+      border-color: var(--green);
+      color: var(--green);
+    }
+
+    @keyframes pulse-red {
+      from { box-shadow: 0 0 10px rgba(255, 61, 113, 0.3); }
+      to { box-shadow: 0 0 25px rgba(255, 61, 113, 0.7); }
+    }
+
+    /* Simulation Grid Layout */
+    .sim-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(360px, 1fr);
+      gap: 18px;
+    }
+
+    /* Canvas Tactical Theater */
+    .theater-panel {
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      border-radius: 14px;
+      padding: 16px;
+      position: relative;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    }
+
+    .theater-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .theater-title {
+      font-family: var(--font-display);
+      font-size: 16px;
+      color: var(--cyan);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .canvas-wrap {
+      position: relative;
+      width: 100%;
+      background: #02050c;
+      border: 1px solid rgba(0, 229, 255, 0.2);
+      border-radius: 10px;
+      overflow: hidden;
+      aspect-ratio: 1200 / 650;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Live Controls & Mission Strip */
+    .control-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .btn-group { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    
+    button {
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      padding: 8px 16px;
+      border-radius: 6px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+    .btn-cyan {
+      background: var(--cyan);
+      color: #031017;
+      box-shadow: 0 0 12px var(--cyan-glow);
+    }
+    .btn-cyan:hover { background: #40efff; transform: translateY(-1px); }
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text);
+      border-color: var(--panel-border);
+    }
+    .btn-secondary:hover { background: rgba(255, 255, 255, 0.15); color: #fff; }
+    .btn-purple {
+      background: rgba(179, 136, 255, 0.2);
+      color: var(--purple);
+      border-color: var(--purple);
+    }
+    .btn-purple:hover { background: var(--purple); color: #000; box-shadow: 0 0 12px var(--purple-glow); }
+    .btn-danger {
+      background: rgba(255, 61, 113, 0.18);
+      color: var(--red);
+      border-color: var(--red);
+    }
+    .btn-danger:hover { background: var(--red); color: #fff; }
+
+    select {
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 600;
+      padding: 8px 12px;
+      border-radius: 6px;
+      background: #0b1322;
+      border: 1px solid var(--panel-border);
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    /* Right Sidebar HUD */
+    .hud-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .hud-card {
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    }
+    .hud-title {
+      font-family: var(--font-display);
+      font-size: 13px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .telemetry-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+    .telem-box {
+      background: rgba(8, 14, 25, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      padding: 10px;
+    }
+    .telem-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+    .telem-val {
+      font-family: var(--font-mono);
+      font-size: 20px;
+      font-weight: 700;
+      margin-top: 4px;
+      color: var(--cyan);
+    }
+    .telem-val.green { color: var(--green); }
+    .telem-val.amber { color: var(--amber); }
+    .telem-val.red { color: var(--red); }
+    .telem-val.purple { color: var(--purple); }
+
+    /* RF Intercept Box */
+    .rf-box {
+      background: rgba(8, 15, 28, 0.9);
+      border: 1px solid rgba(0, 229, 255, 0.3);
+      border-radius: 8px;
+      padding: 12px;
+    }
+    .rf-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px;
+      font-size: 13px;
+    }
+    .rf-row .k { color: var(--muted); font-family: var(--font-mono); }
+    .rf-row .v { font-weight: 700; font-family: var(--font-mono); }
+
+    /* Tactical Event Stream */
+    .log-stream {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      max-height: 220px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding-right: 4px;
+    }
+    .log-stream::-webkit-scrollbar { width: 5px; }
+    .log-stream::-webkit-scrollbar-thumb { background: rgba(0,229,255,0.3); border-radius: 4px; }
+    .log-item {
+      padding: 6px 8px;
+      border-radius: 4px;
+      background: rgba(14, 23, 40, 0.6);
+      border-left: 3px solid var(--cyan);
+    }
+    .log-item.warn { border-left-color: var(--amber); color: #ffe082; }
+    .log-item.danger { border-left-color: var(--red); color: #ff8a80; }
+    .log-item.jam { border-left-color: var(--purple); color: #d1c4e9; }
+    .log-item.win { border-left-color: var(--green); color: #b9f6ca; }
+
+    /* Progress bar */
+    .target-bar {
+      height: 8px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .target-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--cyan), var(--green));
+      width: 0%;
+      transition: width 0.15s linear;
+    }
+
+    /* Mission Accomplished Victory Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(3, 7, 16, 0.88);
+      backdrop-filter: blur(8px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .modal-card {
+      background: #0d1527;
+      border: 2px solid var(--green);
+      box-shadow: 0 0 40px rgba(0, 230, 118, 0.35);
+      border-radius: 16px;
+      width: 90%;
+      max-width: 580px;
+      padding: 32px;
+      text-align: center;
+      transform: scale(0.92);
+      transition: transform 0.3s ease;
+    }
+    .modal-overlay.active .modal-card { transform: scale(1); }
+    .modal-card h2 {
+      font-family: var(--font-display);
+      font-size: 26px;
+      color: var(--green);
+      margin-bottom: 8px;
+      text-shadow: 0 0 16px rgba(0, 230, 118, 0.5);
+    }
+    .debrief-table {
+      margin: 20px 0;
+      text-align: left;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .debrief-table td {
+      padding: 8px 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .debrief-table td:last-child { text-align: right; font-weight: 700; color: var(--cyan); }
+
+    @media (max-width: 1050px) {
+      .sim-layout { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">COG<span>-EW</span> / MISSION CONTROL</div>
+    <nav>
+      <a href="/">Overview</a>
+      <a href="/pages/simulation.html" class="active">Tactical Simulation</a>
+      <a href="/pages/rf_classification.html">RF Classification</a>
+      <a href="/pages/signal_analysis.html">Signal Analysis</a>
+      <a href="/pages/model_performance.html">Model Benchmarks</a>
+    </nav>
+    <div style="display:flex; align-items:center; gap:16px;">
+      <button id="soundToggleBtn" class="btn-secondary" style="padding:6px 14px; font-size:13px;" title="Toggle audio synthesis">
+        <span id="soundIcon">🔊</span> Audio
+      </button>
+      <div class="status" id="apiStatus" style="font-family:var(--font-mono); font-size:13px; color:var(--muted);"><span style="color:#00e676; margin-right:4px;">●</span> Connected to COG-EW API</div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Threat Warning Bar -->
+    <div id="alertBanner" class="alert-banner">
+      <div><strong>TACTICAL STATUS:</strong> <span id="alertStatusText">ALL SYSTEMS NORMAL · INGRESS SECURE</span></div>
+      <div id="alertSubText">RADAR SILENCE MAINTAINED</div>
+    </div>
+
+    <div class="sim-layout">
+      <!-- Main Tactical Canvas Panel -->
+      <section class="theater-panel">
+        <div class="theater-header">
+          <div class="theater-title">
+            <span>⚡ TACTICAL RADAR BATTLEFIELD & HYPERSONIC FLIGHT CORRIDOR</span>
+          </div>
+          <div class="btn-group">
+            <label style="font-size:12px; font-family:var(--font-mono); color:var(--muted)">SCENARIO:</label>
+            <select id="scenarioSelect">
+              <option value="1">1. Coastal Early Warning (Search Radar)</option>
+              <option value="2">2. Contested IADS (Tracking Radar + SAM Launch)</option>
+              <option value="3" selected>3. Deep Strike (Full Evasion & Target Elimination)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="canvas-wrap">
+          <canvas id="simCanvas" width="1200" height="650"></canvas>
+        </div>
+
+        <!-- Controls Strip -->
+        <div class="control-strip">
+          <div class="btn-group">
+            <button id="startBtn" class="btn-cyan">▶ Start Mission</button>
+            <button id="pauseBtn" class="btn-secondary">⏸ Pause</button>
+            <button id="resetBtn" class="btn-danger">↺ Reset</button>
+          </div>
+
+          <div class="btn-group">
+            <button id="autopilotBtn" class="btn-secondary">
+              🤖 Auto-Pilot: <strong id="autopilotStatusText" style="color:var(--green)">ON</strong>
+            </button>
+            <select id="ewModeSelect" title="Select Electronic Warfare countermeasure">
+              <option value="cognitive_auto">Cognitive AI Jammer (Auto)</option>
+              <option value="noise_jamming">Active Spot Noise Jamming</option>
+              <option value="rgpo_spoofing">RGPO Deceptive Spoofing</option>
+              <option value="angle_deception">Angle / Cross-Eye Deception</option>
+              <option value="passive">Passive Surveillance (Silent)</option>
+            </select>
+            <button id="manualEvadeBtn" class="btn-purple" title="Trigger instant high-G evasive maneuver">
+              ⚡ Evade (Split-S)
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Sidebar Telemetry & RF Intercept HUD -->
+      <aside class="hud-sidebar">
+        <!-- Target Strike Progress -->
+        <div class="hud-card">
+          <div class="hud-title">
+            <span>Mission Objective</span>
+            <span id="targetDistText" style="color:var(--cyan); font-family:var(--font-mono)">250.0 km</span>
+          </div>
+          <div style="font-size:13px; color:var(--muted)">Eliminate Enemy Command Bunker at Sector 4</div>
+          <div class="target-bar">
+            <div id="targetProgressFill" class="target-fill"></div>
+          </div>
+        </div>
+
+        <!-- Flight Telemetry -->
+        <div class="hud-card">
+          <div class="hud-title">Flight Telemetry</div>
+          <div class="telemetry-grid">
+            <div class="telem-box">
+              <div class="telem-label">Velocity</div>
+              <div class="telem-val" id="machVal">M 5.2</div>
+            </div>
+            <div class="telem-box">
+              <div class="telem-label">Altitude</div>
+              <div class="telem-val" id="altVal">29,500 m</div>
+            </div>
+            <div class="telem-box">
+              <div class="telem-label">G-Load</div>
+              <div class="telem-val green" id="gVal">1.1 g</div>
+            </div>
+            <div class="telem-box">
+              <div class="telem-label">Thermal Load</div>
+              <div class="telem-val amber" id="thermalVal">120 kJ</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Real-Time Radar Intercept & Jamming -->
+        <div class="hud-card">
+          <div class="hud-title">
+            <span>RF Intercept & Jammer</span>
+            <span class="badge" id="jamBadge" style="background:rgba(179,136,255,0.2); color:var(--purple); border-color:var(--purple)">AUTO</span>
+          </div>
+          <div class="rf-box">
+            <div class="rf-row">
+              <span class="k">Emitter Detected:</span>
+              <span class="v" id="radarNameText" style="color:var(--amber)">Searching...</span>
+            </div>
+            <div class="rf-row">
+              <span class="k">Classification:</span>
+              <span class="v" id="modClassText" style="color:var(--cyan)">--</span>
+            </div>
+            <div class="rf-row">
+              <span class="k">Confidence:</span>
+              <span class="v" id="modConfText">--%</span>
+            </div>
+            <div class="rf-row">
+              <span class="k">Active EW Action:</span>
+              <span class="v" id="jamActionText" style="color:var(--purple)">PASSIVE</span>
+            </div>
+            <div class="rf-row">
+              <span class="k">RF Power Output:</span>
+              <span class="v" id="jamPowerText">0.0 kW</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Tactical Event Log -->
+        <div class="hud-card">
+          <div class="hud-title">Tactical Event Feed</div>
+          <div id="logStream" class="log-stream">
+            <div class="log-item">T+000.0s | Ingress started. Hypersonic glide profile active.</div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <!-- Mission Accomplished Victory Modal for Judges -->
+  <div id="victoryModal" class="modal-overlay">
+    <div class="modal-card">
+      <div style="font-size:42px; margin-bottom:10px">🎯💥</div>
+      <h2>TARGET DESTROYED</h2>
+      <p style="color:var(--muted); font-size:15px">STRATEGIC ENEMY COMMAND BUNKER ELIMINATED</p>
+
+      <table class="debrief-table">
+        <tr><td>Mission Status:</td><td style="color:var(--green)">100% ACCOMPLISHED</td></tr>
+        <tr><td>Target Impact:</td><td style="color:var(--green)">DIRECT KINETIC HIT</td></tr>
+        <tr><td>Survivability Rating:</td><td style="color:var(--cyan)">A+ (98.5%)</td></tr>
+        <tr><td>SAM Missiles Evaded:</td><td id="mEvadedDebrief" style="color:var(--purple)">--</td></tr>
+        <tr><td>Radar Sites Jammed:</td><td id="rJammedDebrief" style="color:var(--purple)">--</td></tr>
+        <tr><td>Final Flight Duration:</td><td id="timeDebrief">-- s</td></tr>
+        <tr><td>Vehicle Structural Damage:</td><td style="color:var(--green)">0.0% (NONE)</td></tr>
+      </table>
+
+      <div class="btn-group" style="justify-content:center; margin-top:20px">
+        <button id="downloadLogBtn" class="btn-secondary">📥 Export Flight Telemetry</button>
+        <button id="replayBtn" class="btn-cyan">↺ Replay Mission</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ======================================================================
+    // WEB AUDIO SYNTHESIS ENGINE (Zero external dependencies)
+    // ======================================================================
+    class AudioEngine {
+      constructor() {
+        this.ctx = null;
+        this.enabled = true;
+      }
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) this.ctx = new AudioContext();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume();
+      }
+      playBlip(freq = 800, dur = 0.08) {
+        if (!this.enabled || !this.ctx) return;
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+          gain.gain.setValueAtTime(0.08, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + dur);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + dur);
+        } catch(e) {}
+      }
+      playAlert() {
+        if (!this.enabled || !this.ctx) return;
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(880, this.ctx.currentTime);
+          osc.frequency.linearRampToValueAtTime(440, this.ctx.currentTime + 0.25);
+          gain.gain.setValueAtTime(0.12, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.25);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.25);
+        } catch(e) {}
+      }
+      playJamming() {
+        if (!this.enabled || !this.ctx) return;
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(140, this.ctx.currentTime);
+          osc.frequency.linearRampToValueAtTime(180, this.ctx.currentTime + 0.15);
+          gain.gain.setValueAtTime(0.06, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.15);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.15);
+        } catch(e) {}
+      }
+      playExplosion() {
+        if (!this.enabled || !this.ctx) return;
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(120, this.ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(20, this.ctx.currentTime + 0.8);
+          gain.gain.setValueAtTime(0.25, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.8);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.8);
+        } catch(e) {}
+      }
+    }
+
+    const sound = new AudioEngine();
+
+    // ======================================================================
+    // CANVAS TACTICAL RENDERER
+    // ======================================================================
+    const canvas = document.getElementById('simCanvas');
+    const ctx = canvas.getContext('2d');
+    let state = null;
+    let animFrame = null;
+    let lastSimTick = Date.now();
+    let prevMissileCount = 0;
+    let prevStatus = 'ready';
+
+    // Particle explosions & effects
+    const particles = [];
+    function addExplosion(x, y, color = '#ff3d71', count = 35) {
+      for (let i = 0; i < count; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const spd = Math.random() * 80 + 20;
+        particles.push({
+          x, y,
+          vx: Math.cos(angle) * spd,
+          vy: Math.sin(angle) * spd,
+          life: 1.0,
+          decay: Math.random() * 0.8 + 0.6,
+          color,
+          size: Math.random() * 4 + 2
+        });
+      }
+    }
+
+    function render(dt) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // 1. Draw Radar Grid
+      ctx.strokeStyle = 'rgba(0, 229, 255, 0.05)';
+      ctx.lineWidth = 1;
+      const step = 60;
+      for (let x = 0; x < canvas.width; x += step) {
+        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
+      }
+      for (let y = 0; y < canvas.height; y += step) {
+        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
+      }
+
+      if (!state) return;
+
+      // 2. Draw Strategic Target Bunker
+      const tgt = state.target;
+      const pulse = Math.sin(Date.now() * 0.005) * 4;
+      ctx.beginPath();
+      ctx.arc(tgt.x, tgt.y, tgt.radius + pulse, 0, Math.PI * 2);
+      ctx.strokeStyle = tgt.destroyed ? '#00e676' : 'rgba(255, 61, 113, 0.7)';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Crosshairs
+      ctx.strokeStyle = tgt.destroyed ? '#00e676' : 'rgba(255, 61, 113, 0.4)';
+      ctx.beginPath();
+      ctx.moveTo(tgt.x - 36, tgt.y); ctx.lineTo(tgt.x + 36, tgt.y);
+      ctx.moveTo(tgt.x, tgt.y - 36); ctx.lineTo(tgt.x, tgt.y + 36);
+      ctx.stroke();
+
+      ctx.fillStyle = tgt.destroyed ? '#00e676' : '#ff3d71';
+      ctx.font = 'bold 12px "Share Tech Mono"';
+      ctx.textAlign = 'center';
+      ctx.fillText(tgt.destroyed ? 'TARGET ELIMINATED' : 'PRIMARY TARGET [HUB-4]', tgt.x, tgt.y + 45);
+
+      // 3. Draw Radar Sites & Scan Beams
+      state.radars.forEach(r => {
+        // Range ring
+        ctx.beginPath();
+        ctx.arc(r.x, r.y, r.range_radius, 0, Math.PI * 2);
+        ctx.strokeStyle = r.is_jammed ? 'rgba(179, 136, 255, 0.18)' : (r.detection_prob > 0.4 ? 'rgba(255, 61, 113, 0.25)' : 'rgba(0, 229, 255, 0.12)');
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        // Scan Beam Sweep
+        const beamRad = (r.beam_angle_deg * Math.PI) / 180;
+        const halfWidth = ((r.beam_width_deg / 2) * Math.PI) / 180;
+        ctx.beginPath();
+        ctx.moveTo(r.x, r.y);
+        ctx.arc(r.x, r.y, r.range_radius, beamRad - halfWidth, beamRad + halfWidth);
+        ctx.closePath();
+
+        let beamColor = 'rgba(0, 229, 255, 0.08)';
+        if (r.is_jammed) beamColor = 'rgba(179, 136, 255, 0.12)';
+        else if (r.detection_prob > 0.4) beamColor = 'rgba(255, 61, 113, 0.16)';
+        ctx.fillStyle = beamColor;
+        ctx.fill();
+
+        // Radar station icon
+        ctx.beginPath();
+        ctx.arc(r.x, r.y, 8, 0, Math.PI * 2);
+        ctx.fillStyle = r.is_jammed ? '#b388ff' : (r.detection_prob > 0.4 ? '#ff3d71' : '#00e5ff');
+        ctx.fill();
+
+        ctx.fillStyle = '#8298b9';
+        ctx.font = '11px "Share Tech Mono"';
+        ctx.textAlign = 'center';
+        ctx.fillText(r.name, r.x, r.y + 20);
+        if (r.is_jammed) {
+          ctx.fillStyle = '#b388ff';
+          ctx.fillText(`JAMMED (-${Math.round(r.jamming_suppression * 100)}%)`, r.x, r.y - 12);
+        }
+      });
+
+      // 4. Draw Vehicle Flight Trajectory
+      if (state.trajectory && state.trajectory.length > 1) {
+        ctx.beginPath();
+        ctx.moveTo(state.trajectory[0][0], state.trajectory[0][1]);
+        for (let i = 1; i < state.trajectory.length; i++) {
+          ctx.lineTo(state.trajectory[i][0], state.trajectory[i][1]);
+        }
+        ctx.strokeStyle = 'rgba(0, 229, 255, 0.35)';
+        ctx.lineWidth = 2;
+        ctx.setLineDash([4, 4]);
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
+
+      // 5. Draw Jamming Emissions from Vehicle
+      const veh = state.vehicle;
+      const ew = state.electronic_warfare;
+      if (ew.active_jamming === 'NOISE_JAMMING') {
+        const jamWave = (Date.now() * 0.08) % 140;
+        ctx.beginPath();
+        ctx.arc(veh.x, veh.y, jamWave, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(0, 229, 255, ${0.8 - jamWave / 140})`;
+        ctx.lineWidth = 3;
+        ctx.stroke();
+      } else if (ew.active_jamming === 'RGPO_SPOOFING') {
+        const spoofWave = (Date.now() * 0.06) % 180;
+        ctx.beginPath();
+        ctx.arc(veh.x, veh.y, spoofWave, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(179, 136, 255, ${0.9 - spoofWave / 180})`;
+        ctx.lineWidth = 3;
+        ctx.stroke();
+
+        // Ghost decoy target indicator
+        ctx.fillStyle = 'rgba(179, 136, 255, 0.4)';
+        ctx.beginPath();
+        ctx.arc(veh.x + 120, veh.y + 35, 10, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#b388ff';
+        ctx.font = '10px "Share Tech Mono"';
+        ctx.fillText('GHOST ECHO', veh.x + 120, veh.y + 55);
+      }
+
+      // 6. Draw Hypersonic Waverider Vehicle
+      ctx.save();
+      ctx.translate(veh.x, veh.y);
+      ctx.rotate((veh.heading_deg * Math.PI) / 180);
+
+      // Mach Shockwave Cone
+      ctx.beginPath();
+      ctx.moveTo(18, 0);
+      ctx.lineTo(-24, -14);
+      ctx.lineTo(-14, 0);
+      ctx.lineTo(-24, 14);
+      ctx.closePath();
+      ctx.fillStyle = veh.evading ? '#b388ff' : '#00e5ff';
+      ctx.shadowColor = veh.evading ? '#b388ff' : '#00e5ff';
+      ctx.shadowBlur = 14;
+      ctx.fill();
+      ctx.restore();
+
+      // 7. Draw SAM Missiles
+      state.missiles.forEach(m => {
+        // Smoke trail
+        if (m.trail && m.trail.length > 1) {
+          ctx.beginPath();
+          ctx.moveTo(m.trail[0][0], m.trail[0][1]);
+          for (let i = 1; i < m.trail.length; i++) {
+            ctx.lineTo(m.trail[i][0], m.trail[i][1]);
+          }
+          ctx.strokeStyle = 'rgba(255, 61, 113, 0.4)';
+          ctx.lineWidth = 2.5;
+          ctx.stroke();
+        }
+
+        // Missile Icon
+        ctx.save();
+        ctx.translate(m.x, m.y);
+        ctx.rotate((m.heading_deg * Math.PI) / 180);
+        ctx.fillStyle = m.locked ? '#ff3d71' : '#b388ff';
+        ctx.shadowColor = m.locked ? '#ff3d71' : '#b388ff';
+        ctx.shadowBlur = 10;
+        ctx.fillRect(-8, -2, 16, 4);
+        ctx.restore();
+
+        ctx.fillStyle = m.locked ? '#ff3d71' : '#b388ff';
+        ctx.font = '10px "Share Tech Mono"';
+        ctx.fillText(m.locked ? `${m.id} [LOCK]` : `${m.id} [SPOOFED]`, m.x, m.y - 10);
+      });
+
+      // 8. Update and Draw Particles
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        p.x += p.vx * dt;
+        p.y += p.vy * dt;
+        p.life -= p.decay * dt;
+        if (p.life <= 0) {
+          particles.splice(i, 1);
+          continue;
+        }
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = p.life;
+        ctx.fill();
+        ctx.globalAlpha = 1.0;
+      }
+    }
+
+    // ======================================================================
+    // API SYNCHRONIZATION & TELEMETRY UPDATES
+    // ======================================================================
+    async function fetchSimulationState() {
+      try {
+        const res = await fetch('/api/simulation/state');
+        if (!res.ok) return;
+        state = await res.json();
+        updateUI();
+      } catch (err) {
+        console.warn('Simulation sync error:', err);
+      }
+    }
+
+    async function tickSimulation() {
+      if (state && (state.status === 'running' || state.status === 'evading' || state.status === 'terminal_dive')) {
+        try {
+          const res = await fetch('/api/simulation/tick', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ dt: 0.1 }),
+          });
+          if (res.ok) {
+            state = await res.json();
+            updateUI();
+          }
+        } catch (err) {}
+      }
+    }
+
+    async function syncRFClassification() {
+      if (state && (state.status === 'running' || state.status === 'evading')) {
+        try {
+          const res = await fetch('/api/rf/classify-current');
+          if (res.ok) {
+            const rf = await res.json();
+            document.getElementById('radarNameText').innerText = rf.active_emitter;
+            document.getElementById('modClassText').innerText = rf.detected_modulation;
+            document.getElementById('modConfText').innerText = `${rf.confidence_percent}%`;
+            document.getElementById('jamActionText').innerText = rf.recommended_jamming;
+          }
+        } catch (e) {}
+      }
+    }
+
+    function updateUI() {
+      if (!state) return;
+
+      const veh = state.vehicle;
+      const tgt = state.target;
+      const ew = state.electronic_warfare;
+      const threat = state.threat_environment;
+
+      // Telemetry
+      document.getElementById('machVal').innerText = `M ${veh.speed_mach}`;
+      document.getElementById('altVal').innerText = `${Math.round(veh.altitude_m).toLocaleString()} m`;
+      document.getElementById('gVal').innerText = `${veh.g_load} g`;
+      document.getElementById('gVal').className = veh.g_load > 6.0 ? 'telem-val red' : (veh.g_load > 3.0 ? 'telem-val amber' : 'telem-val green');
+      document.getElementById('thermalVal').innerText = `${Math.round(veh.thermal_kj)} kJ`;
+      document.getElementById('jamPowerText').innerText = `${ew.power_kw} kW`;
+
+      // Target Progress
+      document.getElementById('targetDistText').innerText = `${tgt.distance_km} km`;
+      document.getElementById('targetProgressFill').style.width = `${tgt.progress_percent}%`;
+
+      // Auto-pilot
+      document.getElementById('autopilotStatusText').innerText = veh.autopilot ? 'ON' : 'MANUAL';
+      document.getElementById('autopilotStatusText').style.color = veh.autopilot ? 'var(--green)' : 'var(--amber)';
+
+      // Sound and Banner Alerts
+      const banner = document.getElementById('alertBanner');
+      const bannerStatus = document.getElementById('alertStatusText');
+      const bannerSub = document.getElementById('alertSubText');
+
+      if (state.status === 'completed') {
+        banner.className = 'alert-banner success';
+        bannerStatus.innerText = 'MISSION COMPLETE · TARGET ELIMINATED';
+        bannerSub.innerText = 'DIRECT IMPACT SUCCESSFUL';
+        if (prevStatus !== 'completed') {
+          sound.playExplosion();
+          addExplosion(tgt.x, tgt.y, '#00e676', 60);
+          showVictoryModal();
+        }
+      } else if (threat.incoming_missiles_count > 0 && veh.evading) {
+        banner.className = 'alert-banner missile';
+        bannerStatus.innerText = 'SAM MISSILE LAUNCH DETECTED · EVADING';
+        bannerSub.innerText = 'AUTO-PILOT EVASION + RGPO SPOOFING ACTIVE';
+        if (state.missiles.length > prevMissileCount) sound.playAlert();
+      } else if (threat.max_detection_prob > 0.4) {
+        banner.className = 'alert-banner tracking';
+        bannerStatus.innerText = `RADAR LOCK WARNING · ${threat.illuminating_radar}`;
+        bannerSub.innerText = `FREQ: ${threat.radar_freq_ghz} GHz · ACTIVE NOISE JAMMING`;
+        sound.playJamming();
+      } else {
+        banner.className = 'alert-banner';
+        bannerStatus.innerText = 'ALL SYSTEMS NORMAL · INGRESS SECURE';
+        bannerSub.innerText = 'RADAR SILENCE MAINTAINED';
+      }
+
+      prevMissileCount = state.missiles.length;
+      prevStatus = state.status;
+
+      // Event Log Stream
+      if (state.events && state.events.length > 0) {
+        const stream = document.getElementById('logStream');
+        stream.innerHTML = state.events.slice(0, 15).map(ev => {
+          let cls = 'log-item';
+          if (ev.type === 'MISSILE_LAUNCH') cls += ' danger';
+          else if (ev.type === 'LOCK_BROKEN' || ev.type === 'EW_MODE_CHANGE') cls += ' jam';
+          else if (ev.type === 'TARGET_DESTROYED') cls += ' win';
+          else if (ev.type.includes('RADAR') || ev.type.includes('ALERT')) cls += ' warn';
+          return `<div class="${cls}"><strong>${ev.time}</strong> | ${ev.message}</div>`;
+        }).join('');
+      }
+    }
+
+    function showVictoryModal() {
+      const modal = document.getElementById('victoryModal');
+      document.getElementById('mEvadedDebrief').innerText = `${state.scorecard.missiles_evaded} SAMs Defeated`;
+      document.getElementById('rJammedDebrief').innerText = `${state.scorecard.radars_suppressed} Sites Suppressed`;
+      document.getElementById('timeDebrief').innerText = `${state.elapsed_seconds} s`;
+      modal.classList.add('active');
+    }
+
+    // ======================================================================
+    // EVENT LISTENERS & CONTROL HANDLERS
+    // ======================================================================
+    document.getElementById('startBtn').addEventListener('click', async () => {
+      sound.init();
+      sound.playBlip(600);
+      await fetch('/api/simulation/start', { method: 'POST' });
+      fetchSimulationState();
+    });
+
+    document.getElementById('pauseBtn').addEventListener('click', async () => {
+      sound.playBlip(400);
+      await fetch('/api/simulation/pause', { method: 'POST' });
+      fetchSimulationState();
+    });
+
+    document.getElementById('resetBtn').addEventListener('click', async () => {
+      document.getElementById('victoryModal').classList.remove('active');
+      const scen = parseInt(document.getElementById('scenarioSelect').value);
+      await fetch('/api/simulation/reset', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ scenario_id: scen })
+      });
+      fetchSimulationState();
+    });
+
+    document.getElementById('scenarioSelect').addEventListener('change', async (e) => {
+      const scen = parseInt(e.target.value);
+      await fetch('/api/simulation/scenario', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ scenario_id: scen })
+      });
+      fetchSimulationState();
+    });
+
+    document.getElementById('autopilotBtn').addEventListener('click', async () => {
+      if (!state) return;
+      const nextState = !state.vehicle.autopilot;
+      await fetch('/api/simulation/autopilot', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ enabled: nextState })
+      });
+      fetchSimulationState();
+    });
+
+    document.getElementById('ewModeSelect').addEventListener('change', async (e) => {
+      await fetch('/api/simulation/ew-mode', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mode: e.target.value })
+      });
+      fetchSimulationState();
+    });
+
+    document.getElementById('manualEvadeBtn').addEventListener('click', async () => {
+      sound.playJamming();
+      await fetch('/api/simulation/manual', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ delta_heading_deg: 25.0, ew_mode: 'rgpo_spoofing' })
+      });
+      fetchSimulationState();
+    });
+
+    document.getElementById('replayBtn').addEventListener('click', () => {
+      document.getElementById('resetBtn').click();
+    });
+
+    document.getElementById('downloadLogBtn').addEventListener('click', async () => {
+      const debrief = await (await fetch('/api/mission/debrief')).json();
+      const blob = new Blob([JSON.stringify(debrief, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `COG_EW_Mission_Flight_Log_T${Date.now()}.json`;
+      a.click();
+    });
+
+    const soundBtn = document.getElementById('soundToggleBtn');
+    soundBtn.addEventListener('click', () => {
+      sound.init();
+      sound.enabled = !sound.enabled;
+      document.getElementById('soundIcon').innerText = sound.enabled ? '🔊' : '🔇';
+    });
+
+    // ======================================================================
+    // ANIMATION & TICK LOOP
+    // ======================================================================
+    let lastTime = performance.now();
+    function loop(time) {
+      const dt = (time - lastTime) / 1000;
+      lastTime = time;
+      render(dt);
+      animFrame = requestAnimationFrame(loop);
+    }
+
+    // Startup
+    fetchSimulationState();
+    setInterval(tickSimulation, 100);
+    setInterval(syncRFClassification, 500);
+    animFrame = requestAnimationFrame(loop);
+  </script>
+</body>
+</html>

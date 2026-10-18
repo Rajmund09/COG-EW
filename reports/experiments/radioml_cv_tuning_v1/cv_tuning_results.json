@@ -1,0 +1,341 @@
+{
+  "experiment": "RadioML pilot 5-fold CV",
+  "seed": 42,
+  "epochs_per_fold": 3,
+  "samples_per_class_snr": 60,
+  "pilot_samples": 37440,
+  "folds": 5,
+  "device": "cuda",
+  "configs_completed": 4,
+  "results": [
+    {
+      "config": "cnn_lr0.001_wd0.0001",
+      "hyperparameters": {
+        "model": "cnn",
+        "learning_rate": 0.001,
+        "weight_decay": 0.0001,
+        "batch_size": 64
+      },
+      "folds_completed": 5,
+      "accuracy_mean": 0.2991987179487179,
+      "accuracy_std": 0.019938483399559,
+      "macro_f1_mean": 0.26082935369221805,
+      "macro_f1_std": 0.029593504438927633,
+      "fold_results": [
+        {
+          "config": "cnn_lr0.001_wd0.0001",
+          "fold": 1,
+          "train_samples": 29952,
+          "validation_samples": 7488,
+          "final_epoch_metrics": {
+            "loss": 2.054579124491439,
+            "accuracy": 0.27550747863247865,
+            "macro_f1": 0.2291156768912567,
+            "samples": 7488
+          },
+          "elapsed_seconds": 48.17834959999891
+        },
+        {
+          "config": "cnn_lr0.001_wd0.0001",
+          "fold": 2,
+          "train_samples": 29952,
+          "validation_samples": 7488,
+          "final_epoch_metrics": {
+            "loss": 1.98537120452294,
+            "accuracy": 0.30235042735042733,
+            "macro_f1": 0.24887882481553378,
+            "samples": 7488
+          },
+          "elapsed_seconds": 34.82182379999722
+        },
+        {
+          "config": "cnn_lr0.001_wd0.0001",
+          "fold": 3,
+          "train_samples": 29952,
+          "validation_samples": 7488,
+          "final_epoch_metrics": {
+            "loss": 2.0765016303103194,
+            "accuracy": 0.28191773504273504,
+            "macro_f1": 0.24167662643194418,
+            "samples": 7488
+          },
+          "elapsed_seconds": 34.489423899998656
+        },
+        {
+          "config": "cnn_lr0.001_wd0.0001",
+          "fold": 4,
+          "train_samples": 29952,
+          "validation_samples": 7488,
+          "final_epoch_metrics": {
+            "loss": 1.9102448489930894,
+            "accuracy": 0.31650641025641024,
+            "macro_f1": 0.294950668283452,
+            "samples": 7488
+          },
+          "elapsed_seconds": 34.35880339999858
+        },
+        {
+          "config": "cnn_lr0.001_wd0.0001",
+          "fold": 5,
+          "train_samples": 29952,
+          "validation_samples": 7488,
+          "final_epoch_metrics": {
+            "loss": 1.8872559518895597,
+            "accuracy": 0.31971153846153844,
+            "macro_f1": 0.2895249720389034,
+            "samples": 7488
+          },
+          "elapsed_seconds": 34.30962640000507
+        }
+      ]
+    },
+    {
+      "config": "cnn_lr0.0005_wd0.0005",
+      "hyperparameters": {
+        "model": "cnn",
+        "learning_rate": 0.0005,
+        "weight_decay": 0.0005,
+        "batch_size": 64
+      },
+      "folds_completed": 5,
+      "accuracy_mean": 0.28701923076923075,
+      "accuracy_std": 0.03579064812153694,
+      "macro_f1_mean": 0.2499476024988482,
+      "macro_f1_std": 0.032425959283246604,
+      "fold_results": [
+        {
+          "config": "cnn_lr0.0005_wd0.0005",
+          "fold": 1,
+          "train_samples": 29952,
+          "validation_samples": 7488,
+          "final_epoch_metrics": {
+            "loss": 1.9167194050601406,
+            "accuracy": 0.3112980769230769,
+            "macro_f1": 0.2724635496258636,
+            "samples": 7488
+          },
+          "elapsed_seconds": 34.41043440000067
+        },
+        {
+          "config": "cnn_lr0.0005_wd0.0005",
+          "fold": 2,
+          "train_samples": 29952,
+          "validation_samples": 7488,
+          "final_epoch_metrics": {
+            "loss": 1.9597928615716786,
+            "accuracy": 0.3078258547008547,
+            "macro_f1": 0.24665500660646802,
+            "samples": 7488
+          },
+          "elapsed_seconds": 34.3600415999972
+        },
+        {
+          "config": "cnn_lr0.0005_wd0.0005",
+          "fold": 3,
+          "train_samples": 29952,
+          "validation_samples": 7488,
+          "final_epoch_metrics": {
+            "loss": 2.688931153370784,
+            "accuracy": 0.22529380341880342,
+            "macro_f1": 0.19891552150580802,
+            "samples": 7488
+          },
+          "elapsed_seconds": 34.42593990000023
+        },
+        {
+          "config": "cnn_lr0.0005_wd0.0005",
+          "fold": 4,
+          "train_samples": 29952,
+          "validation_samples": 7488,
+          "final_epoch_metrics": {
+            "loss": 1.9476514137708223,
+            "accuracy": 0.30408653846153844,
+            "macro_f1": 0.2828488986321942,
+            "samples": 7488
+          },
+          "elapsed_seconds": 34.20229809999728
+        },
+        {
+          "config": "cnn_lr0.0005_wd0.0005",
+          "fold": 5,
+          "train_samples": 29952,
+          "validation_samples": 7488,
+          "final_epoch_metrics": {
+            "loss": 2.010558992369562,
+            "accuracy": 0.2865918803418803,
+            "macro_f1": 0.24885503612390725,
+            "samples": 7488
+          },
+          "elapsed_seconds": 34.111268499997095
+        }
+      ]
+    },
+    {
+      "config": "resnet_lr0.0005_wd0.0001",
+      "hyperparameters": {
+        "model": "resnet",
+        "learning_rate": 0.0005,
+        "weight_decay": 0.0001,
+        "batch_size": 32
+      },
+      "folds_completed": 5,
+      "accuracy_mean": 0.30910790598290594,
+      "accuracy_std": 0.014863548072201752,
+      "macro_f1_mean": 0.27334584950431734,
+      "macro_f1_std": 0.015293239418877867,
+      "fold_results": [
+        {
+          "config": "resnet_lr0.0005_wd0.0001",
+          "fold": 1,
+          "train_samples": 29952,
+          "validation_samples": 7488,
+          "final_epoch_metrics": {
+            "loss": 1.9769565218534224,
+            "accuracy": 0.2904647435897436,
+            "macro_f1": 0.25666305760236696,
+            "samples": 7488
+          },
+          "elapsed_seconds": 61.65464620000421
+        },
+        {
+          "config": "resnet_lr0.0005_wd0.0001",
+          "fold": 2,
+          "train_samples": 29952,
+          "validation_samples": 7488,
+          "final_epoch_metrics": {
+            "loss": 1.8755244312123356,
+            "accuracy": 0.3294604700854701,
+            "macro_f1": 0.28898540772378667,
+            "samples": 7488
+          },
+          "elapsed_seconds": 61.538131900000735
+        },
+        {
+          "config": "resnet_lr0.0005_wd0.0001",
+          "fold": 3,
+          "train_samples": 29952,
+          "validation_samples": 7488,
+          "final_epoch_metrics": {
+            "loss": 1.9067979857452915,
+            "accuracy": 0.3142361111111111,
+            "macro_f1": 0.2781260089725388,
+            "samples": 7488
+          },
+          "elapsed_seconds": 61.822552800003905
+        },
+        {
+          "config": "resnet_lr0.0005_wd0.0001",
+          "fold": 4,
+          "train_samples": 29952,
+          "validation_samples": 7488,
+          "final_epoch_metrics": {
+            "loss": 1.924051052484757,
+            "accuracy": 0.29967948717948717,
+            "macro_f1": 0.2576428441715462,
+            "samples": 7488
+          },
+          "elapsed_seconds": 61.5163395999989
+        },
+        {
+          "config": "resnet_lr0.0005_wd0.0001",
+          "fold": 5,
+          "train_samples": 29952,
+          "validation_samples": 7488,
+          "final_epoch_metrics": {
+            "loss": 1.8884873461519551,
+            "accuracy": 0.31169871794871795,
+            "macro_f1": 0.28531192905134783,
+            "samples": 7488
+          },
+          "elapsed_seconds": 61.79900859999907
+        }
+      ]
+    },
+    {
+      "config": "resnet_lr0.00025_wd0.0005",
+      "hyperparameters": {
+        "model": "resnet",
+        "learning_rate": 0.00025,
+        "weight_decay": 0.0005,
+        "batch_size": 32
+      },
+      "folds_completed": 5,
+      "accuracy_mean": 0.31533119658119657,
+      "accuracy_std": 0.014302130198287966,
+      "macro_f1_mean": 0.2836172958270911,
+      "macro_f1_std": 0.012621266292967434,
+      "fold_results": [
+        {
+          "config": "resnet_lr0.00025_wd0.0005",
+          "fold": 1,
+          "train_samples": 29952,
+          "validation_samples": 7488,
+          "final_epoch_metrics": {
+            "loss": 2.094107958496126,
+            "accuracy": 0.29580662393162394,
+            "macro_f1": 0.2640257206173153,
+            "samples": 7488
+          },
+          "elapsed_seconds": 61.7463843000005
+        },
+        {
+          "config": "resnet_lr0.00025_wd0.0005",
+          "fold": 2,
+          "train_samples": 29952,
+          "validation_samples": 7488,
+          "final_epoch_metrics": {
+            "loss": 1.8507413395449646,
+            "accuracy": 0.3345352564102564,
+            "macro_f1": 0.29919559432412784,
+            "samples": 7488
+          },
+          "elapsed_seconds": 62.100512099998014
+        },
+        {
+          "config": "resnet_lr0.00025_wd0.0005",
+          "fold": 3,
+          "train_samples": 29952,
+          "validation_samples": 7488,
+          "final_epoch_metrics": {
+            "loss": 1.906280997981373,
+            "accuracy": 0.30996260683760685,
+            "macro_f1": 0.2859196125690841,
+            "samples": 7488
+          },
+          "elapsed_seconds": 61.575755200006824
+        },
+        {
+          "config": "resnet_lr0.00025_wd0.0005",
+          "fold": 4,
+          "train_samples": 29952,
+          "validation_samples": 7488,
+          "final_epoch_metrics": {
+            "loss": 1.9441932562070015,
+            "accuracy": 0.31477029914529914,
+            "macro_f1": 0.2830749393238691,
+            "samples": 7488
+          },
+          "elapsed_seconds": 61.712680500000715
+        },
+        {
+          "config": "resnet_lr0.00025_wd0.0005",
+          "fold": 5,
+          "train_samples": 29952,
+          "validation_samples": 7488,
+          "final_epoch_metrics": {
+            "loss": 1.8819100306584284,
+            "accuracy": 0.3215811965811966,
+            "macro_f1": 0.28587061230105903,
+            "samples": 7488
+          },
+          "elapsed_seconds": 61.61752200000046
+        }
+      ]
+    }
+  ],
+  "selection_metric": "mean cross-validation macro-F1",
+  "test_partition_used": false,
+  "separate_validation_partition_used": false,
+  "note": "Pilot subset results are for model selection only. They are not final full-data performance estimates. The 30% test set must remain untouched until final training and evaluation.",
+  "elapsed_seconds": 979.3191377000039
+}

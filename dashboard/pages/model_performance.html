@@ -23,6 +23,62 @@
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #050811;
+            color: #e1ebfa;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Top Navigation matching Overview page */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 40px;
+            border-bottom: 1px solid rgba(30, 58, 95, 0.6);
+            background: rgba(8, 13, 24, 0.95);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 21px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+        .brand span { color: #00e5ff; text-shadow: 0 0 14px rgba(0, 229, 255, 0.35); }
+
+        .status {
+            font-family: 'JetBrains Mono', monospace;
+            color: #8298b9;
+            font-size: 13px;
+        }
+
+        nav {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: #8298b9;
+            text-decoration: none;
+            padding: 7px 14px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        nav a:hover,
+        nav a.active {
+            color: #00e5ff;
+            background: rgba(0, 229, 255, 0.12);
+            border: 1px solid rgba(0, 229, 255, 0.25);
         }
 
         .perf-layout {
@@ -439,33 +495,24 @@
     </style>
 </head>
 <body>
-    <div class="app">
-        <aside class="sidebar">
-            <div class="brand">
-                <div class="brand-icon">C</div>
-                <div>
-                    <h1>COG-EW</h1>
-                    <span>RF Intelligence</span>
-                </div>
-            </div>
+    <!-- TOP NAVIGATION IDENTICAL TO OVERVIEW -->
+    <header>
+        <div class="brand">COG<span>-EW</span> / MISSION CONTROL</div>
+        <nav>
+            <a href="/">Overview</a>
+            <a href="/pages/simulation.html">Tactical Simulation</a>
+            <a href="/pages/rf_classification.html">RF Classification</a>
+            <a href="/pages/signal_analysis.html">Signal Analysis</a>
+            <a href="/pages/model_performance.html" class="active">Model Benchmarks</a>
+        </nav>
+        <div class="status" id="apiStatus"><span style="color:#00e676; margin-right:4px;">●</span> Connected to COG-EW API</div>
+    </header>
 
-            <nav>
-                <a href="/">Overview</a>
-                <a href="/pages/rf_classification.html">RF Classification</a>
-                <a href="/pages/signal_analysis.html">Signal Analysis</a>
-                <a href="/pages/decision_support.html">Decision Support</a>
-                <a href="/pages/performance.html" class="active">Model Performance</a>
-            </nav>
-        </aside>
-
-        <main class="main">
-            <header class="topbar">
-                <div>
-                    <h2>RF CNN Performance & Benchmarks</h2>
-                    <p>Untouched Test-Set Evaluation and Multi-Scheme Diagnostic Metrics</p>
-                </div>
-                <div id="systemStatus" class="status online">● Online</div>
-            </header>
+    <main class="main" style="max-width: 1440px; margin: 0 auto; padding: 24px 30px 60px;">
+        <div style="margin-bottom: 24px;">
+            <h1 style="font-family: 'Orbitron', sans-serif; font-size: 26px; color: var(--text-primary); letter-spacing: 0.5px;">Model Benchmarks & Test Split Performance</h1>
+            <p style="color: var(--text-secondary); font-size: 14px; margin-top: 4px;">Untouched Test-Set Evaluation and Diagnostic Metrics for 24-Class ResNet & Baseline CNN</p>
+        </div>
 
             <div class="perf-layout">
                 <!-- Row 1: KPI Cards -->
@@ -628,7 +675,6 @@
                 </div>
             </div>
         </main>
-    </div>
 
     <script>
         // Pre-computed fallback metrics directly from reports/cogew_rf_cnn_test_evaluation.json

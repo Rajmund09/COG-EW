@@ -1,0 +1,16 @@
+{
+  "episodes": 20,
+  "success_rate": 0.0,
+  "collision_rate": 0.0,
+  "mean_reward": 53.58138068704049,
+  "mean_episode_length": 250.0,
+  "environment": "synthetic_2d_beacon_navigation",
+  "training_timesteps": 10000,
+  "updates": 20,
+  "device": "cuda",
+  "seed": 42,
+  "checkpoint": "D:\\COG-EW\\models\\synthetic_navigation_ppo.pt",
+  "completed_training_episodes": 0,
+  "collision_training_episodes": 31,
+  "final_recent_training_reward": 35.22320035807292
+}

@@ -50,6 +50,9 @@ DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 # If your train_cogew_rf_cnn.py defines COGEWRFCNN directly,
 # we will move that model definition into a reusable module.
 
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
+
 try:
     from scripts.train_cogew_rf_cnn import COGEWRFCNN
 except Exception as exc:

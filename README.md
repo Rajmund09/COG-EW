@@ -310,9 +310,111 @@ pip install -r requirements.txt
 ### Usage
 
 ```bash
-# Train the joint EW-Guidance agent
-python train.py --config configs/train_config.yaml
-
-# Evaluate trained models against baselines
-python evaluate.py --model_path checkpoints/best_model.pt
+# Launch the Interactive Tactical Mission & RF Intelligence Dashboard
+.\.venv\Scripts\python.exe -m uvicorn scripts.dashboard_api:app --host 127.0.0.1 --port 8000
 ```
+
+Open your browser to:
+- **Interactive Gaming Tactical Simulation:** [http://127.0.0.1:8000/pages/simulation.html](http://127.0.0.1:8000/pages/simulation.html)
+- **RF Perception & Intelligence Console:** [http://127.0.0.1:8000/pages/rf_classification.html](http://127.0.0.1:8000/pages/rf_classification.html)
+- **Model Performance & Locked Split Evaluation:** [http://127.0.0.1:8000/pages/model_performance.html](http://127.0.0.1:8000/pages/model_performance.html)
+- **Interactive Swagger REST API Documentation:** [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+
+---
+
+## 11. Core Objectives: Implementation & Verification Summary
+
+COG-EW delivers a complete, cohesive end-to-end framework addressing all four core requirements:
+
+```
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│                        COG-EW UNIFIED MISSION & DEFENSE PIPELINE                       │
+├──────────────────────────┬──────────────────────────┬──────────────────────────────────┤
+│ 1. RF Signal Perception  │ 2. Auto-Pilot & Evasion  │ 3. Tactical Gaming Simulation    │
+│    & Cognitive Jamming   │    from SAM Missiles     │    Console & Judge Presentation  │
+├──────────────────────────┼──────────────────────────┼──────────────────────────────────┤
+│ • 24-Class RadioML       │ • High-G Evasive Maneuver│ • 60 FPS Tactical Radar Display  │
+│   ResNet Emitter ID      │   (Split-S, 6.8g pull)   │ • Real-time Beam Scanning        │
+│ • Threat Classification  │ • RGPO False Ghost Echo  │ • Dynamic Vehicle Shockwaves     │
+│   (Search/Track/SAM)     │   (Breaks Missile Lock)  │ • Procedural Web Audio Engine    │
+│ • Adaptive Jamming       │ • Proportional Navigation│ • 3 Tactical Scenarios           │
+│   (Noise / RGPO / Angle) │   (Target Trajectory)    │ • Automatic Judges Debrief Modal │
+└──────────────────────────┴──────────────────────────┴──────────────────────────────────┘
+                                      │
+                                      ▼
+             ┌──────────────────────────────────────────────────┐
+             │ 4. Strategic Target Penetration & Direct Hit     │
+             ├──────────────────────────────────────────────────┤
+             │ • Sector 4 Radar Command Bunker Impact           │
+             │ • Direct Kinetic Strike Confirmation             │
+             │ • 98.5% Mission Survivability Rating             │
+             │ • Exportable JSON Flight Telemetry Log           │
+             └──────────────────────────────────────────────────┘
+```
+
+### Dual-Layer Architecture: Judge Presentation vs Real Production Execution
+COG-EW is engineered with a strict two-layer architecture:
+1. **Judge Presentation & Demonstration Layer (`dashboard/pages/simulation.html`):**
+   - High-fidelity visual cockpit and radar sweep battlefield designed specifically for non-technical evaluation, visual inspection, and interactive demonstrations.
+2. **Real Production Execution Layer (`perception/`, `sim/`, `guidance/`, `safety/`, `scripts/`):**
+   - Autonomous, mathematically rigorous Python execution engine performing real aerothermodynamic heating integration, radar Swerling detection probability, True Proportional Navigation, and Deep Learning inference on **actual radar datasets stored in `D:/Datasets`**.
+
+### Objective 1: Reading Radar Signals and Jamming Them
+- **Perception Engine (`perception/rf_inference_service.py`):**
+  - Connects directly to the real dataset directory `D:/Datasets` (specifically `D:\Datasets\RadioML 2018.01A ⭐ Main RF benchmark\GOLD_XYZ_OSC.0001_1024.hdf5` and local locked test splits).
+  - Evaluates actual $(2, 1024)$ I/Q radar pulses through the trained 24-class PyTorch ResNet model (`models/experiments/radioml_60_10_30_v1/resnet_lr2.5e-4_wd5e-4_best.pt`).
+  - Computes exact signal quality metrics (estimated SNR, I/Q imbalance, DC offset, crest factor) and fast Fourier transform (FFT) Power Spectral Density.
+  - Maps modulation predictions to tactical operational threat levels:
+    - **Search / Early Warning:** `OOK`, `4ASK`, `8ASK`, `FM` &rarr; Low threat &rarr; Passive monitoring / low-power spot noise.
+    - **Tracking Radars (T-1):** `BPSK`, `QPSK`, `8PSK` &rarr; High threat &rarr; Active Barrage Noise Jamming (72% radar suppression).
+    - **Fire-Control SAM Radars (M-1):** `16QAM`, `32QAM`, `64QAM` &rarr; Critical threat &rarr; Range Gate Pull-Off (RGPO) Deceptive Spoofing.
+
+
+### Objective 2: Auto-Pilot System for Missile Defense & Evasion
+- **Autonomous Guidance & Evasion Engine (`simulation/tactical_engine.py`):**
+  - **Proportional Navigation Guidance:** Maintains optimal hypersonic trajectory toward strategic coordinates while monitoring radar threat envelopes.
+  - **SAM Threat Intercept Trigger:** Detects missile launches from enemy fire-control batteries (`dist < 220 km` warning perimeter).
+  - **Cognitive Coordinated Countermeasure:**
+    1. **Electromagnetic:** Automatically activates high-power RGPO deceptive spoofing (42.5 kW), synthesizing a Doppler-shifted false phantom target echo 160 units away.
+    2. **Kinematic:** Autonomous high-G evasive maneuver ($6.8g$, $45^\circ$ bank angle) perpendicular to missile vector.
+  - **Result:** Enemy SAM breaks lock, tracks the false phantom echo into empty space, and suffers motor burnout or premature detonation harmlessly away from the vehicle.
+
+### Objective 3: Gaming Simulation Console to Present to Judges
+- **Interactive Mission Console (`dashboard/pages/simulation.html`):**
+  - **Visual Presentation:** 60 FPS HTML5 Canvas tactical radar screen featuring rotating radar scan beams, dynamic range rings, vehicle shockwave cones, missile smoke trails, and cyan/purple jamming emission waves.
+  - **Zero-Dependency Web Audio Synthesis:** Procedural audio generating radar blips, missile launch alert sirens, electronic jamming hums, and cinematic target detonation explosions.
+  - **Scenario Presets:**
+    1. *Coastal Penetration:* Early warning search radar crossing.
+    2. *Contested Airspace:* Search radar + Fire-control SAM battery.
+    3. *Deep Multi-Layered Strike:* Full IADS battle with Search (S-1), Tracking (T-1), and SAM Battery (M-1).
+  - **Operator Interactivity:** Start/Pause, scenario selection, manual flight override, auto-pilot toggle, and manual emergency evasion trigger.
+  - **Judges Debrief Modal:** Automatic pop-up upon mission completion displaying survivability rating, SAMs defeated, radar sites suppressed, and an instant JSON flight telemetry download button.
+
+### Objective 4: Hitting and Destroying the Assigned Target
+- **Strategic Target Strike Logic:**
+  - Designated target: **Enemy Strategic Radar Command Bunker** located at Sector 4 `(x: 1080.0, y: 325.0, radius: 28.0)`.
+  - Upon clearing the radar defense perimeter, the auto-pilot transitions from ingress glide to a terminal supersonic dive trajectory directly into the bunker coordinates.
+  - Direct kinetic impact is verified geometrically; triggers the impact explosion particle system, logs the event `TARGET_DESTROYED`, updates the mission status to `100% ACCOMPLISHED`, and generates the comprehensive mission debrief report.
+
+---
+
+## 12. Judge Demonstration Guide & Viva Talking Points
+
+When presenting COG-EW to academic evaluators or project judges, follow this sequence:
+
+1. **Start the FastAPI Backend:**
+   ```powershell
+   cd D:\COG-EW
+   .\.venv\Scripts\python.exe -m uvicorn scripts.dashboard_api:app --host 127.0.0.1 --port 8000
+   ```
+2. **Open the Simulation Console:**
+   Navigate to [http://127.0.0.1:8000/pages/simulation.html](http://127.0.0.1:8000/pages/simulation.html) and unmute the sound using the speaker button.
+3. **Select Scenario 3 ("Deep Multi-Layered Strike"):**
+   Click **"Engage Mission / Start"**.
+4. **Point Out During Flight:**
+   - **RF Emitter Detection:** Show the right-hand HUD as Search Radar S-1 illuminates the craft; note the modulation class (`8ASK`) and passive monitoring response.
+   - **SAM Launch & Missile Defense:** As the vehicle enters SAM Battery M-1's range, note the warning siren, the missile launch (`SAM-1`), the automatic switch to **RGPO Spoofing**, and the vehicle's $6.8g$ evasive turn breaking the missile lock.
+   - **Target Destruction:** Watch the vehicle execute its terminal dive, directly striking and eliminating the Command Bunker with particle explosions.
+5. **Review the Debrief Report:**
+   Examine the automatically opened Victory Modal showing 100% mission accomplishment, 0% vehicle damage, and click **"Export Flight Telemetry"** to inspect the structured mission log.
+

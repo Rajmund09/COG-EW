@@ -1,59 +1,246 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>COG-EW | Decision Support</title>
     <link rel="stylesheet" href="/assets/css/dashboard.css">
+
+    <style>
+        .decision-layout {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .decision-banner {
+            padding: 17px;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 12px;
+            background: rgba(245, 158, 11, 0.07);
+            color: var(--text-secondary);
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .decision-banner strong {
+            display: block;
+            color: #fbbf24;
+            margin-bottom: 5px;
+        }
+
+        .decision-summary {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .decision-card {
+            min-width: 0;
+            overflow-wrap: anywhere;
+            background: rgba(18, 24, 38, 0.85);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px;
+        }
+
+        .decision-card span {
+            display: block;
+            color: var(--text-secondary);
+            font-size: 11px;
+            margin-bottom: 9px;
+        }
+
+        .decision-card strong {
+            display: block;
+            color: var(--accent-cyan);
+            font-size: 17px;
+            overflow-wrap: anywhere;
+        }
+
+        .report-section {
+            margin-top: 18px;
+            padding: 18px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.15);
+            min-width: 0;
+        }
+
+        .report-section h3,
+        .report-section h4 {
+            margin-bottom: 14px;
+        }
+
+        .report-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+            min-width: 0;
+        }
+
+        .report-field {
+            min-width: 0;
+            overflow-wrap: anywhere;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border-color);
+            border-radius: 9px;
+            padding: 13px;
+        }
+
+        .report-label {
+            display: block;
+            color: var(--text-secondary);
+            font-size: 11px;
+            margin-bottom: 7px;
+        }
+
+        .report-value {
+            display: block;
+            font-size: 14px;
+            color: var(--text-primary);
+            overflow-wrap: anywhere;
+            white-space: pre-wrap;
+        }
+
+        .operator-action {
+            margin-top: 18px;
+            padding: 18px;
+            border-left: 3px solid var(--accent-cyan);
+            border-radius: 8px;
+            background: rgba(79, 172, 254, 0.07);
+        }
+
+        .operator-action h3 {
+            font-size: 14px;
+            margin-bottom: 9px;
+        }
+
+        .operator-action p {
+            color: var(--text-primary);
+            font-size: 14px;
+            line-height: 1.8;
+            overflow-wrap: anywhere;
+        }
+
+        .refresh-button {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 9px 14px;
+            background: rgba(79, 172, 254, 0.12);
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+
+        .muted {
+            color: var(--text-secondary);
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        pre {
+            max-height: 450px;
+            overflow: auto;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid var(--border-color);
+            border-radius: 9px;
+            padding: 15px;
+            color: var(--text-secondary);
+            font-size: 12px;
+        }
+
+        @media (max-width: 850px) {
+            .decision-summary {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 520px) {
+
+            .decision-summary,
+            .report-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .panel-header {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 12px;
+            }
+        }
+    </style>
 </head>
+
 <body>
-    <div class="app">
-        <aside class="sidebar">
-            <div class="brand">
-                <div class="brand-icon">C</div>
-                <div>
-                    <h1>COG-EW</h1>
-                    <span>RF Intelligence</span>
-                </div>
-            </div>
+    <!-- UNIFIED TOP NAVIGATION -->
+    <header class="topbar-unified">
+        <div class="brand" style="display:flex; align-items:center; gap:12px; font-family:'Orbitron',sans-serif; font-size:19px; font-weight:800; letter-spacing:1px; margin-bottom:0;">
+            <span>⚡ COG-EW</span> DECISION SUPPORT & OPERATOR REVIEW
+            <span class="badge" style="background:rgba(0,229,255,0.15); border:1px solid var(--accent-cyan); color:var(--accent-cyan); font-size:11px; padding:3px 8px; border-radius:4px; font-family:var(--font-mono)">COG-DECISION</span>
+        </div>
 
-            <nav>
-                <a href="/">Overview</a>
-                <a href="/pages/rf_classification.html">RF Classification</a>
-                <a href="/pages/signal_analysis.html">Signal Analysis</a>
-                <a href="/pages/decision_support.html" class="active">Decision Support</a>
-                <a href="/pages/performance.html">Model Performance</a>
-            </nav>
-        </aside>
+        <nav style="display:flex; gap:8px; align-items:center;">
+            <a href="/">Overview</a>
+            <a href="/pages/simulation.html">Tactical Simulation</a>
+            <a href="/pages/rf_classification.html">RF Perception</a>
+            <a href="/pages/signal_analysis.html">Signal Analysis</a>
+            <a href="/pages/model_performance.html">Model Benchmarks</a>
+        </nav>
 
-        <main class="main">
-            <header class="topbar">
-                <div>
-                    <h2>Cognitive EW Decision Support</h2>
-                    <p>Tactical Recommendations & Modulation Policy Decisions</p>
-                </div>
-                <div id="systemStatus" class="status">● Connecting</div>
-            </header>
+        <div id="systemStatus" class="status" style="font-family:var(--font-mono); font-size:12px; color:#10b981;">● Online</div>
+    </header>
 
-            <section class="prediction-panel">
+    <main class="main" style="max-width: 1440px; margin: 0 auto; padding: 24px 30px 60px;">
+
+            <section class="prediction-panel decision-layout">
                 <div class="panel-header">
                     <div>
                         <span class="eyebrow">DECISION ENGINE</span>
-                        <h2>Adaptive RF Response Evaluation</h2>
+                        <h2>Decision Review Console</h2>
+                        <p class="muted">
+                            Report source: reports\cogew_decision.json
+                        </p>
                     </div>
+
                     <div>
-                        <input id="sampleIndex" type="number" value="2500" min="0">
-                        <button onclick="predictSample()">Analyze</button>
+                        <span id="decisionStatus" class="status">
+                            ● Loading report
+                        </span>
+                        <button type="button" class="refresh-button" onclick="refreshDecisionReport()">
+                            Refresh report
+                        </button>
                     </div>
                 </div>
 
-                <div id="predictionResult" class="prediction-result">
-                    <div class="loading">Loading decision metrics...</div>
+                <div class="decision-banner">
+                    <strong>Human review required for consequential decisions</strong>
+                    A modulation classification is not proof of a real-world
+                    threat or emitter identity. Review the available evidence
+                    and uncertainty before acting on a recommendation.
+                    This interface is read-only and does not issue operational
+                    transmission, jamming, targeting, or weapon-control commands.
                 </div>
+
+                <div id="decisionResult">
+                    <div class="loading">Loading decision report...</div>
+                </div>
+
+                <section class="report-section">
+                    <h3>Original Decision Report</h3>
+                    <p class="muted">
+                        This is the JSON returned by the existing decision API.
+                    </p>
+                    <details>
+                        <summary>Show full report JSON</summary>
+                        <pre id="decisionRaw">Report not loaded.</pre>
+                    </details>
+                </section>
             </section>
         </main>
-    </div>
-
     <script src="/assets/js/dashboard.js"></script>
 </body>
+
 </html>

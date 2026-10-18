@@ -1,0 +1,64 @@
+rf_perception:
+
+  cnn:
+    enabled: true
+
+    input_channels: 2
+
+    hidden_channels:
+      - 32
+      - 64
+      - 128
+
+    dropout: 0.30
+
+  cnn_lstm:
+    enabled: true
+
+    hidden_size: 128
+    num_layers: 2
+    dropout: 0.30
+
+  transformer:
+    enabled: true
+
+    d_model: 128
+    nhead: 4
+    num_layers: 3
+    dim_feedforward: 256
+    dropout: 0.10
+
+
+telemetry:
+
+  lstm:
+    enabled: true
+    hidden_size: 128
+    num_layers: 2
+    dropout: 0.20
+
+  gru:
+    enabled: true
+    hidden_size: 128
+    num_layers: 2
+    dropout: 0.20
+
+  transformer:
+    enabled: true
+    d_model: 128
+    nhead: 4
+    num_layers: 3
+    dropout: 0.10
+
+
+uncertainty:
+
+  method: mc_dropout
+
+  monte_carlo_samples: 20
+
+  entropy:
+    enabled: true
+
+  calibration:
+    enabled: true
