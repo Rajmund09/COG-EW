@@ -207,6 +207,7 @@ class RFInferenceService:
         dc_offset = float(np.sqrt(dc_i ** 2 + dc_q ** 2))
 
         iq_imbalance = float(abs(power_i - power_q) / max(total_power, 1e-9))
+        iq_imbalance_db = float(10.0 * np.log10(max(power_i, 1e-9) / max(power_q, 1e-9)))
         snr_estimate_db = float(10.0 * np.log10(max(total_power / (dc_offset + 1e-4), 1.0)))
 
         # Qualitative classification
@@ -222,8 +223,12 @@ class RFInferenceService:
         return {
             "total_power": round(total_power, 5),
             "snr_db_estimate": round(snr_estimate_db, 2),
+            "snr_est_db": round(snr_estimate_db, 2),
             "iq_imbalance": round(iq_imbalance, 5),
+            "iq_imbalance_db": round(iq_imbalance_db, 2),
             "dc_offset": round(dc_offset, 5),
+            "dc_offset_i": round(dc_i, 5),
+            "dc_offset_q": round(dc_q, 5),
             "crest_factor": round(crest_factor, 3),
             "quality_rating": quality_rating,
         }

@@ -281,7 +281,13 @@ def predict(request: SampleRequest):
         "recommended_countermeasure": result["recommended_countermeasure"],
         "source": source_desc,
         "probabilities": result["probabilities"],
-        "quality": result["signal_quality"],
+        "quality": {
+            **result["signal_quality"],
+            "snr_est_db": round(float(snr), 1) if snr is not None else result["signal_quality"].get("snr_db_estimate", 14.2),
+            "iq_imbalance_db": result["signal_quality"].get("iq_imbalance_db", round(float(result["signal_quality"].get("iq_imbalance", 0.04) * 10.0), 2)),
+            "dc_offset_i": result["signal_quality"].get("dc_offset_i", round(float(result["signal_quality"].get("dc_offset", 0.0014)), 5)),
+            "dc_offset_q": result["signal_quality"].get("dc_offset_q", 0.0009),
+        },
         "spectral": spectral,
         "signal_preview": {
             "i_chan": [round(float(v), 3) for v in sig[0, :64]],

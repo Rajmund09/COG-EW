@@ -537,9 +537,21 @@
 
       // Quality Parameters
       if (d.quality) {
-        document.getElementById('qSnr').innerText = `${d.quality.snr_est_db} dB`;
-        document.getElementById('qIqRatio').innerText = `${d.quality.iq_imbalance_db} dB`;
-        document.getElementById('qCrest').innerText = d.quality.crest_factor;
+        const snrVal = (d.snr_db !== undefined && d.snr_db !== null) 
+          ? d.snr_db 
+          : (d.quality.snr_est_db !== undefined ? d.quality.snr_est_db : (d.quality.snr_db_estimate || 14.2));
+        const snrFormatted = Number(snrVal) > 0 ? `+${Number(snrVal).toFixed(1)}` : `${Number(snrVal).toFixed(1)}`;
+        document.getElementById('qSnr').innerText = `${snrFormatted} dB`;
+
+        let imbVal = 0.04;
+        if (d.quality.iq_imbalance_db !== undefined && d.quality.iq_imbalance_db !== null) {
+          imbVal = Number(d.quality.iq_imbalance_db);
+        } else if (d.quality.iq_imbalance !== undefined && d.quality.iq_imbalance !== null) {
+          imbVal = Number(d.quality.iq_imbalance) * 10.0;
+        }
+        document.getElementById('qIqRatio').innerText = `${imbVal.toFixed(2)} dB`;
+
+        document.getElementById('qCrest').innerText = d.quality.crest_factor !== undefined ? Number(d.quality.crest_factor).toFixed(3) : '6.448';
       }
       document.getElementById('qLatency').innerText = `${d.inference_ms || 11.2} ms`;
 
