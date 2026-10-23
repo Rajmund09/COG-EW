@@ -273,16 +273,33 @@
       margin-top: 3px;
     }
 
-    /* Waveform Canvas */
+    /* Waveform Card & 3D Three.js Container */
     .waveform-card {
       background: var(--panel);
       border: 1px solid var(--border);
       border-radius: 12px;
       padding: 20px;
     }
+    .btn-micro {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(30, 58, 95, 0.8);
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-micro:hover, .btn-micro.active {
+      color: var(--cyan);
+      background: rgba(0, 229, 255, 0.15);
+      border-color: var(--cyan);
+      box-shadow: 0 0 10px rgba(0, 229, 255, 0.25);
+    }
     canvas#iqCanvas {
       width: 100%;
-      height: 190px;
+      height: 260px;
       background: #040711;
       border-radius: 8px;
       border: 1px solid rgba(30, 58, 95, 0.5);
@@ -449,13 +466,35 @@
         </div>
       </div>
 
-      <!-- I/Q Waveform Display -->
+      <!-- I/Q Waveform Display (3D Three.js & 2D fallback) -->
       <div class="waveform-card">
-        <div class="panel-title">
-          <span>Raw I/Q Signal Waveform (First 128 Points)</span>
-          <span class="badge" style="color:var(--purple); border-color:var(--purple)">I: Cyan | Q: Purple</span>
+        <div class="panel-title" style="flex-wrap: wrap; gap: 8px;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span id="waveTitle">3D Electromagnetic Wave &amp; I/Q Helix</span>
+            <span class="badge" style="color:var(--cyan); border-color:var(--cyan)" id="waveModeBadge">WebGL 3D (Three.js)</span>
+          </div>
+          <div style="display:flex; gap:6px; align-items:center; flex-wrap: wrap;">
+            <button id="view3dBtn" class="btn-micro active" title="3D Spatial Perspective">3D Helix</button>
+            <button id="viewConstBtn" class="btn-micro" title="View Down Time Axis">Constellation (I-Q)</button>
+            <button id="viewSideBtn" class="btn-micro" title="Side View: In-Phase vs Time">In-Phase (I)</button>
+            <button id="viewTopBtn" class="btn-micro" title="Top View: Quadrature vs Time">Quadrature (Q)</button>
+            <button id="autoRotateBtn" class="btn-micro" title="Toggle Auto Rotation">Rotate: ON</button>
+            <button id="toggle2d3dBtn" class="btn-micro" title="Toggle 2D / 3D Mode">2D View</button>
+          </div>
         </div>
-        <canvas id="iqCanvas" width="560" height="190"></canvas>
+
+        <!-- 3D Three.js Container -->
+        <div id="threeWaveContainer" style="width: 100%; height: 260px; position: relative; border-radius: 8px; overflow: hidden; background: #030610; border: 1px solid rgba(30, 58, 95, 0.6); margin-top: 10px;">
+          <div id="threeHud" style="position: absolute; bottom: 8px; left: 12px; font-family: var(--font-mono); font-size: 11px; color: var(--muted); pointer-events: none; z-index: 5; text-shadow: 0 1px 3px rgba(0,0,0,0.8);">
+            <span style="color:#00e5ff">● X: Propagation Time</span> · 
+            <span style="color:#00e5ff">● Y: In-Phase (I)</span> · 
+            <span style="color:#b388ff">● Z: Quadrature (Q)</span> | 
+            <span style="color:rgba(255,255,255,0.5)">Drag: Orbit · Scroll: Zoom</span>
+          </div>
+        </div>
+
+        <!-- 2D Canvas (hidden by default in 3D mode) -->
+        <canvas id="iqCanvas" width="560" height="260" style="display: none;"></canvas>
       </div>
     </div>
 
@@ -494,7 +533,401 @@
     </div>
   </main>
 
+  <!-- Three.js & OrbitControls Libraries -->
+  <script src="/assets/js/three.min.js"></script>
+  <script src="/assets/js/OrbitControls.js"></script>
+
   <script>
+    // ======================================================================
+    // 3D ELECTROMAGNETIC WAVE VISUALIZATION (THREE.JS)
+    // ======================================================================
+    let scene3D, camera3D, renderer3D, controls3D;
+    let waveHelixMesh = null;
+    let shadowIMesh = null;
+    let shadowQMesh = null;
+    let constellationPoints = null;
+    let vectorStems = null;
+    let pulseParticle = null;
+    let gridBoundingBox = null;
+    let is3DMode = true;
+    let isAutoRotating = true;
+    let currentSignalData = { i_chan: [], q_chan: [] };
+    let targetCameraPos = null;
+    let targetCameraLookAt = new THREE.Vector3(0, 0, 0);
+    let particleProgress = 0;
+
+    function initThreeDScene() {
+      const container = document.getElementById('threeWaveContainer');
+      if (!container || !window.THREE) {
+        console.warn('Three.js not loaded or container missing; using 2D mode.');
+        is3DMode = false;
+        document.getElementById('threeWaveContainer').style.display = 'none';
+        document.getElementById('iqCanvas').style.display = 'block';
+        return;
+      }
+
+      const w = container.clientWidth || 560;
+      const h = container.clientHeight || 260;
+
+      // 1. Scene
+      scene3D = new THREE.Scene();
+      scene3D.background = new THREE.Color(0x030610);
+      scene3D.fog = new THREE.FogExp2(0x030610, 0.0022);
+
+      // 2. Camera
+      camera3D = new THREE.PerspectiveCamera(42, w / h, 0.1, 2000);
+      camera3D.position.set(130, 85, 140);
+      camera3D.lookAt(0, 0, 0);
+
+      // 3. WebGL Renderer
+      renderer3D = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
+      renderer3D.setSize(w, h);
+      renderer3D.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      container.appendChild(renderer3D.domElement);
+
+      // 4. OrbitControls
+      if (window.THREE.OrbitControls) {
+        controls3D = new THREE.OrbitControls(camera3D, renderer3D.domElement);
+        controls3D.enableDamping = true;
+        controls3D.dampingFactor = 0.06;
+        controls3D.maxDistance = 600;
+        controls3D.minDistance = 35;
+        controls3D.target.set(0, 0, 0);
+      }
+
+      // 5. Lights
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+      scene3D.add(ambientLight);
+
+      const cyanLight = new THREE.DirectionalLight(0x00e5ff, 1.4);
+      cyanLight.position.set(100, 150, 60);
+      scene3D.add(cyanLight);
+
+      const purpleLight = new THREE.DirectionalLight(0xb388ff, 1.2);
+      purpleLight.position.set(-100, -60, 150);
+      scene3D.add(purpleLight);
+
+      // 6. Tactical Coordinate Grid & Axes
+      buildTacticalCoordinateFrame();
+
+      // 7. Pulse Traveling Particle
+      const particleGeo = new THREE.SphereGeometry(2.0, 16, 16);
+      const particleMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+      pulseParticle = new THREE.Mesh(particleGeo, particleMat);
+      pulseParticle.visible = false;
+      scene3D.add(pulseParticle);
+
+      // 8. Start Animation Loop
+      animateThreeD();
+
+      // Resize listener
+      window.addEventListener('resize', onThreeResize);
+    }
+
+    function buildTacticalCoordinateFrame() {
+      const boxLength = 160; // Time (X)
+      const boxHeight = 65;  // In-Phase (Y)
+      const boxDepth = 65;   // Quadrature (Z)
+
+      // Bounding Wireframe Box
+      const boxGeo = new THREE.BoxGeometry(boxLength, boxHeight, boxDepth);
+      const boxMat = new THREE.MeshBasicMaterial({
+        color: 0x1e3a5f,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.22,
+      });
+      gridBoundingBox = new THREE.Mesh(boxGeo, boxMat);
+      scene3D.add(gridBoundingBox);
+
+      // Ground Grid Helper on XZ plane at Y = -boxHeight/2
+      const floorGrid = new THREE.GridHelper(boxLength, 16, 0x00e5ff, 0x142845);
+      floorGrid.position.y = -boxHeight / 2;
+      floorGrid.material.opacity = 0.25;
+      floorGrid.material.transparent = true;
+      scene3D.add(floorGrid);
+
+      // Center Reference Axes:
+      // Time Axis (X)
+      const xLineMat = new THREE.LineBasicMaterial({ color: 0x4a73a0, transparent: true, opacity: 0.5 });
+      const xLineGeo = new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector3(-boxLength / 2, 0, 0),
+        new THREE.Vector3(boxLength / 2, 0, 0)
+      ]);
+      scene3D.add(new THREE.Line(xLineGeo, xLineMat));
+
+      // In-phase Axis (Y)
+      const yLineMat = new THREE.LineBasicMaterial({ color: 0x00e5ff, transparent: true, opacity: 0.65 });
+      const yLineGeo = new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector3(-boxLength / 2, -boxHeight / 2, 0),
+        new THREE.Vector3(-boxLength / 2, boxHeight / 2, 0)
+      ]);
+      scene3D.add(new THREE.Line(yLineGeo, yLineMat));
+
+      // Quadrature Axis (Z)
+      const zLineMat = new THREE.LineBasicMaterial({ color: 0xb388ff, transparent: true, opacity: 0.65 });
+      const zLineGeo = new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector3(-boxLength / 2, 0, -boxDepth / 2),
+        new THREE.Vector3(-boxLength / 2, 0, boxDepth / 2)
+      ]);
+      scene3D.add(new THREE.Line(zLineGeo, zLineMat));
+    }
+
+    function update3DWaveform(iChan, qChan) {
+      if (!scene3D || !iChan || !qChan || iChan.length === 0) return;
+      currentSignalData = { i_chan: iChan, q_chan: qChan };
+
+      // Remove existing dynamic objects
+      if (waveHelixMesh) scene3D.remove(waveHelixMesh);
+      if (shadowIMesh) scene3D.remove(shadowIMesh);
+      if (shadowQMesh) scene3D.remove(shadowQMesh);
+      if (constellationPoints) scene3D.remove(constellationPoints);
+      if (vectorStems) scene3D.remove(vectorStems);
+
+      const n = Math.min(iChan.length, 128);
+      const boxLength = 160;
+      const boxHeight = 65;
+      const boxDepth = 65;
+
+      // Amplitude scaling
+      let maxAbs = 0.001;
+      for (let j = 0; j < n; j++) {
+        maxAbs = Math.max(maxAbs, Math.abs(iChan[j]), Math.abs(qChan[j]));
+      }
+      const ampY = (boxHeight * 0.42) / maxAbs;
+      const ampZ = (boxDepth * 0.42) / maxAbs;
+      const stepX = boxLength / (n - 1);
+      const startX = -boxLength / 2;
+
+      const helixPoints = [];
+      const helixColors = [];
+      const shadowIPoints = [];
+      const shadowQPoints = [];
+      const constellPts = [];
+      const stemLines = [];
+
+      const cyanCol = new THREE.Color(0x00e5ff);
+      const purpleCol = new THREE.Color(0xb388ff);
+
+      for (let i = 0; i < n; i++) {
+        const x = startX + i * stepX;
+        const y = iChan[i] * ampY;
+        const z = qChan[i] * ampZ;
+
+        helixPoints.push(new THREE.Vector3(x, y, z));
+
+        // Color based on instantaneous phase angle: I (cyan) to Q (purple)
+        const phaseRatio = Math.atan2(Math.abs(z), Math.abs(y) + 1e-6) / (Math.PI / 2);
+        const col = cyanCol.clone().lerp(purpleCol, THREE.MathUtils.clamp(phaseRatio, 0, 1));
+        helixColors.push(col.r, col.g, col.b);
+
+        // Projection on Back Plane (Z = -boxDepth/2) -> In-Phase wave
+        shadowIPoints.push(new THREE.Vector3(x, y, -boxDepth / 2));
+
+        // Projection on Floor Plane (Y = -boxHeight/2) -> Quadrature wave
+        shadowQPoints.push(new THREE.Vector3(x, -boxHeight / 2, z));
+
+        // Projection on Front Plane (X = boxLength/2) -> Constellation scatter
+        constellPts.push(new THREE.Vector3(boxLength / 2, y, z));
+
+        // Indicator Stems every 4 points
+        if (i % 4 === 0) {
+          stemLines.push(new THREE.Vector3(x, 0, 0));
+          stemLines.push(new THREE.Vector3(x, y, z));
+        }
+      }
+
+      // 1. 3D Spatial Electromagnetic Helix Wave
+      const helixGeo = new THREE.BufferGeometry().setFromPoints(helixPoints);
+      helixGeo.setAttribute('color', new THREE.Float32BufferAttribute(helixColors, 3));
+      const helixMat = new THREE.LineBasicMaterial({
+        vertexColors: true,
+        linewidth: 3,
+        transparent: true,
+        opacity: 0.95,
+      });
+      waveHelixMesh = new THREE.Line(helixGeo, helixMat);
+      scene3D.add(waveHelixMesh);
+
+      // 2. 2D In-Phase (I) Wave Projection
+      const shadowIGeo = new THREE.BufferGeometry().setFromPoints(shadowIPoints);
+      const shadowIMat = new THREE.LineBasicMaterial({ color: 0x00e5ff, transparent: true, opacity: 0.35 });
+      shadowIMesh = new THREE.Line(shadowIGeo, shadowIMat);
+      scene3D.add(shadowIMesh);
+
+      // 3. 2D Quadrature (Q) Wave Projection
+      const shadowQGeo = new THREE.BufferGeometry().setFromPoints(shadowQPoints);
+      const shadowQMat = new THREE.LineBasicMaterial({ color: 0xb388ff, transparent: true, opacity: 0.35 });
+      shadowQMesh = new THREE.Line(shadowQGeo, shadowQMat);
+      scene3D.add(shadowQMesh);
+
+      // 4. 2D Constellation Projection on Front Wall
+      const constellGeo = new THREE.BufferGeometry().setFromPoints(constellPts);
+      const constellMat = new THREE.PointsMaterial({ color: 0x00e676, size: 3.5, transparent: true, opacity: 0.85 });
+      constellationPoints = new THREE.Points(constellGeo, constellMat);
+      scene3D.add(constellationPoints);
+
+      // 5. Orthogonal Stems
+      if (stemLines.length > 0) {
+        const stemGeo = new THREE.BufferGeometry().setFromPoints(stemLines);
+        const stemMat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.12 });
+        vectorStems = new THREE.LineSegments(stemGeo, stemMat);
+        scene3D.add(vectorStems);
+      }
+
+      if (pulseParticle) pulseParticle.visible = true;
+    }
+
+    function animateThreeD() {
+      requestAnimationFrame(animateThreeD);
+
+      if (!is3DMode) return;
+
+      // Smooth camera position transitions
+      if (targetCameraPos) {
+        camera3D.position.lerp(targetCameraPos, 0.08);
+        if (controls3D) controls3D.target.lerp(targetCameraLookAt, 0.08);
+        if (camera3D.position.distanceTo(targetCameraPos) < 0.5) {
+          targetCameraPos = null;
+        }
+      } else if (isAutoRotating && scene3D) {
+        scene3D.rotation.y += 0.0035;
+      }
+
+      // Traveling pulse particle along the wave
+      if (waveHelixMesh && pulseParticle && pulseParticle.visible) {
+        const pts = waveHelixMesh.geometry.attributes.position;
+        if (pts && pts.count > 0) {
+          particleProgress = (particleProgress + 0.6) % pts.count;
+          const idx = Math.floor(particleProgress);
+          pulseParticle.position.set(pts.getX(idx), pts.getY(idx), pts.getZ(idx));
+        }
+      }
+
+      if (controls3D) controls3D.update();
+      if (renderer3D && scene3D && camera3D) {
+        renderer3D.render(scene3D, camera3D);
+      }
+    }
+
+    function onThreeResize() {
+      const container = document.getElementById('threeWaveContainer');
+      if (!container || !renderer3D || !camera3D) return;
+      const w = container.clientWidth;
+      const h = container.clientHeight;
+      camera3D.aspect = w / h;
+      camera3D.updateProjectionMatrix();
+      renderer3D.setSize(w, h);
+    }
+
+    function setCameraPreset(viewName) {
+      if (!camera3D || !controls3D) return;
+      isAutoRotating = false;
+      document.getElementById('autoRotateBtn').innerText = 'Rotate: OFF';
+      document.getElementById('autoRotateBtn').classList.remove('active');
+
+      document.querySelectorAll('.btn-micro').forEach(b => {
+        if (b.id !== 'toggle2d3dBtn' && b.id !== 'autoRotateBtn') b.classList.remove('active');
+      });
+
+      if (scene3D) scene3D.rotation.set(0, 0, 0);
+
+      if (viewName === '3d') {
+        targetCameraPos = new THREE.Vector3(130, 85, 140);
+        targetCameraLookAt = new THREE.Vector3(0, 0, 0);
+        document.getElementById('view3dBtn').classList.add('active');
+      } else if (viewName === 'constellation') {
+        targetCameraPos = new THREE.Vector3(220, 0, 0);
+        targetCameraLookAt = new THREE.Vector3(0, 0, 0);
+        document.getElementById('viewConstBtn').classList.add('active');
+      } else if (viewName === 'side') {
+        targetCameraPos = new THREE.Vector3(0, 0, 210);
+        targetCameraLookAt = new THREE.Vector3(0, 0, 0);
+        document.getElementById('viewSideBtn').classList.add('active');
+      } else if (viewName === 'top') {
+        targetCameraPos = new THREE.Vector3(0, 210, 0);
+        targetCameraLookAt = new THREE.Vector3(0, 0, 0);
+        document.getElementById('viewTopBtn').classList.add('active');
+      }
+    }
+
+    function toggle2D3DView() {
+      is3DMode = !is3DMode;
+      const threeBox = document.getElementById('threeWaveContainer');
+      const canvas2D = document.getElementById('iqCanvas');
+      const toggleBtn = document.getElementById('toggle2d3dBtn');
+      const badge = document.getElementById('waveModeBadge');
+
+      if (is3DMode) {
+        threeBox.style.display = 'block';
+        canvas2D.style.display = 'none';
+        toggleBtn.innerText = '2D View';
+        badge.innerText = 'WebGL 3D (Three.js)';
+        badge.style.color = 'var(--cyan)';
+        badge.style.borderColor = 'var(--cyan)';
+        onThreeResize();
+        if (currentSignalData.i_chan.length > 0) {
+          update3DWaveform(currentSignalData.i_chan, currentSignalData.q_chan);
+        }
+      } else {
+        threeBox.style.display = 'none';
+        canvas2D.style.display = 'block';
+        toggleBtn.innerText = '3D View';
+        badge.innerText = '2D Canvas Oscilloscope';
+        badge.style.color = 'var(--purple)';
+        badge.style.borderColor = 'var(--purple)';
+        if (currentSignalData.i_chan.length > 0) {
+          drawWaveform2D(currentSignalData.i_chan, currentSignalData.q_chan);
+        }
+      }
+    }
+
+    // 2D Fallback Waveform Drawer
+    function drawWaveform2D(iChan, qChan) {
+      const canvas = document.getElementById('iqCanvas');
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(0, canvas.height / 2);
+      ctx.lineTo(canvas.width, canvas.height / 2);
+      ctx.stroke();
+
+      const n = Math.min(iChan.length, 128);
+      const step = canvas.width / (n - 1);
+      const mid = canvas.height / 2;
+      const amp = canvas.height * 0.38;
+
+      // In-phase (I) Cyan
+      ctx.strokeStyle = '#00e5ff';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      for (let j = 0; j < n; j++) {
+        const x = j * step;
+        const y = mid - iChan[j] * amp;
+        if (j === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+
+      // Quadrature (Q) Purple
+      ctx.strokeStyle = '#b388ff';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      for (let j = 0; j < n; j++) {
+        const x = j * step;
+        const y = mid - qChan[j] * amp;
+        if (j === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+    }
+
+    // ======================================================================
+    // API INFERENCE & CONTROLS
+    // ======================================================================
     const snrSlider = document.getElementById('snrSlider');
     const snrValText = document.getElementById('snrValText');
     snrSlider.addEventListener('input', (e) => {
@@ -576,56 +1009,20 @@
         }).join('');
       }
 
-      // Draw Waveform Canvas
+      // Render 3D Waveform & 2D fallback
       if (d.signal_preview) {
-        drawWaveform(d.signal_preview.i_chan, d.signal_preview.q_chan);
+        currentSignalData = d.signal_preview;
+        if (is3DMode) {
+          update3DWaveform(d.signal_preview.i_chan, d.signal_preview.q_chan);
+        } else {
+          drawWaveform2D(d.signal_preview.i_chan, d.signal_preview.q_chan);
+        }
       }
     }
 
-    function drawWaveform(iChan, qChan) {
-      const canvas = document.getElementById('iqCanvas');
-      const ctx = canvas.getContext('2d');
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      // Centerline
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(0, canvas.height / 2);
-      ctx.lineTo(canvas.width, canvas.height / 2);
-      ctx.stroke();
-
-      const n = Math.min(iChan.length, 64);
-      const step = canvas.width / (n - 1);
-      const mid = canvas.height / 2;
-      const amp = canvas.height * 0.38;
-
-      // Draw In-phase (I) in Cyan
-      ctx.strokeStyle = '#00e5ff';
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      for (let j = 0; j < n; j++) {
-        const x = j * step;
-        const y = mid - iChan[j] * amp;
-        if (j === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-      }
-      ctx.stroke();
-
-      // Draw Quadrature (Q) in Purple
-      ctx.strokeStyle = '#b388ff';
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      for (let j = 0; j < n; j++) {
-        const x = j * step;
-        const y = mid - qChan[j] * amp;
-        if (j === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-      }
-      ctx.stroke();
-    }
-
-    // Button Listeners
+    // ======================================================================
+    // EVENT LISTENERS
+    // ======================================================================
     document.getElementById('analyzeDatasetBtn').addEventListener('click', () => {
       const idx = parseInt(document.getElementById('sampleIndex').value) || 5000;
       analyzeSample({ index: idx });
@@ -637,8 +1034,25 @@
       analyzeSample({ modulation: mod, snr_db: snr });
     });
 
+    // View preset buttons
+    document.getElementById('view3dBtn').addEventListener('click', () => setCameraPreset('3d'));
+    document.getElementById('viewConstBtn').addEventListener('click', () => setCameraPreset('constellation'));
+    document.getElementById('viewSideBtn').addEventListener('click', () => setCameraPreset('side'));
+    document.getElementById('viewTopBtn').addEventListener('click', () => setCameraPreset('top'));
+
+    document.getElementById('autoRotateBtn').addEventListener('click', (e) => {
+      isAutoRotating = !isAutoRotating;
+      e.target.innerText = isAutoRotating ? 'Rotate: ON' : 'Rotate: OFF';
+      e.target.classList.toggle('active', isAutoRotating);
+    });
+
+    document.getElementById('toggle2d3dBtn').addEventListener('click', toggle2D3DView);
+
     // Initial Load
-    analyzeSample({ index: 5000 });
+    window.addEventListener('DOMContentLoaded', () => {
+      initThreeDScene();
+      analyzeSample({ index: 5000 });
+    });
   </script>
 </body>
 </html>

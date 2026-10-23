@@ -290,8 +290,8 @@ def predict(request: SampleRequest):
         },
         "spectral": spectral,
         "signal_preview": {
-            "i_chan": [round(float(v), 3) for v in sig[0, :64]],
-            "q_chan": [round(float(v), 3) for v in sig[1, :64]],
+            "i_chan": [round(float(v), 3) for v in sig[0, :128]],
+            "q_chan": [round(float(v), 3) for v in sig[1, :128]],
         },
     }
 
