@@ -1,0 +1,668 @@
+{
+  "benchmark_timestamp": "2026-10-24T00:53:52Z",
+  "dataset": "Instituto IDF Flight Telemetry (120 Laps)",
+  "hardware": {
+    "device": "cuda",
+    "gpu_name": "NVIDIA GeForce RTX 4050 Laptop GPU",
+    "cuda_available": true
+  },
+  "splits_configuration": {
+    "training_percent": 60.0,
+    "validation_percent": 15.0,
+    "testing_percent": 15.0,
+    "cross_validation_percent": 10.0,
+    "cross_validation_protocol": "5-Fold Stratified Flight Cross-Validation (Lap 109 to 120)",
+    "train_samples": 93570,
+    "val_samples": 11133,
+    "test_samples": 11012,
+    "cv_flights_count": 12
+  },
+  "best_model_name": "TCNResNet",
+  "best_model_metrics": {
+    "mse": 136.0398,
+    "mae": 4.0073,
+    "ade_meters": 17.15,
+    "fde_meters": 17.16,
+    "roll_mae_deg": 5.18,
+    "pitch_mae_deg": 1.23,
+    "yaw_mae_deg": 12.93,
+    "speed_mae_ms": 0.31,
+    "g_load_mae": 0.04,
+    "latency_ms": 0.028
+  },
+  "comparison_results": [
+    {
+      "model_name": "TCNResNet",
+      "parameters": 598382,
+      "training_time_s": 116.2,
+      "best_val_loss": 0.0895,
+      "test_metrics": {
+        "mse": 136.0398,
+        "mae": 4.0073,
+        "ade_meters": 17.15,
+        "fde_meters": 17.16,
+        "roll_mae_deg": 5.18,
+        "pitch_mae_deg": 1.23,
+        "yaw_mae_deg": 12.93,
+        "speed_mae_ms": 0.31,
+        "g_load_mae": 0.04,
+        "latency_ms": 0.028
+      },
+      "history": [
+        {
+          "epoch": 1,
+          "train_loss": 0.0561,
+          "val_loss": 0.1476,
+          "val_ade": 42.06,
+          "val_roll_mae": 4.69
+        },
+        {
+          "epoch": 2,
+          "train_loss": 0.0409,
+          "val_loss": 0.1241,
+          "val_ade": 29.95,
+          "val_roll_mae": 3.83
+        },
+        {
+          "epoch": 3,
+          "train_loss": 0.038,
+          "val_loss": 0.127,
+          "val_ade": 36.65,
+          "val_roll_mae": 4.08
+        },
+        {
+          "epoch": 4,
+          "train_loss": 0.0364,
+          "val_loss": 0.1131,
+          "val_ade": 31.29,
+          "val_roll_mae": 4.18
+        },
+        {
+          "epoch": 5,
+          "train_loss": 0.0349,
+          "val_loss": 0.11,
+          "val_ade": 30.09,
+          "val_roll_mae": 4.18
+        },
+        {
+          "epoch": 6,
+          "train_loss": 0.0337,
+          "val_loss": 0.1101,
+          "val_ade": 18.76,
+          "val_roll_mae": 3.8
+        },
+        {
+          "epoch": 7,
+          "train_loss": 0.0327,
+          "val_loss": 0.1116,
+          "val_ade": 32.49,
+          "val_roll_mae": 3.42
+        },
+        {
+          "epoch": 8,
+          "train_loss": 0.0319,
+          "val_loss": 0.1024,
+          "val_ade": 17.85,
+          "val_roll_mae": 3.82
+        },
+        {
+          "epoch": 9,
+          "train_loss": 0.0307,
+          "val_loss": 0.0983,
+          "val_ade": 19.52,
+          "val_roll_mae": 3.24
+        },
+        {
+          "epoch": 10,
+          "train_loss": 0.0299,
+          "val_loss": 0.0943,
+          "val_ade": 15.96,
+          "val_roll_mae": 3.13
+        },
+        {
+          "epoch": 11,
+          "train_loss": 0.0291,
+          "val_loss": 0.093,
+          "val_ade": 14.68,
+          "val_roll_mae": 2.91
+        },
+        {
+          "epoch": 12,
+          "train_loss": 0.0286,
+          "val_loss": 0.0919,
+          "val_ade": 14.29,
+          "val_roll_mae": 3.07
+        },
+        {
+          "epoch": 13,
+          "train_loss": 0.028,
+          "val_loss": 0.0899,
+          "val_ade": 15.08,
+          "val_roll_mae": 2.84
+        },
+        {
+          "epoch": 14,
+          "train_loss": 0.0276,
+          "val_loss": 0.0895,
+          "val_ade": 13.92,
+          "val_roll_mae": 2.79
+        },
+        {
+          "epoch": 15,
+          "train_loss": 0.0274,
+          "val_loss": 0.09,
+          "val_ade": 12.53,
+          "val_roll_mae": 2.78
+        }
+      ],
+      "checkpoint_path": "D:\\COG-EW\\models\\telemetry\\TCNResNet.pt"
+    },
+    {
+      "model_name": "FlightTransformer",
+      "parameters": 1082862,
+      "training_time_s": 126.7,
+      "best_val_loss": 0.0817,
+      "test_metrics": {
+        "mse": 160.3195,
+        "mae": 4.0975,
+        "ade_meters": 20.97,
+        "fde_meters": 21.1,
+        "roll_mae_deg": 4.58,
+        "pitch_mae_deg": 1.15,
+        "yaw_mae_deg": 11.11,
+        "speed_mae_ms": 0.2,
+        "g_load_mae": 0.03,
+        "latency_ms": 0.03
+      },
+      "history": [
+        {
+          "epoch": 1,
+          "train_loss": 0.0513,
+          "val_loss": 0.1374,
+          "val_ade": 36.53,
+          "val_roll_mae": 4.66
+        },
+        {
+          "epoch": 2,
+          "train_loss": 0.0368,
+          "val_loss": 0.1335,
+          "val_ade": 26.6,
+          "val_roll_mae": 4.03
+        },
+        {
+          "epoch": 3,
+          "train_loss": 0.0345,
+          "val_loss": 0.1231,
+          "val_ade": 24.31,
+          "val_roll_mae": 3.45
+        },
+        {
+          "epoch": 4,
+          "train_loss": 0.033,
+          "val_loss": 0.1051,
+          "val_ade": 33.14,
+          "val_roll_mae": 3.86
+        },
+        {
+          "epoch": 5,
+          "train_loss": 0.0324,
+          "val_loss": 0.1037,
+          "val_ade": 22.25,
+          "val_roll_mae": 3.19
+        },
+        {
+          "epoch": 6,
+          "train_loss": 0.0312,
+          "val_loss": 0.1074,
+          "val_ade": 43.26,
+          "val_roll_mae": 3.25
+        },
+        {
+          "epoch": 7,
+          "train_loss": 0.0305,
+          "val_loss": 0.1021,
+          "val_ade": 23.53,
+          "val_roll_mae": 3.31
+        },
+        {
+          "epoch": 8,
+          "train_loss": 0.0295,
+          "val_loss": 0.0939,
+          "val_ade": 19.54,
+          "val_roll_mae": 3.0
+        },
+        {
+          "epoch": 9,
+          "train_loss": 0.0285,
+          "val_loss": 0.086,
+          "val_ade": 15.66,
+          "val_roll_mae": 2.77
+        },
+        {
+          "epoch": 10,
+          "train_loss": 0.0278,
+          "val_loss": 0.0915,
+          "val_ade": 15.25,
+          "val_roll_mae": 3.05
+        },
+        {
+          "epoch": 11,
+          "train_loss": 0.027,
+          "val_loss": 0.0882,
+          "val_ade": 17.75,
+          "val_roll_mae": 2.66
+        },
+        {
+          "epoch": 12,
+          "train_loss": 0.0262,
+          "val_loss": 0.0851,
+          "val_ade": 14.19,
+          "val_roll_mae": 2.66
+        },
+        {
+          "epoch": 13,
+          "train_loss": 0.0255,
+          "val_loss": 0.0824,
+          "val_ade": 9.46,
+          "val_roll_mae": 2.65
+        },
+        {
+          "epoch": 14,
+          "train_loss": 0.0252,
+          "val_loss": 0.0817,
+          "val_ade": 9.24,
+          "val_roll_mae": 2.52
+        },
+        {
+          "epoch": 15,
+          "train_loss": 0.0248,
+          "val_loss": 0.0825,
+          "val_ade": 8.51,
+          "val_roll_mae": 2.55
+        }
+      ],
+      "checkpoint_path": "D:\\COG-EW\\models\\telemetry\\FlightTransformer.pt"
+    },
+    {
+      "model_name": "KinematicMLP",
+      "parameters": 150638,
+      "training_time_s": 74.4,
+      "best_val_loss": 0.0955,
+      "test_metrics": {
+        "mse": 135.858,
+        "mae": 4.2466,
+        "ade_meters": 21.26,
+        "fde_meters": 21.32,
+        "roll_mae_deg": 4.5,
+        "pitch_mae_deg": 1.08,
+        "yaw_mae_deg": 11.69,
+        "speed_mae_ms": 0.2,
+        "g_load_mae": 0.04,
+        "latency_ms": 0.022
+      },
+      "history": [
+        {
+          "epoch": 1,
+          "train_loss": 0.0519,
+          "val_loss": 0.1279,
+          "val_ade": 16.8,
+          "val_roll_mae": 4.23
+        },
+        {
+          "epoch": 2,
+          "train_loss": 0.036,
+          "val_loss": 0.1219,
+          "val_ade": 17.91,
+          "val_roll_mae": 4.0
+        },
+        {
+          "epoch": 3,
+          "train_loss": 0.0337,
+          "val_loss": 0.1192,
+          "val_ade": 21.85,
+          "val_roll_mae": 3.53
+        },
+        {
+          "epoch": 4,
+          "train_loss": 0.0325,
+          "val_loss": 0.1113,
+          "val_ade": 16.49,
+          "val_roll_mae": 3.56
+        },
+        {
+          "epoch": 5,
+          "train_loss": 0.0315,
+          "val_loss": 0.1119,
+          "val_ade": 18.3,
+          "val_roll_mae": 3.97
+        },
+        {
+          "epoch": 6,
+          "train_loss": 0.0309,
+          "val_loss": 0.1084,
+          "val_ade": 15.35,
+          "val_roll_mae": 3.48
+        },
+        {
+          "epoch": 7,
+          "train_loss": 0.0303,
+          "val_loss": 0.1186,
+          "val_ade": 15.78,
+          "val_roll_mae": 4.26
+        },
+        {
+          "epoch": 8,
+          "train_loss": 0.03,
+          "val_loss": 0.1007,
+          "val_ade": 13.36,
+          "val_roll_mae": 3.08
+        },
+        {
+          "epoch": 9,
+          "train_loss": 0.0294,
+          "val_loss": 0.1032,
+          "val_ade": 12.68,
+          "val_roll_mae": 3.42
+        },
+        {
+          "epoch": 10,
+          "train_loss": 0.0288,
+          "val_loss": 0.1009,
+          "val_ade": 14.98,
+          "val_roll_mae": 3.18
+        },
+        {
+          "epoch": 11,
+          "train_loss": 0.0285,
+          "val_loss": 0.0984,
+          "val_ade": 10.75,
+          "val_roll_mae": 3.08
+        },
+        {
+          "epoch": 12,
+          "train_loss": 0.0281,
+          "val_loss": 0.0966,
+          "val_ade": 10.49,
+          "val_roll_mae": 2.94
+        },
+        {
+          "epoch": 13,
+          "train_loss": 0.0277,
+          "val_loss": 0.0963,
+          "val_ade": 9.97,
+          "val_roll_mae": 2.93
+        },
+        {
+          "epoch": 14,
+          "train_loss": 0.0276,
+          "val_loss": 0.0962,
+          "val_ade": 10.59,
+          "val_roll_mae": 2.94
+        },
+        {
+          "epoch": 15,
+          "train_loss": 0.0275,
+          "val_loss": 0.0955,
+          "val_ade": 9.84,
+          "val_roll_mae": 2.9
+        }
+      ],
+      "checkpoint_path": "D:\\COG-EW\\models\\telemetry\\KinematicMLP.pt"
+    },
+    {
+      "model_name": "BiLSTMAttention",
+      "parameters": 633967,
+      "training_time_s": 85.5,
+      "best_val_loss": 0.1151,
+      "test_metrics": {
+        "mse": 204.2118,
+        "mae": 4.9153,
+        "ade_meters": 25.69,
+        "fde_meters": 25.72,
+        "roll_mae_deg": 4.89,
+        "pitch_mae_deg": 1.21,
+        "yaw_mae_deg": 12.19,
+        "speed_mae_ms": 0.27,
+        "g_load_mae": 0.03,
+        "latency_ms": 0.025
+      },
+      "history": [
+        {
+          "epoch": 1,
+          "train_loss": 0.0628,
+          "val_loss": 0.14,
+          "val_ade": 19.14,
+          "val_roll_mae": 4.52
+        },
+        {
+          "epoch": 2,
+          "train_loss": 0.035,
+          "val_loss": 0.1277,
+          "val_ade": 16.02,
+          "val_roll_mae": 3.79
+        },
+        {
+          "epoch": 3,
+          "train_loss": 0.0325,
+          "val_loss": 0.1282,
+          "val_ade": 18.01,
+          "val_roll_mae": 3.7
+        },
+        {
+          "epoch": 4,
+          "train_loss": 0.0311,
+          "val_loss": 0.1259,
+          "val_ade": 15.62,
+          "val_roll_mae": 3.31
+        },
+        {
+          "epoch": 5,
+          "train_loss": 0.03,
+          "val_loss": 0.1292,
+          "val_ade": 17.35,
+          "val_roll_mae": 3.81
+        },
+        {
+          "epoch": 6,
+          "train_loss": 0.0294,
+          "val_loss": 0.1248,
+          "val_ade": 11.45,
+          "val_roll_mae": 3.15
+        },
+        {
+          "epoch": 7,
+          "train_loss": 0.0286,
+          "val_loss": 0.1204,
+          "val_ade": 13.15,
+          "val_roll_mae": 2.85
+        },
+        {
+          "epoch": 8,
+          "train_loss": 0.0279,
+          "val_loss": 0.1212,
+          "val_ade": 12.64,
+          "val_roll_mae": 3.4
+        },
+        {
+          "epoch": 9,
+          "train_loss": 0.0274,
+          "val_loss": 0.12,
+          "val_ade": 10.6,
+          "val_roll_mae": 2.89
+        },
+        {
+          "epoch": 10,
+          "train_loss": 0.0268,
+          "val_loss": 0.1163,
+          "val_ade": 10.34,
+          "val_roll_mae": 2.66
+        },
+        {
+          "epoch": 11,
+          "train_loss": 0.0263,
+          "val_loss": 0.1161,
+          "val_ade": 12.13,
+          "val_roll_mae": 2.71
+        },
+        {
+          "epoch": 12,
+          "train_loss": 0.0259,
+          "val_loss": 0.1162,
+          "val_ade": 9.66,
+          "val_roll_mae": 2.57
+        },
+        {
+          "epoch": 13,
+          "train_loss": 0.0256,
+          "val_loss": 0.1151,
+          "val_ade": 9.78,
+          "val_roll_mae": 2.58
+        },
+        {
+          "epoch": 14,
+          "train_loss": 0.0254,
+          "val_loss": 0.1152,
+          "val_ade": 8.84,
+          "val_roll_mae": 2.61
+        },
+        {
+          "epoch": 15,
+          "train_loss": 0.0253,
+          "val_loss": 0.1152,
+          "val_ade": 8.65,
+          "val_roll_mae": 2.54
+        }
+      ],
+      "checkpoint_path": "D:\\COG-EW\\models\\telemetry\\BiLSTMAttention.pt"
+    }
+  ],
+  "five_fold_cross_validation": {
+    "architecture": "TCNResNet",
+    "protocol": "5-Fold Stratified Flight Cross-Validation",
+    "dataset_split": "10% Holdout Split (12 flights: Lap 109 to Lap 120)",
+    "epochs_per_fold": 5,
+    "aggregate_metrics": {
+      "mean_ade_meters": 17.96,
+      "std_ade_meters": 2.31,
+      "mean_fde_meters": 17.72,
+      "std_fde_meters": 2.43,
+      "mean_roll_mae_deg": 3.92,
+      "std_roll_mae_deg": 0.18,
+      "mean_pitch_mae_deg": 1.12,
+      "std_pitch_mae_deg": 0.09,
+      "mean_yaw_mae_deg": 9.75,
+      "std_yaw_mae_deg": 2.01,
+      "mean_g_load_mae": 0.03,
+      "std_g_load_mae": 0.0
+    },
+    "folds": [
+      {
+        "fold": 1,
+        "val_laps": [
+          "Lap_109",
+          "Lap_110",
+          "Lap_111"
+        ],
+        "train_samples": 11253,
+        "val_samples": 1796,
+        "metrics": {
+          "mse": 127.9272,
+          "mae": 3.8831,
+          "ade_meters": 18.13,
+          "fde_meters": 17.41,
+          "roll_mae_deg": 4.0,
+          "pitch_mae_deg": 1.2,
+          "yaw_mae_deg": 11.61,
+          "speed_mae_ms": 0.31,
+          "g_load_mae": 0.03,
+          "latency_ms": 0.027
+        }
+      },
+      {
+        "fold": 2,
+        "val_laps": [
+          "Lap_112",
+          "Lap_113",
+          "Lap_114"
+        ],
+        "train_samples": 11065,
+        "val_samples": 1890,
+        "metrics": {
+          "mse": 129.8136,
+          "mae": 4.1535,
+          "ade_meters": 21.27,
+          "fde_meters": 21.08,
+          "roll_mae_deg": 4.17,
+          "pitch_mae_deg": 1.22,
+          "yaw_mae_deg": 10.9,
+          "speed_mae_ms": 0.28,
+          "g_load_mae": 0.03,
+          "latency_ms": 0.029
+        }
+      },
+      {
+        "fold": 3,
+        "val_laps": [
+          "Lap_115",
+          "Lap_116"
+        ],
+        "train_samples": 12383,
+        "val_samples": 1231,
+        "metrics": {
+          "mse": 120.2643,
+          "mae": 3.9978,
+          "ade_meters": 19.57,
+          "fde_meters": 19.8,
+          "roll_mae_deg": 3.97,
+          "pitch_mae_deg": 1.16,
+          "yaw_mae_deg": 11.59,
+          "speed_mae_ms": 0.3,
+          "g_load_mae": 0.03,
+          "latency_ms": 0.027
+        }
+      },
+      {
+        "fold": 4,
+        "val_laps": [
+          "Lap_117",
+          "Lap_118"
+        ],
+        "train_samples": 12350,
+        "val_samples": 1247,
+        "metrics": {
+          "mse": 65.3447,
+          "mae": 3.167,
+          "ade_meters": 15.66,
+          "fde_meters": 15.69,
+          "roll_mae_deg": 3.83,
+          "pitch_mae_deg": 1.01,
+          "yaw_mae_deg": 7.7,
+          "speed_mae_ms": 0.19,
+          "g_load_mae": 0.03,
+          "latency_ms": 0.029
+        }
+      },
+      {
+        "fold": 5,
+        "val_laps": [
+          "Lap_119",
+          "Lap_120"
+        ],
+        "train_samples": 12321,
+        "val_samples": 1262,
+        "metrics": {
+          "mse": 59.9774,
+          "mae": 2.9868,
+          "ade_meters": 15.17,
+          "fde_meters": 14.61,
+          "roll_mae_deg": 3.63,
+          "pitch_mae_deg": 1.02,
+          "yaw_mae_deg": 6.96,
+          "speed_mae_ms": 0.2,
+          "g_load_mae": 0.03,
+          "latency_ms": 0.027
+        }
+      }
+    ]
+  }
+}

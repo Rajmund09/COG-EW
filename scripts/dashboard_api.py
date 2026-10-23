@@ -23,6 +23,7 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
+import h5py
 import numpy as np
 import torch
 from fastapi import FastAPI, HTTPException
@@ -59,6 +60,56 @@ MODEL_CARD_JSON = REPORTS_DIR / "rf_model_card.json"
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
+# HDF5 Dataset Connection in D:/Datasets
+_H5_HANDLE: h5py.File | None = None
+_H5_DATASET_PATH: Path | None = None
+
+
+def get_radioml_hdf5_path() -> Path | None:
+    """Discover real RadioML 2018.01A HDF5 file in D:/Datasets (with unicode robustness)."""
+    candidates = [
+        Path(r"D:\Datasets\RadioML 2018.01A ⭐ Main RF benchmark\GOLD_XYZ_OSC.0001_1024.hdf5"),
+        Path(r"D:\Datasets\RadioML 2018.01A Main RF benchmark\GOLD_XYZ_OSC.0001_1024.hdf5"),
+        Path(r"D:\Datasets\GOLD_XYZ_OSC.0001_1024.hdf5"),
+    ]
+    for c in candidates:
+        if c.is_file():
+            return c
+
+    d_path = Path(r"D:\Datasets")
+    if d_path.is_dir():
+        try:
+            for match in d_path.glob("*RadioML*/GOLD_XYZ_OSC.0001_1024.hdf5"):
+                if match.is_file():
+                    return match
+        except Exception:
+            pass
+    return None
+
+
+def get_h5_handle() -> h5py.File | None:
+    """Return persistent, read-only cached handle to real RadioML HDF5 dataset."""
+    global _H5_HANDLE, _H5_DATASET_PATH
+    if _H5_HANDLE is not None:
+        try:
+            if "X" in _H5_HANDLE:
+                return _H5_HANDLE
+        except Exception:
+            _H5_HANDLE = None
+
+    p = get_radioml_hdf5_path()
+    if p and p.is_file():
+        try:
+            _H5_HANDLE = h5py.File(p, "r")
+            _H5_DATASET_PATH = p
+            print(f"[INFO] Connected to RadioML HDF5 dataset: {p.name} ({len(_H5_HANDLE['X']):,} pulses available)")
+            return _H5_HANDLE
+        except Exception as e:
+            print(f"[WARNING] Could not open HDF5 dataset at {p}: {e}")
+            _H5_HANDLE = None
+    return None
+
+
 # Initialize core services
 try:
     rf_service = RFInferenceService(device="auto")
@@ -70,6 +121,7 @@ except Exception as e:
 tactical_engine = TacticalSimulationEngine(scenario_id=3)
 # Legacy demo engine for backward compatibility
 legacy_demo_engine = SimulationEngine()
+get_h5_handle()
 
 
 app = FastAPI(
@@ -121,6 +173,10 @@ class ManualControlRequest(BaseModel):
     ew_mode: str | None = None
 
 
+class FlightSelectRequest(BaseModel):
+    lap_id: int = Field(default=1, ge=1, le=72)
+
+
 class SignalPredictRequest(BaseModel):
     signal: list[list[float]] | None = None
     modulation: str | None = None
@@ -133,6 +189,7 @@ class SignalPredictRequest(BaseModel):
 
 @app.get("/api/health")
 def health():
+    h5 = get_h5_handle()
     return {
         "status": "ok",
         "online": True,
@@ -142,11 +199,15 @@ def health():
         "model_available": (rf_service is not None),
         "classes_count": 24,
         "tactical_simulation_active": (tactical_engine.status != "shot_down"),
+        "hdf5_dataset_connected": (h5 is not None),
+        "hdf5_dataset_name": _H5_DATASET_PATH.name if _H5_DATASET_PATH else None,
+        "total_dataset_pulses": len(h5["X"]) if h5 is not None else 0,
     }
 
 
 @app.get("/api/system")
 def system():
+    h5 = get_h5_handle()
     return {
         "project": "COG-EW Cognitive Multi-Domain EW-Guidance Co-Designer",
         "device": str(DEVICE),
@@ -157,6 +218,9 @@ def system():
         "test_accuracy": "56.38%",
         "test_macro_f1": "0.6058",
         "test_samples": 766772,
+        "dataset_connected": (h5 is not None),
+        "dataset_path": str(_H5_DATASET_PATH) if _H5_DATASET_PATH else "Render Cloud Fallback",
+        "total_dataset_pulses": len(h5["X"]) if h5 is not None else 0,
     }
 
 
@@ -301,6 +365,7 @@ def classify_current():
     """
     Real-time Tactical Intercept:
     Extracts the RF signal currently emitted by the active radar tracking the vehicle
+    directly from the real RadioML 2018.01A HDF5 dataset in D:/Datasets (with high-fidelity synthesis fallback)
     and runs full 24-class ResNet classification and EW recommendation.
     """
     global rf_service
@@ -311,21 +376,45 @@ def classify_current():
     threat = sim_state["threat_environment"]
     active_type = threat.get("radar_type", "NONE")
 
-    # Map current tactical radar to appropriate modulation
+    # Map current tactical radar to appropriate modulation and SNR
     if active_type == "fire_control":
         target_mod = "16QAM"
         snr = 18.0
+        cls_idx = 12
     elif active_type == "tracking":
         target_mod = "QPSK"
         snr = 14.0
+        cls_idx = 4
     elif active_type == "search":
         target_mod = "8ASK"
         snr = 8.0
+        cls_idx = 2
     else:
         target_mod = "FM"
-        snr = 5.0
+        snr = 6.0
+        cls_idx = 21
 
-    sig = RFInferenceService.generate_synthetic_radar_signal(modulation=target_mod, snr_db=snr)
+    h5 = get_h5_handle()
+    dataset_source = "Synthetic Radar Pulse Generator (Render Cloud Fallback)"
+    actual_idx = None
+    sig = None
+
+    if h5 is not None:
+        try:
+            # 24 classes x 26 SNRs (-20dB to +30dB, step 2dB) x 4096 pulses
+            snr_step = int(np.clip((int(snr) + 20) // 2, 0, 25))
+            pulse_offset = int(sim_state["elapsed_seconds"] * 10) % 4096
+            actual_idx = cls_idx * 106496 + snr_step * 4096 + pulse_offset
+            raw_pulse = h5["X"][actual_idx]  # (1024, 2)
+            sig = raw_pulse.T.astype(np.float32)  # (2, 1024)
+            dataset_source = f"RadioML 2018.01A HDF5 (D:/Datasets - Pulse #{actual_idx:,})"
+        except Exception as e:
+            print(f"[WARNING] Error reading HDF5 pulse #{actual_idx}: {e}")
+            sig = None
+
+    if sig is None:
+        sig = RFInferenceService.generate_synthetic_radar_signal(modulation=target_mod, snr_db=snr)
+
     prediction = rf_service.predict(sig)
     spectral = RFInferenceService.compute_spectral_features(sig)
 
@@ -333,6 +422,7 @@ def classify_current():
         "intercept_timestamp": sim_state["elapsed_seconds"],
         "active_emitter": threat.get("illuminating_radar", "None"),
         "radar_frequency_ghz": threat.get("radar_freq_ghz", 0.0),
+        "target_modulation": target_mod,
         "detected_modulation": prediction["predicted_class"],
         "confidence_percent": prediction["confidence_percent"],
         "threat_level": prediction["threat_level"],
@@ -341,15 +431,40 @@ def classify_current():
         "signal_quality": prediction["signal_quality"],
         "spectral": spectral,
         "probabilities": prediction["probabilities"],
+        "dataset_source": dataset_source,
+        "sample_index": actual_idx,
+        "raw_iq_preview": {
+            "i_chan": [round(float(v), 4) for v in sig[0, :128]],
+            "q_chan": [round(float(v), 4) for v in sig[1, :128]],
+        },
     }
 
 
 @app.get("/api/rf/sample")
 def get_rf_sample(modulation: str = "QPSK", snr_db: float = 12.0):
-    """Return raw I/Q samples and spectral features for the requested modulation."""
+    """Return raw I/Q samples and spectral features directly from HDF5 or generator."""
     if modulation not in RADIOML_24_CLASSES:
         modulation = "QPSK"
-    sig = RFInferenceService.generate_synthetic_radar_signal(modulation=modulation, snr_db=snr_db)
+
+    cls_idx = RADIOML_24_CLASSES.index(modulation)
+    snr_step = int(np.clip((int(snr_db) + 20) // 2, 0, 25))
+    h5 = get_h5_handle()
+    sig = None
+    dataset_source = "Synthetic Generator (Render Cloud Fallback)"
+    actual_idx = None
+
+    if h5 is not None:
+        try:
+            actual_idx = cls_idx * 106496 + snr_step * 4096
+            raw_pulse = h5["X"][actual_idx]
+            sig = raw_pulse.T.astype(np.float32)
+            dataset_source = f"RadioML 2018.01A HDF5 (D:/Datasets - Pulse #{actual_idx:,})"
+        except Exception:
+            sig = None
+
+    if sig is None:
+        sig = RFInferenceService.generate_synthetic_radar_signal(modulation=modulation, snr_db=snr_db)
+
     quality = RFInferenceService.analyze_signal_quality(sig)
     spectral = RFInferenceService.compute_spectral_features(sig)
 
@@ -357,6 +472,8 @@ def get_rf_sample(modulation: str = "QPSK", snr_db: float = 12.0):
         "modulation": modulation,
         "snr_db": snr_db,
         "samples_count": 1024,
+        "dataset_source": dataset_source,
+        "sample_index": actual_idx,
         "i_channel": [round(float(v), 4) for v in sig[0]],
         "q_channel": [round(float(v), 4) for v in sig[1]],
         "quality": quality,
@@ -458,6 +575,55 @@ def mission_debrief():
         },
         "event_log_count": len(state["events"]),
     }
+
+
+# ======================================================================
+# IDF FLIGHT TELEMETRY & MODEL BENCHMARK ENDPOINTS
+# ======================================================================
+
+@app.get("/api/telemetry/flights")
+def get_telemetry_flights():
+    """Return catalog of all 72 flights in the 60% Training Split with flight metadata."""
+    return {
+        "dataset": "Instituto IDF UAV Flight Telemetry Database",
+        "split": "60% Training Split (72 flights, 189,198 samples)",
+        "active_lap_id": tactical_engine.selected_lap_id,
+        "flights": tactical_engine.get_available_training_flights(),
+    }
+
+
+@app.post("/api/telemetry/select-flight")
+def select_telemetry_flight(request: FlightSelectRequest):
+    """Switch the active flight telemetry lap (1 to 72) driving the tactical simulation."""
+    return tactical_engine.select_training_flight(request.lap_id)
+
+
+@app.get("/api/telemetry/benchmark")
+def get_telemetry_benchmark():
+    """Return comprehensive deep learning benchmark comparing modern architectures on 60/15/15 split."""
+    report_file = REPORTS_DIR / "experiments" / "idf_telemetry_comparison_report.json"
+    if not report_file.exists():
+        report_file = REPORTS_DIR / "idf_telemetry_comparison_report.json"
+    if report_file.exists():
+        try:
+            with open(report_file, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception as e:
+            print(f"[WARNING] Error reading telemetry report: {e}")
+
+    return {
+        "dataset": "Instituto IDF Flight Telemetry",
+        "best_model_name": "FlightTransformer",
+        "split_configuration": {"training_percent": 60.0, "validation_percent": 15.0, "testing_percent": 15.0},
+        "comparison_results": [],
+    }
+
+
+@app.get("/api/telemetry/current")
+def get_current_telemetry():
+    """Return live Holybro Pixhawk flight telemetry slice currently active."""
+    state = tactical_engine.get_state()
+    return state.get("telemetry", {})
 
 
 # ======================================================================
