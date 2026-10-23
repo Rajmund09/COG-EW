@@ -1,80 +1,191 @@
-# Cognitive Multi-Domain EW–Guidance Co-Designer
+# Cognitive Multi-Domain EW–Guidance Co-Designer (COG-EW)
 
-> **Comprehensive Technical System Architecture, Implementation Plan & Research Upgrade Roadmap for Hypersonic Missions**
+[![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
+[![PyTorch 2.2+](https://img.shields.io/badge/PyTorch-2.2%2B%20(CPU%2FGPU)-ee4c2c.svg)](https://pytorch.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.100%2B-009688.svg)](https://fastapi.tiangolo.com/)
+[![RadioML 2018.01A](https://img.shields.io/badge/Dataset-RadioML%202018.01A%20(24--Class)-yellow.svg)](https://www.deepsig.ai/datasets)
+[![Deployment](https://img.shields.io/badge/Render-Cloud%20Ready-46E3B7.svg)](https://render.com/)
+[![Defense AI](https://img.shields.io/badge/Domain-Aerospace%20%26%20Defense-purple.svg)]()
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+
+> **Autonomous Cognitive Electronic Warfare, Deep Residual RF Perception, and Closed-Loop Hypersonic Guidance System**
 
 | Attribute | Details |
 |---|---|
-| **Domain** | Aerospace & Defence – AI/ML |
-| **Level** | Advanced AIML Project Architecture |
-| **Target Environment** | Hypersonic Missions / Antigravity IDE / Python 3.10+ |
-| **Methodologies** | POMDP, Deep RL (PPO/MAPPO), RF Perception, Knowledge Graphs |
+| **Operational Domain** | Aerospace & Defense – Cognitive AI / Electromagnetic Spectrum Operations (EMSO) |
+| **System Level** | Production-Grade AI/ML System Architecture & Mission Control Platform |
+| **Target Platform** | Hypersonic Strike Vehicles (Mach 5.2) / FastAPI Mission Engine / Antigravity IDE |
+| **Core Methodologies** | 24-Class Deep ResNet AMC, True Proportional Navigation, Cognitive RGPO / Noise Jamming |
+| **Benchmark Standard** | RadioML 2018.01A (60/10/30 Locked Evaluation across 766,772 Test Samples) |
 
 ---
 
 ## 1. Executive Summary & Core Philosophy
 
-This repository presents a unified, production-ready blueprint and implementation for the **Cognitive Multi-Domain EW–Guidance Co-Designer**. Engineered for hypersonic vehicles operating in heavily defended, highly contested airspace rich in integrated radar and communication infrastructure, the artificial intelligence system simultaneously coordinates two tightly coupled operational domains:
+This repository presents a unified, production-ready implementation of the **Cognitive Multi-Domain EW–Guidance Co-Designer (COG-EW)**. Engineered for hypersonic vehicles penetrating heavily defended, highly contested anti-access/area-denial (A2/AD) airspace, the system autonomously coordinates two tightly coupled operational domains in real time:
 
-*   **Electronic Warfare (EW):** Continuously monitors enemy RF and communication emissions, classifies emitter signals (search radar, tracking radar, fire control, missile guidance), and autonomously determines optimal countermeasure timing (passive listening, active noise jamming, or deceptive spoofing).
-*   **Guidance & Trajectory Planning:** Controls vehicle flight dynamics (angle of attack, bank angle, speed, and maneuvers) to reach assigned targets with high accuracy and on-schedule arrival, while actively avoiding high-threat radar engagement zones.
+*   **Electronic Warfare (EW):** Continuously monitors enemy RF radar and communication emissions, classifies modulation signatures using a 24-class Deep Residual Network in under 3 milliseconds, and autonomously commands adaptive countermeasures (passive monitoring, barrage noise saturation, or Range Gate Pull-Off deceptive spoofing).
+*   **Guidance & Trajectory Planning:** Controls vehicle flight dynamics (angle of attack, bank angle, Mach 5.2 cruise, and terminal dive) to strike strategic targets on schedule while actively evading Surface-to-Air Missile (SAM) intercepts.
 
-### Core Paradigm: Joint Optimization
-Instead of treating Guidance and Electronic Warfare as isolated sub-systems, this architecture builds a unified AI system that **jointly optimizes flight control and electromagnetic spectrum countermeasures**. The agent leverages Reinforcement Learning (RL) trained over millions of simulated flight scenarios to deliver real-time, adaptive decision-making.
+### Core Paradigm: Multi-Domain Co-Design
+Traditional military platforms treat flight guidance and electronic warfare as disconnected sub-systems. **COG-EW jointly optimizes both domains**: flight maneuvers modify radar cross-section (RCS) illumination and Doppler geometry, while electronic deception degrades missile tracking solutions, enabling coordinated, high-survivability strike missions.
 
 ---
 
 ## 2. Problem Statement & Mission Context
 
-Hypersonic vehicles travel at extreme speeds (Mach 5+) and operate in highly contested environments featuring multi-layered Integrated Air Defence Systems (IADS). Traditional decoupled control architectures exhibit critical sub-optimalities:
-
-*   **Layered RF Threat Networks:** Enemies deploy overlapping long-range search, medium-range track, and short-range fire-control radars paired with networked adaptive tactics (frequency hopping, changing PRFs, multi-static processing).
-*   **Decoupled System Inefficiencies:** Flight paths directly determine which radars can illuminate the vehicle, while EW actions dynamically modify radar tracking accuracy and engagement probability. Treating flight control and EW independently leads to mission failure or vehicle loss.
-*   **Operational Challenge:** High maneuverability and rapid time-to-target require decisions executed within millisecond timeframes under severe dynamic uncertainty, high thermal/structural stress, and intermittent communications.
+Modern Integrated Air Defense Systems (IADS) deploy multi-static, frequency-agile radar networks paired with supersonic SAM interceptors. Traditional platforms suffer from:
+1. **Reaction Latency:** Human operators and legacy EW pods cannot analyze complex digital modulations and execute evasive maneuvers within hypersonic millisecond engagement windows.
+2. **Decoupled Control Penalties:** High-G physical evasion without electronic jamming bleeds excessive kinetic energy, while jamming without kinetic maneuver allows track-via-missile (TVM) home-on-jam weapons to score direct hits.
+3. **Severe Operational Constraints:** Hypersonic flight imposes extreme thermal heating bounds, aerodynamic structural limits ($\le 12G$), and rapid Mach 5+ descent dynamics.
 
 ---
 
-## 3. System Architecture Overview
+## 3. System Architecture & Workflow Diagram
 
-The co-designer architecture is structured into three primary interacting operational modules, supported by safety and explainability wrappers:
+The COG-EW architecture links real-time radio frequency signal intelligence directly to aerodynamic flight guidance and autonomous tactical countermeasures:
 
+```mermaid
+flowchart TB
+    subgraph RF_ENV["1. Electromagnetic Spectrum & RF Threat Network"]
+        IADS["Enemy Multi-Static IADS Radars<br/>(VHF Search / S-Band Acquisition / X-Band Fire Control)"]
+        PULSE["Intercepted Raw I/Q Pulses<br/>[Shape: 2 x 1024 Float32]"]
+        IADS -->|"Electromagnetic Emission"| PULSE
+    end
+
+    subgraph PERCEPTION["2. Perception & Signal Intelligence (perception/)"]
+        direction TB
+        RESNET["24-Class Deep ResNet AMC<br/>(resnet_best.pt | Sub-3ms Latency)"]
+        DSP["Signal Quality & Spectral DSP Engine<br/>(FFT PSD, I/Q Imbalance, DC Offset)"]
+        FUSION["Threat Assessment & Situation Synthesis<br/>(Search vs Tracking vs Missile Lock)"]
+
+        PULSE --> RESNET
+        PULSE --> DSP
+        RESNET -->|"Modulation Probabilities"| FUSION
+        DSP -->|"Estimated SNR & Signal Integrity"| FUSION
+    end
+
+    subgraph COGNITIVE["3. Autonomous Decision & Control AI (rl/ & guidance/)"]
+        direction TB
+        DECISION["Hierarchical Cognitive Commander<br/>(Multi-Objective Optimization)"]
+        SAFETY["Kinematic & Thermal Safety Filter<br/>(12G Structural & Heating Bounds)"]
+        FUSION --> DECISION
+        DECISION --> SAFETY
+    end
+
+    subgraph DUAL_ACTION["4. Coordinated Multi-Domain Execution"]
+        direction LR
+        subgraph EW_DOMAIN["Electronic Warfare Domain"]
+            PASSIVE["ESM Radio Silence"]
+            NOISE["Barrage Noise Jamming<br/>(45 kW Saturation)"]
+            RGPO["Range Gate Pull-Off (RGPO)<br/>(False Phantom Echo Deception)"]
+        end
+
+        subgraph FLIGHT_DOMAIN["Guidance & Flight Domain"]
+            CRUISE["Hypersonic Glide<br/>(Mach 5.2 | Alt 29,500m)"]
+            EVADE["High-G Bank-to-Turn Evasion<br/>(6.8G Pull | Lock Break)"]
+            DIVE["Terminal Supersonic Dive<br/>(Kinetic Bunker Strike)"]
+        end
+    end
+
+    SAFETY -->|"EW Directives"| EW_DOMAIN
+    SAFETY -->|"Flight Controls"| FLIGHT_DOMAIN
+
+    subgraph SIM_BATTLE["5. Tactical Combat Engine (simulation/ & sim/)"]
+        direction TB
+        SAM["Enemy SAM Interceptor<br/>(Mach 4.0 Proportional Nav)"]
+        BUNKER["Strategic Target Command Bunker<br/>(Sector 4 Objective)"]
+
+        RGPO -->|"Doppler False Target"| SAM
+        EVADE -->|"Kinematic Separation"| SAM
+        SAM -->|"Missile Lock Broken"| BURNOUT["SAM Motor Exhaustion / Defeat"]
+        DIVE -->|"Direct Kinetic Hit"| BUNKER
+    end
+
+    subgraph TELEMETRY["6. Mission Control & Presentation Layer (dashboard/ & scripts/)"]
+        DASH_API["FastAPI Unified API (scripts/dashboard_api.py)"]
+        UI1["Tactical Battlefield Radar Map (60 FPS Canvas)"]
+        UI2["RF Waveform & AI Softmax Oscilloscope"]
+        UI3["Spectral FFT & Signal Quality Gauges"]
+        UI4["Locked 60/10/30 Benchmark & SNR Stratification"]
+
+        SIM_BATTLE -.->|"Real-Time State Telemetry"| DASH_API
+        DASH_API --> UI1
+        DASH_API --> UI2
+        DASH_API --> UI3
+        DASH_API --> UI4
+    end
+
+    classDef env fill:#0f172a,stroke:#38bdf8,stroke-width:2px,color:#f8fafc;
+    classDef ai fill:#1e1b4b,stroke:#818cf8,stroke-width:2px,color:#f8fafc;
+    classDef decision fill:#311042,stroke:#c084fc,stroke-width:2px,color:#f8fafc;
+    classDef action fill:#022c22,stroke:#34d399,stroke-width:2px,color:#f8fafc;
+    classDef sim fill:#3f1d0b,stroke:#fb923c,stroke-width:2px,color:#f8fafc;
+    classDef dash fill:#172554,stroke:#60a5fa,stroke-width:2px,color:#f8fafc;
+
+    class RF_ENV env;
+    class PERCEPTION ai;
+    class COGNITIVE decision;
+    class DUAL_ACTION action;
+    class SIM_BATTLE sim;
+    class TELEMETRY dash;
 ```
-                          ┌────────────────────────────────────────┐
-                          │         Mission Objectives &           │
-                          │        Strategic Tasking State         │
-                          └───────────────────┬────────────────────┘
-                                              │
-                                              ▼
- ┌────────────────────────┐      ┌────────────────────────┐      ┌────────────────────────┐
- │   Perception Module    │      │  Decision & Control AI │      │  Simulation Module     │
- │     (perception/)      ├─────►│    (rl/ & guidance/)   ├─────►│        (sim/)          │
- │ Emitter Classification │      │ PPO / MAPPO / PNG      │      │ Vehicle Dynamics & RF  │
- └────────────────────────┘      └────────────┬───────────┘      └────────────────────────┘
-                                              │
-                                              ▼
-                                 ┌────────────────────────┐
-                                 │ Safety & Explainability│
-                                 │   (safety/ & explain/) │
-                                 │ Safety Filter & XAI    │
-                                 └────────────────────────┘
+
+### 3.1 Closed-Loop Mission Execution Sequence
+
+The operational lifecycle of an autonomous engagement follows a verified closed-loop sequence:
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Operator as Mission Commander / Pilot
+    participant Veh as Hypersonic Vehicle (Mach 5.2)
+    participant RF as RF Perception (Deep ResNet)
+    participant Decision as Cognitive Decision Engine
+    participant Jammer as Cognitive Jammer (RGPO)
+    participant EnemyRadar as Enemy IADS Radar Network
+    participant SAM as Surface-to-Air Missile (Mach 4)
+    participant Bunker as Strategic Bunker (Sector 4)
+
+    Operator->>Veh: Launch Mission (Mach 5.2, 29,500m Altitude)
+    EnemyRadar->>Veh: Sector 1 Search Radar Sweep (8ASK/FM)
+    Veh->>RF: Intercept RF Waveform (2x1024 I/Q)
+    RF->>Decision: Emitter ID: Early Warning Search (Low Threat)
+    Decision->>Veh: Maintain Stratospheric Cruise (Radio Silence)
+
+    EnemyRadar->>Veh: Sector 3 X-Band Fire-Control Lock (16QAM)
+    Veh->>RF: Intercept Fire-Control Radar Pulses
+    RF->>Decision: Threat Level: CRITICAL (Missile Guidance Active)
+    EnemyRadar->>SAM: Launch Interceptor Missile at Vehicle
+
+    Decision->>Jammer: Engage Range Gate Pull-Off (RGPO) Spoofing
+    Jammer-->>SAM: Transmit Amplified Doppler False Echo
+    Decision->>Veh: Execute 6.8G Evasive Turn Maneuver
+    SAM->>Jammer: Locks onto False Phantom Target
+    Note over SAM: SAM Diverts, Over-shoots & Suffers Motor Burnout
+
+    Decision->>Veh: Initiate Terminal Supersonic Dive Profile
+    Veh->>Bunker: High-Speed Kinetic Impact at Coordinates
+    Note over Bunker: Target Eliminated (100% Mission Accomplished)
 ```
 
-### 3.1 Simulation Environment Module (`sim/`)
-*   **Hypersonic Vehicle Dynamics:** 2D point-mass model (expandable to 3D) incorporating flight kinematics, aerodynamic lift/drag, gravity, atmospheric density, and strict constraints (g-load, thermal heating, min altitude).
-*   **RF / Emitter Environment:** Multi-emitter IADS layout featuring diverse frequencies, PRFs, scan patterns, and detection probability models.
-*   **EW Effects Model:** Simulates jamming noise-floor elevation (reducing radar detection range) and spoofing track-degradation (inducing position errors and radar break-locks).
+### 3.2 Simulation Environment Module (`simulation/` & `sim/`)
+*   **Hypersonic Vehicle Dynamics:** High-fidelity 60 FPS flight kinematics, aerodynamic lift/drag, gravity, atmospheric density, and strict constraints (max 12G structural load, stagnation thermal heating in kJ, altitude profile from 29,500m to 250m).
+*   **RF Threat Environment:** Multi-static IADS radar network featuring Sector 1 Early Warning Search (VHF/UHF), Sector 2 Target Acquisition (S-Band), and Sector 3 Fire-Control (X-Band pencil beam).
+*   **EW Effects Model:** Simulates jamming noise-floor elevation (reducing radar detection range) and RGPO spoofing track-degradation (inducing Doppler phantom targets and SAM missile break-locks).
 
-### 3.2 Perception & Situation Awareness Module (`perception/`)
-*   **RF Signal Preprocessing:** Extracts pulse features (Pulse Repetition Frequency [PRF], bandwidth, pulse width, Direction of Arrival [DoA]).
-*   **Emitter Classification Network:** 1D CNN / Transformer architecture identifying signal categories and emitting probability distributions in real time.
-*   **Threat Graph / Situation Summary:** Synthesizes classified emitters, geographical threat zones, and vehicle states into a compact situation vector for the cognitive agent.
+### 3.3 Perception & Signal Intelligence Module (`perception/`)
+*   **RF Signal Preprocessing:** High-speed I/Q ingestion from real datasets (`D:/Datasets/RadioML 2018.01A`) or high-fidelity mathematical pulse synthesis.
+*   **Emitter Classification Network:** 24-class Deep Residual Network (`perception/models/radioml_resnet.py`) with residual skip connections delivering sub-3ms inference latency and >94% operational accuracy ($\ge +6\text{ dB}$).
+*   **Signal Quality & Spectral DSP:** Real-time computation of FFT Power Spectral Density, estimated SNR, I/Q imbalance, DC offset, and crest factor.
 
-### 3.3 Decision & Control AI Module (`rl/` & `guidance/`)
+### 3.4 Decision & Control AI Module (`rl/` & `guidance/`)
 *   **POMDP Formulation:** 
-    *   State ($s$): Vehicle kinematic state + threat graph + mission context.
-    *   Action ($a$): EW commands + guidance control parameters.
-    *   Reward ($r$): Multi-objective score balancing survivability, target arrival, energy, and thermal limits.
-*   **Policy Network:** Neural network mapping situation vectors to action outputs via single-agent multi-head or multi-agent architectures (PPO/MAPPO).
-*   **Safety & Explainability:** Action projection safety filters enforce physical limits, while attention mechanisms highlight critical threat drivers.
+    *   State ($s$): Vehicle kinematic state + threat graph + intercepted RF modulation probabilities + SAM proximity.
+    *   Action ($a$): EW directives (Passive / Noise Jamming / RGPO Spoofing) + flight heading and bank angle.
+    *   Reward ($r$): Multi-objective Pareto score balancing survivability, target destruction, thermal limits, and energy.
+*   **Guidance Laws:** True Proportional Navigation Guidance (PNG) combined with autonomous high-G evasive maneuvers and terminal supersonic strike profiling.
+*   **Safety & Explainability:** Action projection safety filters enforce aerodynamic limits, while explanation generators provide human-readable tactical rationales.
 
 ---
 
@@ -156,38 +267,46 @@ To address real limitations in autonomous electronic warfare and guidance system
 ## 5. Recommended Publication Architecture & Top Contributions
 
 ### Integrated Cognitive Pipeline Architecture
-```
-Mission Objective
-      │
-      ▼
-Strategic Cognitive Commander
-      │
-      ▼
-Guidance Specialist | EW Specialist | Resource Specialist
-      │
-      ▼
-Multi-Objective Decision Engine
-      │
-      ▼
-Physics & Safety Layer
-      │
-      ▼
-Final Tactical Action
-      │
-      ▼
-Battlefield Digital Twin Simulator
-      │
-      ▼
-Adaptive Enemy AI + Threat Knowledge Graph + Long-Term Memory
-      │
-      ▼
-Intent Prediction & Risk Engine
-      │
-      ▼
-Explainable Decision Generator
-      │
-      ▼
-Lifelong Learning Framework
+
+```mermaid
+flowchart TD
+    OBJ["Strategic Mission Objective & Target Tasking"] --> CMD["Strategic Cognitive Commander"]
+
+    subgraph SPECIALISTS["Domain Expert Specialists"]
+        direction LR
+        G_SPEC["Guidance Specialist<br/>(Trajectory & Aerodynamics)"]
+        EW_SPEC["EW Specialist<br/>(Jamming & Deception)"]
+        RES_SPEC["Resource Specialist<br/>(Thermal & Power Management)"]
+    end
+
+    CMD --> G_SPEC
+    CMD --> EW_SPEC
+    CMD --> RES_SPEC
+
+    G_SPEC --> MO_OPT["Multi-Objective Decision Engine<br/>(Pareto Trade-off: Survivability vs Target Arrival)"]
+    EW_SPEC --> MO_OPT
+    RES_SPEC --> MO_OPT
+
+    MO_OPT --> SAFETY["Physics & Safety Projection Layer<br/>(Aerodynamic G-limits, Heat Dissipation, Stall Margins)"]
+    SAFETY --> ACTION["Executed Multi-Domain Tactical Action"]
+
+    ACTION --> TWIN["Battlefield Digital Twin Simulation<br/>(Kinematics, Emitters, Missiles)"]
+
+    TWIN --> ADAPT["Adaptive Enemy AI + Threat Knowledge Graph"]
+    ADAPT --> MEMORY["Long-Term Tactical Experience Memory"]
+    MEMORY --> INTENT["Enemy Intent Prediction & Risk Engine"]
+    INTENT --> XAI["Explainable AI (XAI) Tactical Rationale Generator"]
+    XAI -.->|"Feedback & Lifelong Learning"| CMD
+
+    classDef cmdNode fill:#1e1b4b,stroke:#818cf8,stroke-width:2px,color:#ffffff;
+    classDef specNode fill:#0f172a,stroke:#38bdf8,stroke-width:2px,color:#ffffff;
+    classDef optNode fill:#311042,stroke:#c084fc,stroke-width:2px,color:#ffffff;
+    classDef actNode fill:#022c22,stroke:#34d399,stroke-width:2px,color:#ffffff;
+
+    class CMD,OBJ cmdNode;
+    class G_SPEC,EW_SPEC,RES_SPEC specNode;
+    class MO_OPT,SAFETY optNode;
+    class ACTION,TWIN,ADAPT,MEMORY,INTENT,XAI actNode;
 ```
 
 ### Top Recommended Research Contributions
@@ -205,48 +324,61 @@ Lifelong Learning Framework
 ## 6. Detailed Codebase Directory & File Structure
 
 ```
-COG-EW-main/
-├── README.md                          # Comprehensive technical documentation
-├── requirements.txt                   # Dependency definitions
-├── train.py                           # Main training entry point
+COG-EW/
+├── README.md                          # Comprehensive technical documentation & workflow diagrams
+├── requirements.txt                   # Production & Render cloud dependencies (Lightweight CPU PyTorch)
+├── requirements-dev.txt               # Full local development & training dependencies (Gym, SB3, MLflow)
+├── render.yaml                        # Automated cloud deployment blueprint for Render Web Services
+├── train.py                           # Baseline training entry point
 ├── evaluate.py                        # Benchmark evaluation script
 ├── configs/                           # System Configuration Files
 │   ├── env_config.yaml                # Gym & hypersonic environment parameters
 │   └── train_config.yaml              # RL agent & PPO hyperparameters
-├── sim/                               # Simulation Environment Module
-│   ├── __init__.py
+├── dashboard/                         # Unified Mission Control & Presentation Layer
+│   ├── index.html                     # Unified Mission Control Cockpit (Overview redirect)
+│   ├── pages/                         # Core Mission Intelligence Interfaces
+│   │   ├── overview.html              # Tactical overview, 60 FPS battlefield canvas & controls
+│   │   ├── rf_classification.html     # Live 24-class RF modulation oscilloscope & threat meter
+│   │   ├── signal_analysis.html       # Spectral FFT PSD, constellation & signal quality gauges
+│   │   └── model_performance.html     # Locked test benchmarks & interactive SNR threshold filter
+│   └── assets/                        # High-performance styling (CSS) & procedural audio assets
+├── scripts/                           # Core Operational & Service Scripts
+│   ├── dashboard_api.py               # Unified FastAPI backend & tactical mission server
+│   ├── train_radioml_finalists.py     # 60/10/30 RadioML multi-seed training pipeline
+│   └── run_radioml_cv_tuning.py       # Cross-validation & hyperparameter optimization engine
+├── simulation/                        # High-Fidelity Tactical Combat Engine
+│   ├── tactical_engine.py             # 60 FPS hypersonic aerodynamics (Mach 5.2), IADS radars & SAMs
+│   └── demo_engine.py                 # Interactive demonstration & scenario coordinator
+├── perception/                        # RF Perception & Signal Intelligence
+│   ├── rf_inference_service.py        # 24-class AMC inference service & DSP signal quality analyzer
+│   └── models/                        # Deep Neural Network Architectures
+│       ├── radioml_resnet.py          # 24-Class Deep ResNet with residual skip connections
+│       └── radioml_cnn.py             # Baseline 1D/2D CNN architectures
+├── models/                            # Trained Checkpoints
+│   └── experiments/radioml_60_10_30_v1/
+│       └── resnet_lr2.5e-4_wd5e-4_best.pt # Winning trained 24-class ResNet (6.42 MB)
+├── reports/                           # Locked Benchmark Reports & Confusion Matrices
+│   └── experiments/radioml_60_10_30_v1/
+│       └── finalist_comparison_report.json # Comprehensive 766,772 test sample evaluation
+├── sim/                               # POMDP Gym Simulation Environment
 │   ├── vehicle_dynamics.py            # 2D/3D flight kinematics, aero & thermal limits
 │   ├── emitter_models.py              # Multi-static IADS radar layout & signal emission
-│   ├── ew_effects.py                  # Jamming noise-floor & spoofing error models
-│   └── environment.py                 # Gym-compliant POMDP environment API
-├── perception/                        # Perception & Situation Awareness Module
-│   ├── __init__.py
-│   ├── rf_preprocessing.py            # Pulse feature extraction (PRF, DoA, bandwidth)
-│   ├── emitter_classifier.py          # 1D CNN / Transformer RF signal classifier
-│   ├── situation_builder.py           # Feature synthesis & threat state vector builder
-│   └── threat_graph.py                # Graph neural network for spatial/RF relationships
+│   └── ew_effects.py                  # Jamming noise-floor & spoofing error models
 ├── guidance/                          # Guidance & Dynamic Utilities
-│   ├── __init__.py
-│   ├── baseline_guidance.py           # Proportional Navigation Law (PNG) baseline
+│   ├── baseline_guidance.py           # True Proportional Navigation Law (PNG) baseline
 │   └── dynamics_utils.py              # Coordinate frame transformations (NED, ECEF)
 ├── rl/                                # Decision & Control AI Module
-│   ├── __init__.py
 │   ├── policy_network.py              # Multi-head PPO/MAPPO actor-critic network
-│   ├── rl_agent.py                    # RL Agent interaction & action sampler
 │   ├── reward.py                      # Multi-objective Pareto reward engine
-│   ├── training_loop.py               # PPO training loop with curriculum learning
-│   ├── evaluation.py                  # Benchmark & evaluation metrics suite
 │   └── hierarchical_commander.py      # Strategic Commander coordinating domain experts
 ├── safety/                            # Safety Projection Filter
-│   ├── __init__.py
 │   └── constraint_checker.py          # Kinematic/thermal/g-load action projection filter
 ├── explain/                           # Explainability & Interpretability
-│   ├── __init__.py
-│   ├── attention_visualizer.py        # Attention weight extraction & heatmap generator
-│   ├── saliency_analyzer.py           # Feature saliency computation
 │   └── explanation_generator.py       # Human-readable tactical rationale generator
-└── notebooks/                         # Exploration & Analytical Notebooks
-    └── 01_simulation_exploration.ipynb
+└── tests/                             # Comprehensive Automated Test Suite
+    ├── test_dashboard_api.py          # FastAPI endpoints & static file serving tests
+    ├── test_tactical_and_rf_system.py # End-to-end tactical simulation & RF perception tests
+    └── test_decision_engine.py        # Autonomous decision & EW jamming logic tests
 ```
 
 ---
@@ -296,28 +428,33 @@ COG-EW-main/
 ### Installation
 ```bash
 # Clone the repository
-git clone https://github.com/user/COG-EW.git
-cd COG-EW-main/COG-EW-main
+git clone https://github.com/pravatsahu05/COG-EW.git
+cd COG-EW
 
-# Create virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+# Create and activate virtual environment
+python -m venv .venv
+.\.venv\Scripts\activate  # On Linux/macOS: source .venv/bin/activate
 
-# Install dependencies
+# Install production dependencies (lightweight CPU PyTorch stack)
 pip install -r requirements.txt
+
+# (Optional) For deep RL training, MLflow, and full research tools:
+pip install -r requirements-dev.txt
 ```
 
 ### Usage
 
 ```bash
-# Launch the Interactive Tactical Mission & RF Intelligence Dashboard
-.\.venv\Scripts\python.exe -m uvicorn scripts.dashboard_api:app --host 127.0.0.1 --port 8000
+# Launch the Unified Tactical Mission Control & RF Intelligence API
+.\.venv\Scripts\python.exe -m uvicorn scripts.dashboard_api:app --host 127.0.0.1 --port 8000 --reload
 ```
 
 Open your browser to:
-- **Interactive Gaming Tactical Simulation:** [http://127.0.0.1:8000/pages/simulation.html](http://127.0.0.1:8000/pages/simulation.html)
-- **RF Perception & Intelligence Console:** [http://127.0.0.1:8000/pages/rf_classification.html](http://127.0.0.1:8000/pages/rf_classification.html)
-- **Model Performance & Locked Split Evaluation:** [http://127.0.0.1:8000/pages/model_performance.html](http://127.0.0.1:8000/pages/model_performance.html)
+- **Tactical Mission Control (Home):** [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
+- **Tactical Combat Simulation Console:** [http://127.0.0.1:8000/pages/simulation.html](http://127.0.0.1:8000/pages/simulation.html)
+- **RF 24-Class Modulation Intelligence Console:** [http://127.0.0.1:8000/pages/rf_classification.html](http://127.0.0.1:8000/pages/rf_classification.html)
+- **Signal Quality & Spectral FFT Analysis:** [http://127.0.0.1:8000/pages/signal_analysis.html](http://127.0.0.1:8000/pages/signal_analysis.html)
+- **Model Performance & Operational SNR Stratification:** [http://127.0.0.1:8000/pages/model_performance.html](http://127.0.0.1:8000/pages/model_performance.html)
 - **Interactive Swagger REST API Documentation:** [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
 
 ---
@@ -326,30 +463,46 @@ Open your browser to:
 
 COG-EW delivers a complete, cohesive end-to-end framework addressing all four core requirements:
 
-```
-┌────────────────────────────────────────────────────────────────────────────────────────┐
-│                        COG-EW UNIFIED MISSION & DEFENSE PIPELINE                       │
-├──────────────────────────┬──────────────────────────┬──────────────────────────────────┤
-│ 1. RF Signal Perception  │ 2. Auto-Pilot & Evasion  │ 3. Tactical Gaming Simulation    │
-│    & Cognitive Jamming   │    from SAM Missiles     │    Console & Judge Presentation  │
-├──────────────────────────┼──────────────────────────┼──────────────────────────────────┤
-│ • 24-Class RadioML       │ • High-G Evasive Maneuver│ • 60 FPS Tactical Radar Display  │
-│   ResNet Emitter ID      │   (Split-S, 6.8g pull)   │ • Real-time Beam Scanning        │
-│ • Threat Classification  │ • RGPO False Ghost Echo  │ • Dynamic Vehicle Shockwaves     │
-│   (Search/Track/SAM)     │   (Breaks Missile Lock)  │ • Procedural Web Audio Engine    │
-│ • Adaptive Jamming       │ • Proportional Navigation│ • 3 Tactical Scenarios           │
-│   (Noise / RGPO / Angle) │   (Target Trajectory)    │ • Automatic Judges Debrief Modal │
-└──────────────────────────┴──────────────────────────┴──────────────────────────────────┘
-                                      │
-                                      ▼
-             ┌──────────────────────────────────────────────────┐
-             │ 4. Strategic Target Penetration & Direct Hit     │
-             ├──────────────────────────────────────────────────┤
-             │ • Sector 4 Radar Command Bunker Impact           │
-             │ • Direct Kinetic Strike Confirmation             │
-             │ • 98.5% Mission Survivability Rating             │
-             │ • Exportable JSON Flight Telemetry Log           │
-             └──────────────────────────────────────────────────┘
+```mermaid
+flowchart LR
+    subgraph OBJ1["1. RF Signal Perception & Jamming"]
+        direction TB
+        O1_A["24-Class RadioML ResNet AMC"] --> O1_B["Threat Level Assessment<br/>(Search / Track / SAM Lock)"]
+        O1_B --> O1_C["Adaptive Jamming Trigger<br/>(Noise Barrage vs RGPO Deception)"]
+    end
+
+    subgraph OBJ2["2. Auto-Pilot & SAM Evasion"]
+        direction TB
+        O2_A["SAM Launch Alert Detection"] --> O2_B["RGPO Phantom Target Echo"]
+        O2_B --> O2_C["6.8G Evasive Split-S Maneuver"]
+        O2_C --> O2_D["Missile Break-Lock & Burnout"]
+    end
+
+    subgraph OBJ3["3. Tactical Gaming Console"]
+        direction TB
+        O3_A["60 FPS Canvas Radar Display"] --> O3_B["Procedural Web Audio Engine"]
+        O3_B --> O3_C["Multi-Scenario Mission Presets"]
+        O3_C --> O3_D["Automated Victory Debrief Modal"]
+    end
+
+    subgraph OBJ4["4. Strategic Bunker Strike"]
+        direction TB
+        O4_A["Terminal Supersonic Dive Profile"] --> O4_B["Sector 4 Command Bunker Strike"]
+        O4_B --> O4_C["Direct Kinetic Impact Confirmed"]
+        O4_C --> O4_D["Exportable JSON Telemetry Log"]
+    end
+
+    OBJ1 ==> OBJ2 ==> OBJ3 ==> OBJ4
+
+    classDef obj1 fill:#1e1b4b,stroke:#818cf8,stroke-width:2px,color:#ffffff;
+    classDef obj2 fill:#022c22,stroke:#34d399,stroke-width:2px,color:#ffffff;
+    classDef obj3 fill:#0f172a,stroke:#38bdf8,stroke-width:2px,color:#ffffff;
+    classDef obj4 fill:#451a03,stroke:#f59e0b,stroke-width:2px,color:#ffffff;
+
+    class OBJ1 obj1;
+    class OBJ2 obj2;
+    class OBJ3 obj3;
+    class OBJ4 obj4;
 ```
 
 ### Dual-Layer Architecture: Judge Presentation vs Real Production Execution
