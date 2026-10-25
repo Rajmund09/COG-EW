@@ -294,7 +294,58 @@ def build_document():
     )
 
     p = doc.add_paragraph()
-    format_heading(doc, "Mathematical Problem Formulations", level=3)
+    format_heading(doc, "I. Research Objectives, Scientific Scope & Hypotheses", level=2)
+
+    add_body_p(doc, 
+        "The overarching goal of the COG-EW research initiative is to formulate, implement, and empirically validate an edge-deployable "
+        "cyber-physical architecture that unifies real-time radio frequency (RF) perception with predictive flight kinematics under strict hypersonic "
+        "aerothermodynamic and structural load constraints. To fulfill this overarching goal, the research is governed by four primary published objectives:",
+        bold_prefix="Problem Motivation & Scope: "
+    )
+
+    add_bullet(doc,
+        "Engineer and benchmark an edge-deployable Deep Residual Convolutional Neural Network (adapted ResNet-18) capable of ingesting raw "
+        "In-Phase/Quadrature (I/Q) complex tensors (shape: 2 x 1024 float32) directly from ESM digitized frontends to classify 24 distinct analog "
+        "and digital modulation schemes within sub-0.03 millisecond inference latency on dedicated edge GPU hardware.",
+        bold_prefix="Objective 1 (Real-Time Sub-Millisecond RF Perception): "
+    )
+
+    add_bullet(doc,
+        "Formulate a closed-loop Cognitive Decision & Electronic Countermeasure Arbitrator (OODA cycle) that evaluates intercepted radar modes "
+        "(Search vs Acquisition vs Fire-Control SAM Tracking) and dynamically allocates electronic countermeasures (45 kW Barrage Noise Saturation "
+        "vs Deceptive Range Gate Pull-Off [RGPO] Spoofing vs Passive ESM Monitoring) based on real-time signal-to-noise ratio (SNR) and threat severity.",
+        bold_prefix="Objective 2 (Autonomous Multi-Mode Electronic Warfare Allocation): "
+    )
+
+    add_bullet(doc,
+        "Develop and cross-validate a Temporal Convolutional Residual Guidance Network (TCNResNet) trained on authentic multi-axis Pixhawk UAV flight "
+        "telemetry (120 flights partitioned into leak-free 60/15/15/10% cross-validation splits) to generate stable multi-step lookahead flight trajectories "
+        "(10-step horizon: +0.1s to +1.0s) while strictly observing structural load limits (G <= 6.5g continuous, 10g peak) and thermal bounds (T <= 1800 K).",
+        bold_prefix="Objective 3 (Deep Learning Grounded Flight Guidance & Trajectory Co-Design): "
+    )
+
+    add_bullet(doc,
+        "Establish an operational doctrine and hardware-in-the-loop simulation verifying that hypersonic waverider platforms maintain stratospheric "
+        "cruise (Mach 5.2, h = 29,500 m), execute ventral release of a hypersonic kinetic glide penetrator against deep strategic bunkers, and perform "
+        "a high-altitude supersonic climb (+10° AoA, ascending to 31,500m - 32,500m) and egress bank to achieve a >98% survivability index as a 100% "
+        "reusable strategic military asset.",
+        bold_prefix="Objective 4 (Autonomous Standoff Strike & 100% Reusable Egress Doctrine): "
+    )
+
+    add_callout(
+        doc,
+        "RESEARCH HYPOTHESIS H1 (Perception): Downconverting RF signals to raw 2x1024 baseband tensors preserves complete instantaneous phase and frequency "
+        "coherence, allowing deep residual feature extraction to exceed 90% classification accuracy in the actionable operational regime (SNR >= +6 dB) without "
+        "manual feature engineering.\n\n"
+        "RESEARCH HYPOTHESIS H2 (Co-Design): Coupling electronic attack deception with simultaneous aerodynamic bank-to-turn maneuvers breaks multi-static "
+        "radar tracking lock with >94% probability while consuming 42% less propellant mass than pure physical high-G evasion maneuvers alone.",
+        title="CORE SCIENTIFIC HYPOTHESES & CONTRIBUTION BOUNDS",
+        border_color="1A365D",
+        bg_color="F7FAFC"
+    )
+
+    p = doc.add_paragraph()
+    format_heading(doc, "II. Mathematical Formulation & Flight Dynamics", level=2)
 
     add_body_p(doc, "The flight dynamics of the hypersonic waverider are governed by point-mass 3-DOF equations over a spherical Earth:")
     
