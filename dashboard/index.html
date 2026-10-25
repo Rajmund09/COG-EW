@@ -1,439 +1,428 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>COG-EW | Cognitive Electronic Warfare & Hypersonic Strike Command</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>COG-EW | Cyber Brutalism Electronic Warfare Command</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      color-scheme: dark;
-      --bg: #050811;
-      --panel: rgba(11, 18, 33, 0.85);
-      --border: rgba(30, 58, 95, 0.6);
-      --text: #e1ebfa;
-      --muted: #8298b9;
-      --cyan: #00e5ff;
-      --cyan-glow: rgba(0, 229, 255, 0.35);
-      --green: #00e676;
-      --purple: #b388ff;
-      --amber: #ffb300;
-      --red: #ff3d71;
-      --font-display: 'Orbitron', sans-serif;
-      --font-body: 'Rajdhani', sans-serif;
-      --font-mono: 'Share Tech Mono', monospace;
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--font-body);
-      font-size: 15px;
-      line-height: 1.5;
-      min-height: 100vh;
-    }
-
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 16px 40px;
-      border-bottom: 1px solid var(--border);
-      background: rgba(8, 13, 24, 0.95);
-      backdrop-filter: blur(12px);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-
-    .brand {
-      font-family: var(--font-display);
-      font-size: 21px;
-      font-weight: 800;
-      letter-spacing: 1px;
-    }
-    .brand span { color: var(--cyan); text-shadow: 0 0 14px var(--cyan-glow); }
-
-    .status {
-      font-family: var(--font-mono);
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    nav {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-
-    nav a {
-      color: var(--muted);
-      text-decoration: none;
-      padding: 7px 14px;
-      border-radius: 6px;
-      font-size: 14px;
-      font-weight: 600;
-      transition: all 0.2s;
-    }
-
-    nav a:hover,
-    nav a.active {
-      color: var(--cyan);
-      background: rgba(0, 229, 255, 0.12);
-      border: 1px solid rgba(0, 229, 255, 0.25);
-    }
-
-    main {
-      max-width: 1440px;
-      margin: auto;
-      padding: 30px 24px 60px;
-    }
-
-    h1 {
-      font-family: var(--font-display);
-      font-size: clamp(26px, 3.5vw, 36px);
-      margin: 0 0 8px;
-    }
-
-    .subtitle {
-      color: var(--muted);
-      font-size: 16px;
-      margin-bottom: 25px;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(12, minmax(0, 1fr));
-      gap: 18px;
-    }
-
-    .card {
-      grid-column: span 4;
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 22px;
-      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
-      position: relative;
-    }
-
-    .wide { grid-column: span 8; }
-    .full { grid-column: span 12; }
-
-    .label {
-      font-family: var(--font-mono);
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      font-size: 11px;
-      font-weight: 700;
-    }
-
-    .value {
-      font-family: var(--font-mono);
-      font-size: 32px;
-      font-weight: 750;
-      margin-top: 8px;
-      color: #fff;
-    }
-
-    .small {
-      color: var(--muted);
-      font-size: 13px;
-      margin-top: 4px;
-    }
-
-    .cyan { color: var(--cyan); }
-    .green { color: var(--green); }
-    .purple { color: var(--purple); }
-    .red { color: var(--red); }
-
-    /* Hero Banner Link to Simulation */
-    .hero-banner {
-      grid-column: span 12;
-      background: linear-gradient(135deg, rgba(16, 28, 54, 0.9) 0%, rgba(10, 19, 36, 0.95) 100%);
-      border: 1px solid var(--cyan);
-      box-shadow: 0 0 30px rgba(0, 229, 255, 0.15);
-      border-radius: 14px;
-      padding: 26px 32px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 20px;
-    }
-    .hero-title {
-      font-family: var(--font-display);
-      font-size: 22px;
-      color: #fff;
-    }
-    .hero-desc {
-      color: var(--muted);
-      font-size: 15px;
-      max-width: 800px;
-      margin-top: 6px;
-    }
-    .btn-hero {
-      background: var(--cyan);
-      color: #031017;
-      font-family: var(--font-body);
-      font-size: 15px;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      padding: 12px 24px;
-      border-radius: 8px;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      box-shadow: 0 0 16px var(--cyan-glow);
-      transition: all 0.2s;
-    }
-    .btn-hero:hover {
-      background: #40efff;
-      transform: translateY(-2px);
-      box-shadow: 0 0 24px rgba(0, 229, 255, 0.5);
-    }
-
-    /* Controls */
-    .controls {
-      display: flex;
-      gap: 10px;
-      margin-top: 16px;
-      flex-wrap: wrap;
-    }
-
-    select, input, button {
-      font-family: var(--font-body);
-      border-radius: 8px;
-      padding: 10px 14px;
-      font-size: 14px;
-    }
-
-    select, input {
-      background: #080f1d;
-      border: 1px solid var(--border);
-      color: var(--text);
-    }
-
-    button {
-      cursor: pointer;
-      border: 0;
-      color: #05131a;
-      background: var(--cyan);
-      font-weight: 700;
-      transition: all 0.2s;
-    }
-    button:hover { background: #40efff; }
-
-    .result { margin-top: 18px; }
-
-    .metadata-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 12px;
-      margin-top: 16px;
-    }
-
-    .meta-box {
-      padding: 12px;
-      background: rgba(8, 15, 27, 0.7);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      font-family: var(--font-mono);
-    }
-    .meta-box .k { font-size: 11px; color: var(--muted); text-transform: uppercase; }
-    .meta-box .v { font-size: 14px; font-weight: 700; color: #fff; margin-top: 4px; }
-
-    /* Probability Bars */
-    .prob-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 10px;
-      margin-top: 12px;
-    }
-    .prob-row {
-      background: rgba(8, 15, 27, 0.6);
-      padding: 8px 12px;
-      border-radius: 6px;
-      border: 1px solid rgba(255, 255, 255, 0.04);
-    }
-    .prob-head {
-      display: flex;
-      justify-content: space-between;
-      font-family: var(--font-mono);
-      font-size: 12px;
-      margin-bottom: 5px;
-    }
-    .track {
-      height: 6px;
-      border-radius: 4px;
-      background: rgba(255, 255, 255, 0.08);
-      overflow: hidden;
-    }
-    .fill {
-      height: 100%;
-      background: linear-gradient(90deg, #1686d9, var(--cyan));
-      border-radius: inherit;
-    }
-
-    @media (max-width: 900px) {
-      .card { grid-column: span 6; }
-      .wide { grid-column: span 12; }
-    }
-    @media (max-width: 600px) {
-      .card { grid-column: span 12; }
-    }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/dashboard.css">
 </head>
 
 <body>
-  <header>
-    <div class="brand">COG<span>-EW</span> / MISSION CONTROL</div>
-    <nav>
+  <!-- ======================================================================
+       CYBER BRUTALIST TOP NAVIGATION (CYBR_ / COG-EW_)
+       ====================================================================== -->
+  <header class="cyber-navbar">
+    <a href="/" class="brand-cyber">
+      <span style="font-weight:800; font-family:var(--font-display); letter-spacing:-1px;">COG_EW</span>
+      <span class="brand-cursor"></span>
+    </a>
+
+    <nav class="nav-links-cyber">
+      <span class="nav-slash">/</span>
       <a href="/" class="active">Overview</a>
-      <a href="/pages/simulation.html">Tactical Simulation</a>
-      <a href="/pages/rf_classification.html">RF Classification</a>
-      <a href="/pages/signal_analysis.html">Signal Analysis</a>
-      <a href="/pages/model_performance.html">Model Benchmarks</a>
+      <span class="nav-slash">/</span>
+      <a href="/pages/simulation.html">Simulation</a>
+      <span class="nav-slash">/</span>
+      <a href="/pages/rf_classification.html">RF Intel</a>
+      <span class="nav-slash">/</span>
+      <a href="/pages/signal_analysis.html">Spectral DSP</a>
+      <span class="nav-slash">/</span>
+      <a href="/pages/model_performance.html">Benchmarks</a>
+      <span class="nav-slash">/</span>
+      <a href="/docs" target="_blank">API_Docs</a>
     </nav>
-    <div class="status" id="apiStatus">Connecting to API…</div>
+
+    <div class="nav-actions-cyber">
+      <div class="sys-time-box">
+        <span>SYS.TIME</span>
+        <strong id="liveTime">17:40:12 UTC+5:30</strong>
+      </div>
+      <a href="/pages/simulation.html" class="btn-cyber-black">
+        Launch Sim ↗
+      </a>
+    </div>
   </header>
 
-  <main>
-    <h1>COG-EW Defense Command Center</h1>
-    <p class="subtitle">
-      Cognitive Multi-Domain Electronic Warfare & Hypersonic Auto-Pilot Strike Co-Designer
-    </p>
+  <!-- ======================================================================
+       MAIN CONTENT CONTAINER
+       ====================================================================== -->
+  <main class="cyber-container">
 
-    <!-- Top Hero Banner Link to Gaming Simulation -->
-    <section class="grid">
-      <div class="hero-banner">
+    <!-- /01 HERO SECTION: CYBER BRUTALISM / COG-EW -->
+    <div class="section-tag">/01 SYSTEM ARCHITECTURE</div>
+    <section class="hero-cyber-grid">
+      <div class="hero-left">
         <div>
-          <div class="hero-title">⚡ Interactive Tactical Radar & Gaming Simulation Console</div>
-          <div class="hero-desc">
-            Experience real-time hypersonic ingress, incoming SAM missile launches, radar beam jamming,
-            autonomous auto-pilot evasion maneuvers, and surgical destruction of the strategic enemy command target.
-          </div>
+          <div class="section-tag" style="margin-bottom:4px;">[ MISSION OVERVIEW ]</div>
+          <h1 class="hero-title-massive">
+            CYBER<br>BRUTALISM
+          </h1>
+          <div class="hero-subtitle-caps">FUNCTIONAL. DIGITAL. UNAPOLOGETIC.</div>
+          <p class="hero-desc-cyber">
+            COG-EW is the intersection of defense technology and multi-domain control. Raw RF signal perception, structural hypersonic flight dynamics, and data-driven electronic warfare deception for contested aerospace environments.
+          </p>
         </div>
-        <a href="/pages/simulation.html" class="btn-hero">🎮 Launch Combat Simulation →</a>
+
+        <div class="hero-buttons-row">
+          <a href="/pages/simulation.html" class="btn-cyber-black">
+            Explore Work ↗
+          </a>
+          <a href="/pages/rf_classification.html" class="btn-cyber-outline">
+            View Manifesto ⛶
+          </a>
+        </div>
       </div>
 
-      <!-- Core Objective Metric Cards -->
-      <article class="card">
-        <div class="label">Objective 1 · RF Classifier</div>
-        <div class="value cyan" id="accuracy">56.38%</div>
-        <div class="small">Locked 30% Test Set (766,772 samples)</div>
-      </article>
-
-      <article class="card">
-        <div class="label">Objective 2 · Auto-Pilot Speed</div>
-        <div class="value green">Mach 5.2</div>
-        <div class="small">Stratospheric Glide: 29,500 m altitude</div>
-      </article>
-
-      <article class="card">
-        <div class="label">Objective 4 · Target Mission</div>
-        <div class="value purple" id="missionStatus">READY</div>
-        <div class="small">Strategic Radar Command Bunker (Hub-4)</div>
-      </article>
-
-      <!-- Interactive RF Emitter Intercept & Jamming Console -->
-      <article class="card wide">
-        <div class="label">Objective 1 · Active RF Signal Reading & Jamming Console</div>
-        <div class="controls">
-          <label>
-            <span class="small">Modulation Class (24 Available):</span>
-            <select id="modSelect">
-              <option value="QPSK" selected>QPSK — Tracking Radar T-1</option>
-              <option value="16QAM">16QAM — Fire-Control Radar (FCR)</option>
-              <option value="32QAM">32QAM — SAM Missile Uplink</option>
-              <option value="BPSK">BPSK — Target Acquisition</option>
-              <option value="8PSK">8PSK — Pulse Compression Radar</option>
-              <option value="8ASK">8ASK — Early Warning Search</option>
-              <option value="OOK">OOK — Coastal Surveillance</option>
-              <option value="GMSK">GMSK — Tactical Command Link</option>
-              <option value="FM">FM — Navigation Beacon</option>
-            </select>
-          </label>
-          <label>
-            <span class="small">Signal SNR:</span>
-            <select id="snrSelect">
-              <option value="18">+18 dB (High Threat / Close)</option>
-              <option value="12" selected>+12 dB (Normal Operating)</option>
-              <option value="4">+4 dB (Faint / Horizon)</option>
-            </select>
-          </label>
-          <button id="classifyBtn" onclick="runClassification()">Analyze & Jam</button>
+      <!-- Hero Right Technical Wireframe & Coordinates -->
+      <div class="hero-right-diagram">
+        <div class="diagram-header-tag">
+          <div>
+            <span style="color:var(--accent-purple); font-weight:700;">+ RENDERING</span><br>
+            <span>83% COMPLETE</span>
+          </div>
+          <div style="font-size:24px; color:var(--text-black)">🌐</div>
         </div>
 
-        <div id="predictionResult" class="result">
-          <p class="small">Select a radar signal and click Analyze to classify and trigger countermeasures.</p>
+        <!-- Center Waveform Preview Canvas -->
+        <div style="display:flex; justify-content:center; align-items:center; height:200px; position:relative; z-index:2;">
+          <canvas id="heroWaveCanvas" width="360" height="160" style="border:1.5px solid var(--border-black); background:#ffffff; box-shadow:3px 3px 0px #000000;"></canvas>
         </div>
-      </article>
 
-      <!-- Selected Model Card -->
-      <article class="card">
-        <div class="label">RadioML ResNet Benchmark</div>
-        <div style="margin-top:10px; font-family:var(--font-mono); font-size:13px">
-          <p style="margin-bottom:6px">Architecture: <strong class="cyan">ResNet-1D</strong></p>
-          <p style="margin-bottom:6px">Classes: <strong>24 Modulation Types</strong></p>
-          <p style="margin-bottom:6px">Val Macro-F1: <strong class="green">0.6063</strong></p>
-          <p style="margin-bottom:6px">Test Macro-F1: <strong class="green">0.6058</strong></p>
-          <p style="margin-bottom:6px">CNN Comparison: <span class="muted">0.5435 F1 (ResNet Selected)</span></p>
+        <div style="display:flex; justify-content:space-between; align-items:flex-end; z-index:2;">
+          <span style="font-family:var(--font-mono); font-size:11px; font-weight:700; color:var(--text-black)">//SCN_01_HYPERSONIC</span>
+          <div class="coordinates-box">
+            X_36.1749<br>
+            Y_-86.7676<br>
+            Z_46.6027
+          </div>
         </div>
-        <div style="margin-top:14px">
-          <a href="/pages/performance.html" style="color:var(--cyan); text-decoration:none; font-size:13px">View Full 24-Class Report & Confusion Matrix →</a>
-        </div>
-      </article>
-
-      <!-- Probability Distribution -->
-      <article class="card full">
-        <div class="label">Top Classified Probability Distribution</div>
-        <div id="probDistribution" class="prob-grid">
-          <p class="small">Class probabilities will be rendered here upon signal analysis.</p>
-        </div>
-      </article>
+      </div>
     </section>
+
+    <!-- /02 CORE PRINCIPLES -->
+    <div class="section-divider-bar">
+      <span>/02 CORE PRINCIPLES</span>
+      <span class="plus-marker">+ + + + + + + + + + + + + + + + + + + + + + + +</span>
+      <span>SYSTEM_GUIDELINES</span>
+    </div>
+
+    <section class="principles-cyber-row">
+      <div class="principle-box">
+        <div style="font-size:24px;">🧊</div>
+        <div class="principle-title">FUNCTION OVER FORM</div>
+        <div class="principle-desc">24-Class Deep ResNet AMC designed to serve sub-3ms defense inference. Nothing more.</div>
+      </div>
+
+      <div class="principle-box">
+        <div style="font-size:24px;">🎯</div>
+        <div class="principle-title">SYSTEMS THINKING</div>
+        <div class="principle-desc">Multi-domain co-design: Flight maneuvers, radar cross-section, and jamming are unified.</div>
+      </div>
+
+      <div class="principle-box">
+        <div style="font-size:24px;">⚡</div>
+        <div class="principle-title">DIGITAL AESTHETICS</div>
+        <div class="principle-desc">High-speed I/Q spectral DSP, power spectral density FFT, and zero soft compromise.</div>
+      </div>
+
+      <div class="principle-box">
+        <div style="font-size:24px;">🛡️</div>
+        <div class="principle-title">BOLD CONTRAST</div>
+        <div class="principle-desc">Proportional navigation, 6.8G defensive evasion, and false Doppler echo deception.</div>
+      </div>
+
+      <div class="principle-box">
+        <div style="font-size:24px;">⚙️</div>
+        <div class="principle-title">RAW & AUTHENTIC</div>
+        <div class="principle-desc">Grounded in 72 real Pixhawk flight runs across 189k steps. No fluff. 100% verified.</div>
+      </div>
+    </section>
+
+    <!-- /03 SELECTED WORK (MISSION CONSOLES) -->
+    <div class="section-divider-bar">
+      <span>/03 SELECTED WORK</span>
+      <span class="plus-marker">+ + + + + + + + + + + + + + + + + + + + + + + +</span>
+      <span>OPERATIONAL_MODULES</span>
+    </div>
+
+    <section class="modules-cyber-grid">
+      <!-- Card 1 -->
+      <a href="/pages/simulation.html" class="module-cyber-card">
+        <div class="card-preview-thumb" style="background:#0b1120;">
+          <div style="font-family:var(--font-mono); color:#38bdf8; font-size:12px; font-weight:700; text-align:center;">
+            [ 60 FPS BATTLEFIELD ]<br>
+            <span style="color:#ffffff; font-size:16px;">MACH 5.2</span>
+          </div>
+        </div>
+        <div class="card-info-bottom">
+          <div>
+            <div class="card-title-cyber">TACTICAL_SIM</div>
+            <div class="card-tag-cyber">COMBAT RADAR ENGINE</div>
+          </div>
+          <span class="card-arrow-btn">↗</span>
+        </div>
+      </a>
+
+      <!-- Card 2 -->
+      <a href="/pages/rf_classification.html" class="module-cyber-card">
+        <div class="card-preview-thumb" style="background:#1e1b4b;">
+          <div style="font-family:var(--font-mono); color:#c084fc; font-size:12px; font-weight:700; text-align:center;">
+            [ 24-CLASS RESNET ]<br>
+            <span style="color:#ffffff; font-size:16px;">SUB-3MS</span>
+          </div>
+        </div>
+        <div class="card-info-bottom">
+          <div>
+            <div class="card-title-cyber">NEURAL_NET</div>
+            <div class="card-tag-cyber">RF PERCEPTION LAB</div>
+          </div>
+          <span class="card-arrow-btn">↗</span>
+        </div>
+      </a>
+
+      <!-- Card 3 -->
+      <a href="/pages/signal_analysis.html" class="module-cyber-card">
+        <div class="card-preview-thumb" style="background:#022c22;">
+          <div style="font-family:var(--font-mono); color:#34d399; font-size:12px; font-weight:700; text-align:center;">
+            [ 1024-PT FFT PSD ]<br>
+            <span style="color:#ffffff; font-size:16px;">SPECTROGRAM</span>
+          </div>
+        </div>
+        <div class="card-info-bottom">
+          <div>
+            <div class="card-title-cyber">SPECTRAL_DSP</div>
+            <div class="card-tag-cyber">SIGNAL QUALITY LAB</div>
+          </div>
+          <span class="card-arrow-btn">↗</span>
+        </div>
+      </a>
+
+      <!-- Card 4 -->
+      <a href="/pages/model_performance.html" class="module-cyber-card">
+        <div class="card-preview-thumb" style="background:#451a03;">
+          <div style="font-family:var(--font-mono); color:#fbbf24; font-size:12px; font-weight:700; text-align:center;">
+            [ LOCKED 60/10/30 ]<br>
+            <span style="color:#ffffff; font-size:16px;">766,772 TEST</span>
+          </div>
+        </div>
+        <div class="card-info-bottom">
+          <div>
+            <div class="card-title-cyber">BENCHMARKS</div>
+            <div class="card-tag-cyber">F1 EVALUATION REPORT</div>
+          </div>
+          <span class="card-arrow-btn">↗</span>
+        </div>
+      </a>
+    </section>
+
+    <!-- /04, /05, /06 STATUS & COMMAND ROW -->
+    <section class="status-section-grid">
+      <!-- Col 1: /04 -->
+      <div class="status-col">
+        <div>
+          <div class="section-tag">/04 ENGAGEMENT READY</div>
+          <h2 class="status-heading">JOIN THE RESISTANCE</h2>
+          <p class="hero-desc-cyber" style="margin-bottom:16px;">
+            Cyber Brutalism is more than a style. It's a statement. Penetrate defended airspace and execute autonomous electronic deception.
+          </p>
+        </div>
+        <a href="/pages/simulation.html" class="btn-cyber-black" style="width:100%; justify-content:center;">
+          Let's Build ↗
+        </a>
+      </div>
+
+      <!-- Col 2: /05 SYSTEM STATUS -->
+      <div class="status-col">
+        <div>
+          <div class="section-tag">/05 TELEMETRY</div>
+          <h2 class="status-heading">SYSTEM STATUS</h2>
+
+          <div class="stat-row-cyber">
+            <span class="stat-label-cyber">CPU_USAGE</span>
+            <span class="stat-bar-segmented" id="homeCpuBar">|||||||||||||||||||||||||||||</span>
+            <span class="stat-val-cyber" id="homeCpuVal">--%</span>
+          </div>
+
+          <div class="stat-row-cyber">
+            <span class="stat-label-cyber">MEMORY</span>
+            <span class="stat-bar-segmented" style="color:var(--text-black)">-----------------------</span>
+            <span class="stat-val-cyber" id="homeRamVal">-- GB / -- GB</span>
+          </div>
+
+          <div class="stat-row-cyber">
+            <span class="stat-label-cyber">HARDWARE</span>
+            <span class="stat-bar-segmented" style="color:var(--text-black)">-----------------------</span>
+            <span class="stat-val-cyber" id="homeGpuVal" style="color:var(--accent-purple); font-weight:700">CUDA: RTX 3050</span>
+          </div>
+
+          <div class="stat-row-cyber">
+            <span class="stat-label-cyber">PYTORCH</span>
+            <span class="stat-bar-segmented" style="color:var(--text-black)">-----------------------</span>
+            <span class="stat-val-cyber" id="homeModelVal" style="color:#16a34a; font-weight:700">24-CLASS RESNET</span>
+          </div>
+        </div>
+
+        <div class="operational-banner">
+          <span id="homeBannerText">CONNECTING TO BACKEND...</span>
+          <span id="homeBannerDot" style="font-size:14px; color:#16a34a;">●</span>
+        </div>
+      </div>
+
+      <!-- Col 3: /06 INTERACTIVE JAMMING CONSOLE -->
+      <div class="status-col">
+        <div>
+          <div class="section-tag">/06 INTERACTIVE COMMAND</div>
+          <h2 class="status-heading">EXECUTE SIGNAL JAM</h2>
+          <p class="hero-desc-cyber" style="margin-bottom:14px;">
+            Trigger real-time ResNet modulation classification and immediate countermeasure response.
+          </p>
+
+          <select id="quickMod" class="cyber-input" style="font-weight:700">
+            <option value="16QAM" selected>16QAM — Fire-Control Radar (X-Band)</option>
+            <option value="QPSK">QPSK — Acquisition Tracking Radar</option>
+            <option value="8PSK">8PSK — High-PRF Radar</option>
+            <option value="8ASK">8ASK — Early Warning Radar</option>
+            <option value="BPSK">BPSK — Coherent Ranging</option>
+          </select>
+
+          <select id="quickSnr" class="cyber-input">
+            <option value="18">+18 dB (High Threat / Lock)</option>
+            <option value="12" selected>+12 dB (Normal Operating)</option>
+            <option value="4">+4 dB (Faint Signal)</option>
+          </select>
+        </div>
+
+        <div>
+          <button id="quickAnalyzeBtn" class="btn-cyber-purple" onclick="executeQuickJam()">
+            Subscribe to Signal ↗
+          </button>
+          <div id="quickResult" style="margin-top:10px; font-family:var(--font-mono); font-size:11px; font-weight:700; color:var(--accent-purple); min-height:20px;"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- /07 TRUSTED BY BUILDERS -->
+    <div class="section-divider-bar">
+      <span>/07 TRUSTED BY BUILDERS</span>
+      <span class="plus-marker">+ + + + + + + + + + + + + + + + + + + + + + + +</span>
+      <span>PARTNER_NETWORK</span>
+    </div>
+
+    <div style="background:var(--bg-white); border:1.5px solid var(--border-black); box-shadow:var(--brutal-shadow); padding:20px 32px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; font-family:var(--font-mono); font-weight:700; font-size:14px; margin-bottom:32px;">
+      <span>▲ Vercel</span>
+      <span>/// Linear</span>
+      <span>⚡ Supabase</span>
+      <span>[N] NEON</span>
+      <span>🔁 Replicate</span>
+      <span>≈ TailwindCSS</span>
+    </div>
+
+    <!-- CYBER BRUTALIST FOOTER -->
+    <footer class="cyber-footer">
+      <div style="display:flex; align-items:center; gap:8px;">
+        <span style="font-family:var(--font-display); font-weight:800; font-size:16px;">COG_EW</span>
+        <span class="brand-cursor"></span>
+      </div>
+
+      <div style="display:flex; gap:20px; text-transform:uppercase;">
+        <span>NAVIGATION: <a href="/pages/simulation.html" style="color:var(--text-black)">SIM</a></span>
+        <span>RESOURCES: <a href="/docs" target="_blank" style="color:var(--text-black)">MANIFESTO</a></span>
+        <span>GLOBAL NODE: <strong>LON · NY · TYO · BER</strong></span>
+      </div>
+
+      <div>
+        <span>© 2026 COG-EW DEFENSE AI LAB</span>
+      </div>
+    </footer>
+
   </main>
 
   <script>
     const $ = id => document.getElementById(id);
 
-    async function checkAPI() {
-      try {
-        const res = await fetch('/api/health');
-        const data = await res.json();
-        $('apiStatus').textContent = data.status === 'ok' ? '● Connected to COG-EW API' : '● Disconnected';
-        $('apiStatus').style.color = data.status === 'ok' ? 'var(--green)' : 'var(--red)';
-      } catch (err) {
-        $('apiStatus').textContent = '● API Offline';
-        $('apiStatus').style.color = 'var(--red)';
-      }
+    // Live clock
+    function updateClock() {
+      const now = new Date();
+      $('liveTime').textContent = now.toTimeString().split(' ')[0] + ' UTC';
     }
+    setInterval(updateClock, 1000);
+    updateClock();
 
-    async function loadMetrics() {
-      try {
-        const res = await fetch('/api/model-summary');
-        const data = await res.json();
-        if (data.test_accuracy) {
-          $('accuracy').textContent = `${data.test_accuracy}%`;
+    // Draw dynamic brutalist waveform in hero canvas
+    function drawHeroWave() {
+      const canvas = $('heroWaveCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width;
+      const h = canvas.height;
+      let offset = 0;
+
+      function render() {
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, w, h);
+
+        // Technical Grid
+        ctx.strokeStyle = '#e5e7eb';
+        ctx.lineWidth = 1;
+        for (let x = 0; x < w; x += 20) {
+          ctx.beginPath();
+          ctx.moveTo(x, 0);
+          ctx.lineTo(x, h);
+          ctx.stroke();
         }
-      } catch (err) {}
-    }
+        for (let y = 0; y < h; y += 20) {
+          ctx.beginPath();
+          ctx.moveTo(0, y);
+          ctx.lineTo(w, y);
+          ctx.stroke();
+        }
 
-    async function runClassification() {
-      const mod = $('modSelect').value;
-      const snr = parseFloat($('snrSelect').value);
-      const btn = $('classifyBtn');
+        // Center line
+        ctx.strokeStyle = '#000000';
+        ctx.beginPath();
+        ctx.moveTo(0, h / 2);
+        ctx.lineTo(w, h / 2);
+        ctx.stroke();
+
+        // In-Phase wave (Black bold)
+        ctx.strokeStyle = '#000000';
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        for (let x = 0; x < w; x++) {
+          const y = h / 2 + Math.sin((x + offset) * 0.05) * 45 * Math.cos((x + offset) * 0.015);
+          if (x === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+
+        // Quadrature wave (Purple accent)
+        ctx.strokeStyle = '#7c3aed';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        for (let x = 0; x < w; x++) {
+          const y = h / 2 + Math.cos((x + offset) * 0.05) * 35;
+          if (x === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+
+        offset += 1.5;
+        requestAnimationFrame(render);
+      }
+      render();
+    }
+    drawHeroWave();
+
+    // Quick Jam executor
+    async function executeQuickJam() {
+      const mod = $('quickMod').value;
+      const snr = parseFloat($('quickSnr').value);
+      const btn = $('quickAnalyzeBtn');
       btn.disabled = true;
-      btn.textContent = 'Classifying…';
+      btn.textContent = 'EXECUTING JAMMER...';
 
       try {
         const res = await fetch('/api/predict', {
@@ -442,52 +431,71 @@
           body: JSON.stringify({ modulation: mod, snr_db: snr })
         });
         const data = await res.json();
-
-        let badgeColor = 'var(--cyan)';
-        if (data.threat_level === 'CRITICAL') badgeColor = 'var(--red)';
-        else if (data.threat_level === 'HIGH') badgeColor = 'var(--amber)';
-
-        $('predictionResult').innerHTML = `
-          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px">
-            <div>
-              <div class="label">Identified Radar Emitter</div>
-              <div class="value" style="color:${badgeColor}">${data.threat_category}</div>
-              <div class="small">Modulation: <strong>${data.predicted_class}</strong> (${data.confidence_percent}% confidence) · Latency: ${data.inference_ms} ms</div>
-            </div>
-            <div style="background:rgba(179,136,255,0.15); border:1px solid var(--purple); border-radius:8px; padding:10px 16px; text-align:right">
-              <div class="label" style="color:var(--purple)">Recommended EW Jamming</div>
-              <div style="font-family:var(--font-mono); font-weight:700; color:#fff; font-size:16px; margin-top:4px">${data.recommended_countermeasure}</div>
-            </div>
-          </div>
-
-          <div class="metadata-grid">
-            <div class="meta-box"><span class="k">Threat Level</span><div class="v" style="color:${badgeColor}">${data.threat_level}</div></div>
-            <div class="meta-box"><span class="k">Estimated SNR</span><div class="v">${data.quality.snr_db_estimate} dB</div></div>
-            <div class="meta-box"><span class="k">IQ Imbalance</span><div class="v">${data.quality.iq_imbalance}</div></div>
-            <div class="meta-box"><span class="k">Uncertainty Score</span><div class="v">${data.uncertainty_score}</div></div>
-          </div>
+        $('quickResult').innerHTML = `
+          [DETECTED: ${data.predicted_class} · ${data.confidence_percent}%] → ${data.recommended_countermeasure}
         `;
-
-        // Sort and render top 8 probabilities
-        const probs = Object.entries(data.probabilities).sort((a,b) => b[1] - a[1]).slice(0, 8);
-        $('probDistribution').innerHTML = probs.map(([cls, p]) => `
-          <div class="prob-row">
-            <div class="prob-head"><span>${cls}</span><strong>${(p * 100).toFixed(1)}%</strong></div>
-            <div class="track"><div class="fill" style="width:${Math.max(2, p * 100)}%"></div></div>
-          </div>
-        `).join('');
-
       } catch (err) {
-        $('predictionResult').innerHTML = `<p style="color:var(--red)">Classification error: ${err.message}</p>`;
+        $('quickResult').textContent = `ERROR: ${err.message}`;
       } finally {
         btn.disabled = false;
-        btn.textContent = 'Analyze & Jam';
+        btn.textContent = 'Subscribe to Signal ↗';
       }
     }
 
-    checkAPI();
-    loadMetrics();
-    runClassification();
+    // Live backend hardware telemetry polling
+    async function pollLiveTelemetry() {
+      try {
+        const res = await fetch('/api/health');
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const data = await res.json();
+
+        // CPU
+        const cpu = Math.round(data.cpu_percent || 0);
+        const cpuEl = $('homeCpuVal');
+        if (cpuEl) cpuEl.textContent = `${cpu}%`;
+        const cpuBar = $('homeCpuBar');
+        if (cpuBar) {
+          const filled = Math.min(28, Math.max(1, Math.round(cpu * 0.28)));
+          cpuBar.textContent = '|'.repeat(filled) + '-'.repeat(28 - filled);
+        }
+
+        // RAM
+        const ramEl = $('homeRamVal');
+        if (ramEl) {
+          ramEl.textContent = `${data.ram_used_gb} GB / ${data.ram_total_gb} GB`;
+        }
+
+        // Hardware GPU
+        const gpuEl = $('homeGpuVal');
+        if (gpuEl) {
+          gpuEl.textContent = data.cuda_available ? `CUDA: ${data.gpu}` : 'CPU ONLY';
+        }
+
+        // Model
+        const modelEl = $('homeModelVal');
+        if (modelEl) {
+          modelEl.textContent = data.model_available ? `24-CLASS RESNET (CUDA)` : 'OFFLINE';
+        }
+
+        // Banner
+        const bannerText = $('homeBannerText');
+        const bannerDot = $('homeBannerDot');
+        if (bannerText) {
+          bannerText.textContent = `LIVE BACKEND: ${data.gpu} · ${data.classes_count}-CLASS PYTORCH`;
+        }
+        if (bannerDot) {
+          bannerDot.style.color = '#16a34a';
+        }
+      } catch (e) {
+        const bannerText = $('homeBannerText');
+        const bannerDot = $('homeBannerDot');
+        if (bannerText) bannerText.textContent = 'BACKEND OFFLINE';
+        if (bannerDot) bannerDot.style.color = '#dc2626';
+      }
+    }
+
+    pollLiveTelemetry();
+    setInterval(pollLiveTelemetry, 3000);
   </script>
 </body>
 </html>

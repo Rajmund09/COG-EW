@@ -6,110 +6,51 @@
   <title>COG-EW | Tactical Hypersonic Mission & 3D EW Battlefield Simulation</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700;800&family=Space+Grotesk:wght@500;700;800&display=swap" rel="stylesheet">
 
   <!-- Local Offline-First Three.js & OrbitControls -->
   <script src="/assets/js/three.min.js"></script>
   <script src="/assets/js/OrbitControls.js"></script>
+  <link rel="stylesheet" href="/assets/css/dashboard.css">
 
   <style>
     :root {
-      --bg: #050811;
-      --panel: rgba(11, 18, 33, 0.88);
-      --panel-border: rgba(30, 58, 95, 0.65);
-      --cyan: #00e5ff;
-      --cyan-glow: rgba(0, 229, 255, 0.4);
-      --green: #00e676;
-      --green-glow: rgba(0, 230, 118, 0.4);
-      --purple: #b388ff;
-      --purple-glow: rgba(179, 136, 255, 0.4);
-      --amber: #ffb300;
-      --red: #ff3d71;
-      --red-glow: rgba(255, 61, 113, 0.45);
-      --text: #e1ebfa;
-      --muted: #8298b9;
-      --font-display: 'Orbitron', sans-serif;
-      --font-body: 'Rajdhani', sans-serif;
-      --font-mono: 'Share Tech Mono', monospace;
+      --bg: var(--cyber-bg);
+      --panel: #ffffff;
+      --panel-border: #000000;
+      --cyan: #0284c7;
+      --cyan-glow: rgba(2, 132, 199, 0.4);
+      --green: #16a34a;
+      --green-glow: rgba(22, 163, 74, 0.4);
+      --purple: #7c3aed;
+      --purple-glow: rgba(124, 58, 237, 0.4);
+      --amber: #d97706;
+      --red: #dc2626;
+      --red-glow: rgba(220, 38, 38, 0.45);
+      --text: #000000;
+      --muted: #555555;
+      --font-display: 'Space Grotesk', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--font-body);
-      font-size: 15px;
-      line-height: 1.4;
+      background-color: var(--cyber-bg);
+      color: var(--cyber-black);
+      font-family: var(--cyber-body);
+      font-size: 14px;
+      line-height: 1.5;
       overflow-x: hidden;
       min-height: 100vh;
-    }
-
-    /* Subtle Scanline Overlay */
-    body::before {
-      content: "";
-      position: fixed;
-      top: 0; left: 0; width: 100vw; height: 100vh;
-      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.22) 50%);
-      background-size: 100% 4px;
-      z-index: 999;
-      pointer-events: none;
-      opacity: 0.28;
-    }
-
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 28px;
-      background: rgba(8, 13, 24, 0.96);
-      border-bottom: 1px solid var(--panel-border);
-      backdrop-filter: blur(12px);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-family: var(--font-display);
-      font-size: 19px;
-      font-weight: 800;
-      letter-spacing: 1px;
-    }
-    .brand span { color: var(--cyan); text-shadow: 0 0 12px var(--cyan-glow); }
-    .badge {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      padding: 3px 8px;
-      border-radius: 4px;
-      background: rgba(0, 229, 255, 0.15);
-      border: 1px solid var(--cyan);
-      color: var(--cyan);
-      letter-spacing: 0.5px;
-    }
-
-    nav { display: flex; gap: 8px; }
-    nav a {
-      color: var(--muted);
-      text-decoration: none;
-      padding: 6px 14px;
-      border-radius: 6px;
-      font-size: 14px;
-      font-weight: 600;
-      transition: all 0.2s;
-    }
-    nav a:hover, nav a.active {
-      color: var(--cyan);
-      background: rgba(0, 229, 255, 0.12);
-      border: 1px solid rgba(0, 229, 255, 0.25);
+      margin: 0;
+      padding: 0;
     }
 
     main {
       max-width: 1560px;
       margin: 0 auto;
-      padding: 18px 22px 50px;
+      padding: 24px 28px 60px;
     }
 
     /* Threat Alert Bar */
@@ -117,86 +58,98 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 10px 20px;
-      margin-bottom: 14px;
-      border-radius: 8px;
-      font-family: var(--font-mono);
-      font-size: 13.5px;
-      background: rgba(14, 26, 48, 0.85);
-      border: 1px solid var(--panel-border);
-      transition: all 0.3s;
+      padding: 12px 20px;
+      margin-bottom: 20px;
+      font-family: var(--cyber-mono);
+      font-size: 13px;
+      background: #ffffff;
+      border: 1.5px solid var(--cyber-black);
+      box-shadow: 3px 3px 0px var(--cyber-black);
+      color: var(--cyber-black);
+      transition: all 0.2s ease;
+    }
+    .alert-banner strong {
+      color: var(--cyber-purple);
     }
     .alert-banner.tracking {
-      background: rgba(255, 179, 0, 0.16);
-      border-color: var(--amber);
-      color: var(--amber);
+      background: #fef3c7;
+      border-left: 6px solid #d97706;
+      color: #78350f;
     }
     .alert-banner.missile {
-      background: rgba(255, 61, 113, 0.22);
-      border-color: var(--red);
-      color: var(--red);
-      animation: pulse-red 0.8s infinite alternate;
+      background: #fee2e2;
+      border-left: 6px solid #dc2626;
+      color: #7f1d1d;
+      animation: pulse-red-border 0.8s infinite alternate;
     }
     .alert-banner.evaded {
-      background: rgba(179, 136, 255, 0.18);
-      border-color: var(--purple);
-      color: var(--purple);
+      background: #f5f3ff;
+      border-left: 6px solid var(--cyber-purple);
+      color: #4c1d95;
     }
     .alert-banner.success {
-      background: rgba(0, 230, 118, 0.22);
-      border-color: var(--green);
-      color: var(--green);
+      background: #ecfdf5;
+      border-left: 6px solid #16a34a;
+      color: #064e3b;
+    }
+    .alert-banner.standoff {
+      background: #fffbeb;
+      border-left: 6px solid #d97706;
+      color: #92400e;
     }
 
-    @keyframes pulse-red {
-      from { box-shadow: 0 0 10px rgba(255, 61, 113, 0.3); }
-      to { box-shadow: 0 0 25px rgba(255, 61, 113, 0.7); }
+    @keyframes pulse-red-border {
+      from { box-shadow: 3px 3px 0px #dc2626; }
+      to { box-shadow: 6px 6px 0px #dc2626; }
     }
 
     /* Simulation Grid Layout */
     .sim-layout {
       display: grid;
-      grid-template-columns: minmax(0, 3fr) minmax(370px, 1fr);
-      gap: 18px;
+      grid-template-columns: minmax(0, 3fr) minmax(380px, 1.05fr);
+      gap: 20px;
     }
 
     /* Tactical Theater Panel */
     .theater-panel {
-      background: var(--panel);
-      border: 1px solid var(--panel-border);
-      border-radius: 14px;
-      padding: 16px;
+      background: #ffffff;
+      border: 1.5px solid var(--cyber-black);
+      box-shadow: 4px 4px 0px var(--cyber-black);
+      padding: 20px;
       position: relative;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
     }
 
     .theater-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 12px;
+      border-bottom: 1.5px solid #eaeaea;
+      padding-bottom: 12px;
     }
     .theater-title {
-      font-family: var(--font-display);
-      font-size: 15.5px;
-      color: var(--cyan);
+      font-family: var(--cyber-display);
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--cyber-black);
       display: flex;
       align-items: center;
       gap: 8px;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
     }
 
     /* Dual Canvas / Three.js Container */
     .canvas-wrap {
       position: relative;
       width: 100%;
-      background: #02050c;
-      border: 1px solid rgba(0, 229, 255, 0.3);
-      border-radius: 10px;
-      overflow: hidden;
-      aspect-ratio: 1200 / 650;
-      box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.8);
+      background: #000000;
+      border: 2px solid var(--cyber-black);
+      box-shadow: 3px 3px 0px var(--cyber-black);
+      height: 550px;
+      max-height: 68vh;
     }
 
     #threeSimContainer {
@@ -225,23 +178,21 @@
       display: flex;
       flex-direction: column;
       gap: 6px;
-      font-family: var(--font-mono);
-      font-size: 11.5px;
-      color: var(--cyan);
-      text-shadow: 0 0 8px rgba(0, 229, 255, 0.6);
+      font-family: var(--cyber-mono);
+      font-size: 11px;
     }
     .hud-tag {
-      background: rgba(3, 10, 22, 0.82);
-      border: 1px solid rgba(0, 229, 255, 0.35);
-      backdrop-filter: blur(4px);
-      padding: 4px 9px;
-      border-radius: 4px;
+      background: rgba(0, 0, 0, 0.88);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #ffffff;
+      padding: 4px 10px;
       display: inline-flex;
       align-items: center;
       gap: 8px;
+      box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.5);
     }
-    .hud-tag.green { border-color: rgba(0, 230, 118, 0.4); color: var(--green); }
-    .hud-tag.amber { border-color: rgba(255, 179, 0, 0.4); color: var(--amber); }
+    .hud-tag.green { border-color: var(--cyber-lime); color: var(--cyber-lime); }
+    .hud-tag.amber { border-color: #f59e0b; color: #fbbf24; }
 
     .hud-3d-topright {
       position: absolute;
@@ -251,7 +202,7 @@
       z-index: 10;
       display: flex;
       gap: 6px;
-      font-family: var(--font-mono);
+      font-family: var(--cyber-mono);
       font-size: 11px;
     }
 
@@ -261,57 +212,52 @@
       bottom: 12px;
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(6, 12, 24, 0.90);
-      border: 1px solid rgba(0, 229, 255, 0.4);
-      border-radius: 8px;
-      padding: 6px 12px;
+      background: #000000;
+      border: 1.5px solid #ffffff;
+      padding: 6px 10px;
       display: flex;
       align-items: center;
       gap: 6px;
       z-index: 20;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 4px 22px rgba(0, 0, 0, 0.6);
+      box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.8);
       max-width: 96%;
       overflow-x: auto;
     }
     .cam-toolbar::-webkit-scrollbar { height: 3px; }
-    .cam-toolbar::-webkit-scrollbar-thumb { background: rgba(0,229,255,0.3); border-radius: 2px; }
+    .cam-toolbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 2px; }
     .cam-toolbar-title {
-      font-family: var(--font-mono);
+      font-family: var(--cyber-mono);
       font-size: 11px;
-      font-weight: 700;
-      color: var(--muted);
+      font-weight: 800;
+      color: var(--cyber-lime);
       margin-right: 4px;
       white-space: nowrap;
-      letter-spacing: 0.5px;
     }
     .cam-btn {
-      font-family: var(--font-mono);
-      font-size: 11.5px;
+      font-family: var(--cyber-mono);
+      font-size: 11px;
       font-weight: 700;
-      padding: 5px 10px;
-      border-radius: 5px;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      color: var(--text);
+      padding: 5px 9px;
+      background: #1e1e1e;
+      border: 1px solid #444444;
+      color: #ffffff;
       cursor: pointer;
       white-space: nowrap;
       display: inline-flex;
       align-items: center;
       gap: 5px;
-      transition: all 0.2s;
+      transition: all 0.15s ease;
     }
     .cam-btn:hover {
-      background: rgba(0, 229, 255, 0.18);
-      border-color: var(--cyan);
-      color: #fff;
-      transform: translateY(-1px);
+      background: #333333;
+      border-color: #ffffff;
     }
     .cam-btn.active {
-      background: var(--cyan);
-      color: #031017;
-      border-color: #ffffff;
-      box-shadow: 0 0 12px var(--cyan-glow);
+      background: var(--cyber-lime);
+      color: #000000;
+      border-color: #000000;
+      font-weight: 800;
+      box-shadow: 0 0 8px rgba(190, 242, 100, 0.6);
     }
 
     /* Live Controls & Mission Strip */
@@ -319,73 +265,85 @@
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
-      margin-top: 14px;
+      margin-top: 16px;
       align-items: center;
       justify-content: space-between;
+      border-top: 1.5px solid #eaeaea;
+      padding-top: 14px;
     }
 
     .btn-group { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-    
+
     button {
-      font-family: var(--font-body);
-      font-size: 14px;
+      font-family: var(--cyber-mono);
+      font-size: 12px;
       font-weight: 700;
-      letter-spacing: 0.5px;
       padding: 7px 15px;
-      border-radius: 6px;
-      border: 1px solid transparent;
+      border: 1.5px solid var(--cyber-black);
+      box-shadow: 2px 2px 0px var(--cyber-black);
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      transition: all 0.2s;
+      transition: all 0.15s ease;
     }
     .btn-cyan {
-      background: var(--cyan);
-      color: #031017;
-      box-shadow: 0 0 12px var(--cyan-glow);
+      background: var(--cyber-black);
+      color: #ffffff;
     }
-    .btn-cyan:hover { background: #40efff; transform: translateY(-1px); }
+    .btn-cyan:hover {
+      background: var(--cyber-purple);
+      color: #ffffff;
+      transform: translate(-1px, -1px);
+      box-shadow: 3px 3px 0px var(--cyber-black);
+    }
     .btn-cyan.active {
-      background: #00e5ff;
-      color: #031017;
-      box-shadow: 0 0 15px var(--cyan-glow);
-      border-color: #ffffff;
+      background: var(--cyber-black);
+      color: #ffffff;
     }
     .btn-secondary {
-      background: rgba(255, 255, 255, 0.08);
-      color: var(--text);
-      border-color: var(--panel-border);
+      background: #ffffff;
+      color: var(--cyber-black);
     }
-    .btn-secondary:hover { background: rgba(255, 255, 255, 0.15); color: #fff; }
+    .btn-secondary:hover {
+      background: #f1f5f9;
+      transform: translate(-1px, -1px);
+      box-shadow: 3px 3px 0px var(--cyber-black);
+    }
     .btn-secondary.active {
-      background: rgba(0, 229, 255, 0.25);
-      border-color: var(--cyan);
-      color: var(--cyan);
-      box-shadow: 0 0 10px var(--cyan-glow);
+      background: var(--cyber-black);
+      color: #ffffff;
     }
     .btn-purple {
-      background: rgba(179, 136, 255, 0.2);
-      color: var(--purple);
-      border-color: var(--purple);
+      background: var(--cyber-purple);
+      color: #ffffff;
     }
-    .btn-purple:hover { background: var(--purple); color: #000; box-shadow: 0 0 12px var(--purple-glow); }
+    .btn-purple:hover {
+      background: #6d28d9;
+      transform: translate(-1px, -1px);
+      box-shadow: 3px 3px 0px var(--cyber-black);
+    }
     .btn-danger {
-      background: rgba(255, 61, 113, 0.18);
-      color: var(--red);
-      border-color: var(--red);
+      background: #ffffff;
+      color: #dc2626;
+      border-color: #dc2626;
     }
-    .btn-danger:hover { background: var(--red); color: #fff; }
+    .btn-danger:hover {
+      background: #dc2626;
+      color: #ffffff;
+      transform: translate(-1px, -1px);
+      box-shadow: 3px 3px 0px var(--cyber-black);
+    }
 
     select {
-      font-family: var(--font-body);
-      font-size: 14px;
-      font-weight: 600;
-      padding: 7px 12px;
-      border-radius: 6px;
-      background: #0b1322;
-      border: 1px solid var(--panel-border);
-      color: var(--text);
+      font-family: var(--cyber-mono);
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 6px 10px;
+      background: #ffffff;
+      border: 1.5px solid var(--cyber-black);
+      box-shadow: 2px 2px 0px var(--cyber-black);
+      color: var(--cyber-black);
       cursor: pointer;
     }
 
@@ -393,23 +351,25 @@
     .hud-sidebar {
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 16px;
     }
 
     .hud-card {
-      background: var(--panel);
-      border: 1px solid var(--panel-border);
-      border-radius: 12px;
-      padding: 15px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+      background: #ffffff;
+      border: 1.5px solid var(--cyber-black);
+      box-shadow: 4px 4px 0px var(--cyber-black);
+      padding: 16px;
     }
     .hud-title {
-      font-family: var(--font-display);
-      font-size: 12.5px;
-      letter-spacing: 1px;
+      font-family: var(--cyber-display);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
       text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 10px;
+      color: var(--cyber-black);
+      margin-bottom: 12px;
+      border-bottom: 1.5px solid #eaeaea;
+      padding-bottom: 8px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -421,81 +381,83 @@
       gap: 10px;
     }
     .telem-box {
-      background: rgba(8, 14, 25, 0.7);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      border-radius: 8px;
-      padding: 9px;
+      background: #f8fafc;
+      border: 1px solid var(--cyber-black);
+      box-shadow: 2px 2px 0px var(--cyber-black);
+      padding: 10px;
     }
     .telem-label {
-      font-family: var(--font-mono);
+      font-family: var(--cyber-mono);
       font-size: 10.5px;
-      color: var(--muted);
+      font-weight: 700;
+      color: #64748b;
       text-transform: uppercase;
     }
     .telem-val {
-      font-family: var(--font-mono);
+      font-family: var(--cyber-mono);
       font-size: 19px;
-      font-weight: 700;
+      font-weight: 800;
       margin-top: 3px;
-      color: var(--cyan);
+      color: var(--cyber-black);
     }
-    .telem-val.green { color: var(--green); }
-    .telem-val.amber { color: var(--amber); }
-    .telem-val.red { color: var(--red); }
-    .telem-val.purple { color: var(--purple); }
+    .telem-val.green { color: #16a34a; }
+    .telem-val.amber { color: #d97706; }
+    .telem-val.red { color: #dc2626; }
+    .telem-val.purple { color: var(--cyber-purple); }
 
     /* RF Intercept Box */
     .rf-box {
-      background: rgba(8, 15, 28, 0.9);
-      border: 1px solid rgba(0, 229, 255, 0.3);
-      border-radius: 8px;
+      background: #f8fafc;
+      border: 1px solid var(--cyber-black);
+      box-shadow: 2px 2px 0px var(--cyber-black);
       padding: 12px;
     }
     .rf-row {
       display: flex;
       justify-content: space-between;
       margin-bottom: 6px;
-      font-size: 13px;
+      font-size: 12px;
       gap: 8px;
     }
-    .rf-row .k { color: var(--muted); font-family: var(--font-mono); }
-    .rf-row .v { font-weight: 700; font-family: var(--font-mono); text-align: right; }
+    .rf-row .k { color: #555555; font-family: var(--cyber-mono); font-weight: 600; }
+    .rf-row .v { font-weight: 800; font-family: var(--cyber-mono); text-align: right; color: var(--cyber-black); }
 
     /* Tactical Event Stream */
     .log-stream {
-      font-family: var(--font-mono);
-      font-size: 12px;
-      max-height: 200px;
+      font-family: var(--cyber-mono);
+      font-size: 11.5px;
+      max-height: 180px;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
       gap: 6px;
-      padding-right: 4px;
+      background: #f8fafc;
+      border: 1px solid var(--cyber-black);
+      padding: 8px;
     }
-    .log-stream::-webkit-scrollbar { width: 5px; }
-    .log-stream::-webkit-scrollbar-thumb { background: rgba(0,229,255,0.3); border-radius: 4px; }
     .log-item {
       padding: 6px 8px;
-      border-radius: 4px;
-      background: rgba(14, 23, 40, 0.6);
-      border-left: 3px solid var(--cyan);
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-left: 3px solid var(--cyber-black);
+      color: var(--cyber-black);
     }
-    .log-item.warn { border-left-color: var(--amber); color: #ffe082; }
-    .log-item.danger { border-left-color: var(--red); color: #ff8a80; }
-    .log-item.jam { border-left-color: var(--purple); color: #d1c4e9; }
-    .log-item.win { border-left-color: var(--green); color: #b9f6ca; }
+    .log-item.warn { border-left-color: #d97706; background: #fffbeb; color: #92400e; }
+    .log-item.danger { border-left-color: #dc2626; background: #fef2f2; color: #991b1b; }
+    .log-item.jam { border-left-color: var(--cyber-purple); background: #f5f3ff; color: #5b21b6; }
+    .log-item.win { border-left-color: #16a34a; background: #f0fdf4; color: #166534; }
 
     /* Progress bar */
     .target-bar {
-      height: 7px;
-      background: rgba(255,255,255,0.1);
-      border-radius: 4px;
+      height: 9px;
+      background: #e2e8f0;
+      border: 1px solid var(--cyber-black);
       overflow: hidden;
       margin-top: 8px;
     }
     .target-fill {
       height: 100%;
-      background: linear-gradient(90deg, var(--cyan), var(--green));
+      background: var(--cyber-lime);
       width: 0%;
       transition: width 0.15s linear;
     }
@@ -504,8 +466,8 @@
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; width: 100vw; height: 100vh;
-      background: rgba(3, 7, 16, 0.88);
-      backdrop-filter: blur(8px);
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(4px);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -519,60 +481,228 @@
       pointer-events: auto;
     }
     .modal-card {
-      background: #0d1527;
-      border: 2px solid var(--green);
-      box-shadow: 0 0 40px rgba(0, 230, 118, 0.35);
-      border-radius: 16px;
+      background: #ffffff;
+      border: 2.5px solid #000000;
+      box-shadow: 10px 10px 0px #000000;
       width: 90%;
-      max-width: 580px;
-      padding: 30px;
-      text-align: center;
-      transform: scale(0.92);
-      transition: transform 0.3s ease;
-    }
-    .modal-overlay.active .modal-card { transform: scale(1); }
-    .modal-card h2 {
-      font-family: var(--font-display);
-      font-size: 26px;
-      color: var(--green);
-      margin-bottom: 8px;
-      text-shadow: 0 0 16px rgba(0, 230, 118, 0.5);
-    }
-    .debrief-table {
-      margin: 18px 0;
+      max-width: 620px;
+      padding: 0;
+      overflow: hidden;
+      transform: scale(0.96) translateY(10px);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
       text-align: left;
-      font-family: var(--font-mono);
-      font-size: 13px;
+    }
+    .modal-overlay.active .modal-card { transform: scale(1) translateY(0); }
+
+    /* Modal Top Header */
+    .modal-cyber-header {
+      background: #000000;
+      color: #ffffff;
+      padding: 12px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #000000;
+    }
+    .modal-header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .modal-cyber-tag {
+      font-family: var(--cyber-mono);
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--cyber-lime);
+      letter-spacing: 0.05em;
+    }
+    .modal-cyber-pill {
+      background: #dc2626;
+      color: #ffffff;
+      font-family: var(--cyber-mono);
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 7px;
+      border: 1px solid #ffffff;
+    }
+    .modal-cyber-close {
+      background: var(--cyber-lime);
+      color: #000000;
+      border: 1.5px solid #000000;
+      box-shadow: 2px 2px 0px #ffffff;
+      font-family: var(--cyber-mono);
+      font-size: 14px;
+      font-weight: 900;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      line-height: 1;
+    }
+    .modal-cyber-close:hover {
+      background: #dc2626;
+      color: #ffffff;
+      transform: translate(-1px, -1px);
+      box-shadow: 3px 3px 0px #ffffff;
+    }
+    .modal-cyber-close:active {
+      transform: translate(1px, 1px);
+      box-shadow: 1px 1px 0px #ffffff;
+    }
+
+    /* Modal Body Content */
+    .modal-cyber-body {
+      padding: 22px 26px 24px;
+      background: #ffffff;
+    }
+
+    .victory-hero-badge {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 18px;
+      padding-bottom: 16px;
+      border-bottom: 2px dashed #000000;
+    }
+    .victory-icon-frame {
+      font-size: 32px;
+      background: var(--cyber-lime);
+      border: 2px solid #000000;
+      box-shadow: 3px 3px 0px #000000;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .victory-category-tag {
+      font-family: var(--cyber-mono);
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--cyber-purple);
+      letter-spacing: 0.05em;
+      margin-bottom: 2px;
+    }
+    .victory-title {
+      font-family: var(--cyber-display);
+      font-size: 24px;
+      font-weight: 900;
+      color: #000000;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+    .victory-subtitle {
+      font-family: var(--cyber-mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: #64748b;
+      margin-top: 4px;
+      letter-spacing: 0.02em;
+    }
+
+    /* 4-Stat Grid */
+    .victory-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+    @media (max-width: 640px) {
+      .victory-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    .victory-stat-tile {
+      background: #f8fafc;
+      border: 1.5px solid #000000;
+      box-shadow: 3px 3px 0px #000000;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .victory-stat-tile .tile-label {
+      font-family: var(--cyber-mono);
+      font-size: 9px;
+      font-weight: 800;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .victory-stat-tile .tile-val {
+      font-family: var(--cyber-mono);
+      font-size: 13.5px;
+      font-weight: 900;
+    }
+
+    /* Table Wrap */
+    .victory-table-wrap {
+      border: 1.5px solid #000000;
+      box-shadow: 3px 3px 0px #000000;
+      background: #ffffff;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+    .victory-table-wrap .debrief-table {
       width: 100%;
       border-collapse: collapse;
+      font-family: var(--cyber-mono);
+      font-size: 11.5px;
+      margin: 0;
     }
-    .debrief-table td {
-      padding: 7px 12px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    .victory-table-wrap .debrief-table td {
+      padding: 9px 14px;
+      border-bottom: 1px solid #e2e8f0;
+      color: #1e293b;
     }
-    .debrief-table td:last-child { text-align: right; font-weight: 700; color: var(--cyan); }
+    .victory-table-wrap .debrief-table tr:last-child td {
+      border-bottom: none;
+    }
+    .victory-table-wrap .debrief-table td:last-child {
+      text-align: right;
+      font-weight: 700;
+    }
+    .table-dot {
+      color: var(--cyber-lime);
+      font-size: 10px;
+      margin-right: 6px;
+      filter: drop-shadow(0 0 1px #000);
+    }
+
+    /* Modal Footer Buttons */
+    .modal-cyber-footer {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
 
     /* Model Benchmark Modal Styles */
     .benchmark-modal-card {
-      background: #09101f;
-      border: 2px solid var(--cyan);
-      box-shadow: 0 0 45px rgba(0, 229, 255, 0.4);
-      border-radius: 16px;
+      background: #ffffff;
+      border: 2px solid var(--cyber-black);
+      box-shadow: 8px 8px 0px var(--cyber-black);
+      color: var(--cyber-black);
       width: 95%;
       max-width: 920px;
       max-height: 90vh;
       overflow-y: auto;
       padding: 26px 30px;
       text-align: left;
-      transform: scale(0.92);
+      transform: scale(0.95);
       transition: transform 0.3s ease;
     }
     .modal-overlay.active .benchmark-modal-card { transform: scale(1); }
     .benchmark-modal-card h2 {
-      font-family: var(--font-display);
-      font-size: 22px;
-      color: var(--cyan);
-      text-shadow: 0 0 16px var(--cyan-glow);
+      font-family: var(--cyber-display);
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--cyber-black);
       display: flex;
       align-items: center;
       gap: 10px;
@@ -580,38 +710,40 @@
     .benchmark-table {
       width: 100%;
       border-collapse: collapse;
-      font-family: var(--font-mono);
-      font-size: 12px;
+      font-family: var(--cyber-mono);
+      font-size: 11.5px;
       margin: 14px 0;
+      border: 1px solid var(--cyber-black);
     }
     .benchmark-table th {
-      background: rgba(0, 229, 255, 0.12);
-      color: var(--cyan);
+      background: var(--cyber-black);
+      color: #ffffff;
       padding: 8px 10px;
       text-align: left;
       font-weight: 700;
-      border-bottom: 1px solid rgba(0, 229, 255, 0.35);
+      border: 1px solid #333333;
     }
     .benchmark-table td {
       padding: 8px 10px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+      border: 1px solid #e2e8f0;
+      color: #000000;
     }
     .benchmark-table tr.winner-row {
-      background: rgba(0, 230, 118, 0.12);
+      background: #f0fdf4;
       font-weight: 700;
     }
     .benchmark-table tr.winner-row td {
-      border-top: 1px solid rgba(0, 230, 118, 0.3);
-      border-bottom: 1px solid rgba(0, 230, 118, 0.3);
+      border-top: 1.5px solid #16a34a;
+      border-bottom: 1.5px solid #16a34a;
     }
     .command-box {
-      background: #040813;
-      border: 1px solid var(--panel-border);
-      border-radius: 6px;
+      background: #f8fafc;
+      border: 1.5px solid var(--cyber-black);
+      box-shadow: 2px 2px 0px var(--cyber-black);
       padding: 12px 16px;
-      font-family: var(--font-mono);
-      font-size: 12.5px;
-      color: var(--cyan);
+      font-family: var(--cyber-mono);
+      font-size: 12px;
+      color: var(--cyber-black);
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -620,20 +752,19 @@
       overflow-x: auto;
     }
     .copy-cmd-btn {
-      background: rgba(0, 229, 255, 0.18);
-      border: 1px solid var(--cyan);
-      color: var(--cyan);
-      font-family: var(--font-mono);
-      font-size: 12px;
+      background: var(--cyber-black);
+      border: 1px solid var(--cyber-black);
+      color: #ffffff;
+      font-family: var(--cyber-mono);
+      font-size: 11px;
       padding: 5px 12px;
-      border-radius: 4px;
       cursor: pointer;
       white-space: nowrap;
-      transition: all 0.2s;
+      transition: all 0.15s ease;
     }
     .copy-cmd-btn:hover {
-      background: var(--cyan);
-      color: #050811;
+      background: var(--cyber-purple);
+      color: #ffffff;
     }
 
     @media (max-width: 1100px) {
@@ -643,21 +774,27 @@
 </head>
 <body>
 
-  <header>
-    <div class="brand">COG<span>-EW</span> / MISSION CONTROL</div>
-    <nav>
-      <a href="/">Overview</a>
-      <a href="/pages/simulation.html" class="active">Tactical Simulation</a>
-      <a href="/pages/rf_classification.html">RF Classification</a>
-      <a href="/pages/signal_analysis.html">Signal Analysis</a>
-      <a href="/pages/model_performance.html">Model Benchmarks</a>
+  <header class="cyber-navbar">
+    <div class="cyber-brand">
+      COG<span>_EW_</span>
+      <span class="cyber-pill-tag">SIMULATION THEATER</span>
+    </div>
+
+    <nav class="cyber-nav-links">
+      <a href="/">// 00 OVERVIEW</a>
+      <a href="/pages/simulation.html" class="active">// 01 TACTICAL SIM</a>
+      <a href="/pages/rf_classification.html">// 02 RF PERCEPTION</a>
+      <a href="/pages/signal_analysis.html">// 03 SPECTRAL DSP</a>
+      <a href="/pages/model_performance.html">// 04 BENCHMARKS</a>
     </nav>
-    <div style="display:flex; align-items:center; gap:16px;">
-      <button id="soundToggleBtn" class="btn-secondary" style="padding:5px 12px; font-size:13px;" title="Toggle audio synthesis">
-        <span id="soundIcon">🔊</span> Audio
+
+    <div class="cyber-sys-status">
+      <div class="cyber-time-pill">SYS.TIME <span>23:47:12</span></div>
+      <button id="soundToggleBtn" class="cyber-btn-black" style="padding:5px 10px; font-size:10.5px;" title="Toggle audio synthesis">
+        <span id="soundIcon">🔊</span> AUDIO
       </button>
-      <div class="status" id="apiStatus" style="font-family:var(--font-mono); font-size:12.5px; color:var(--muted);">
-        <span style="color:#00e676; margin-right:4px;">●</span> Connected to COG-EW API
+      <div id="apiStatus" style="border:1.5px solid #000; background:var(--cyber-lime); color:#000; padding:3px 7px; font-family:var(--cyber-mono); font-size:10.5px; font-weight:800; box-shadow:2px 2px 0px #000; white-space:nowrap; display:inline-flex; align-items:center; gap:4px;">
+        <span>●</span> API ONLINE
       </div>
     </div>
   </header>
@@ -708,17 +845,17 @@
             </select>
 
             <!-- Trained Flight Lap Selector -->
-            <div style="display:flex; align-items:center; gap:5px; background:rgba(0,229,255,0.06); padding:2px 8px; border-radius:6px; border:1px solid rgba(0,229,255,0.25);">
-              <label style="font-size:11px; font-family:var(--font-mono); color:var(--cyan); font-weight:700;">TRAINED LAP:</label>
-              <select id="flightLapSelect" style="padding:3px 6px; font-size:11px; background:#070d1a; border:1px solid var(--cyan); color:#e1ebfa; border-radius:4px; max-width:180px;" title="Select from 72 Training Split flights">
+            <div style="display:flex; align-items:center; gap:6px; background:#f8fafc; padding:3px 8px; border:1.5px solid var(--cyber-black); box-shadow:2px 2px 0px var(--cyber-black);">
+              <label style="font-size:11px; font-family:var(--cyber-mono); color:var(--cyber-black); font-weight:800;">TRAINED LAP:</label>
+              <select id="flightLapSelect" style="padding:3px 6px; font-size:11px; background:#ffffff; border:1px solid var(--cyber-black); color:#000000; font-family:var(--cyber-mono); font-weight:700; max-width:180px;" title="Select from 72 Training Split flights">
                 <option value="1">Lap 001 (60% Train)</option>
               </select>
-              <span class="badge" style="border-color:var(--green); color:var(--green); background:rgba(0,230,118,0.15); font-size:9.5px; padding:1px 5px;">TRAIN ONLY</span>
+              <span class="cyber-pill-tag" style="background:var(--cyber-lime); color:#000000; font-size:9.5px; font-weight:800; border:1px solid #000; padding:1px 6px;">TRAIN ONLY</span>
             </div>
 
             <!-- Model Benchmark Modal Button -->
-            <button id="openBenchmarkBtn" class="btn-cyan" style="padding:5px 11px; font-size:12px;" title="Compare modern architectures (Transformer vs TCN vs BiLSTM on 60/15/15 split)">
-              🏆 Model Benchmark
+            <button id="openBenchmarkBtn" class="btn-cyan" style="padding:6px 12px; font-size:11px;" title="Compare modern architectures">
+              🏆 MODEL BENCHMARK ↗
             </button>
           </div>
         </div>
@@ -820,7 +957,7 @@
             <span class="badge" style="border-color:var(--cyan); color:var(--cyan); font-size:10px;">PIXHAWK GYRO</span>
           </div>
           <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:8px;">
-            <div style="position:relative; width:120px; height:120px; border-radius:50%; border:2px solid var(--panel-border); overflow:hidden; background:#070d1a; box-shadow:inset 0 0 15px rgba(0,0,0,0.8); flex-shrink:0;">
+            <div style="position:relative; width:120px; height:120px; border-radius:50%; border:2px solid var(--cyber-black); box-shadow:2px 2px 0px var(--cyber-black); overflow:hidden; background:#070d1a; flex-shrink:0;">
               <canvas id="adiCanvas" width="120" height="120" style="display:block;"></canvas>
             </div>
             <div style="flex:1; font-family:var(--font-mono); font-size:12px;">
@@ -849,7 +986,7 @@
         </div>
 
         <!-- AI Neural Model Deep Learning Inference (GPU Online) -->
-        <div class="hud-card" style="border:1px solid rgba(0,230,118,0.35); background:rgba(7,16,26,0.92);">
+        <div class="hud-card">
           <div class="hud-title">
             <span style="color:var(--green)">🧠 Neural AI Inference</span>
             <span class="badge" id="aiModelBadge" style="border-color:var(--green); color:var(--green); background:rgba(0,230,118,0.15); font-size:10px;">TCNResNet · GPU</span>
@@ -865,12 +1002,12 @@
             </div>
             <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
               <span style="color:var(--muted)">GROUNDED DATA:</span>
-              <span style="color:#e1ebfa">IDF 60% Train (72 Laps)</span>
+              <span style="color:var(--cyber-black); font-weight:700;">IDF 60% Train (72 Laps)</span>
             </div>
 
             <!-- Predicted vs Recorded Real Telemetry Comparison -->
-            <div style="background:rgba(2,5,12,0.85); border:1px solid rgba(0,229,255,0.2); border-radius:6px; padding:7px 9px; margin-top:8px;">
-              <div style="display:flex; justify-content:space-between; font-size:10px; color:var(--muted); border-bottom:1px solid rgba(255,255,255,0.08); padding-bottom:3px; margin-bottom:5px;">
+            <div style="background:#f8fafc; border:1px solid var(--cyber-black); box-shadow:2px 2px 0px var(--cyber-black); padding:9px 10px; margin-top:8px;">
+              <div style="display:flex; justify-content:space-between; font-size:10px; color:#555555; font-weight:800; border-bottom:1px solid #e2e8f0; padding-bottom:4px; margin-bottom:5px;">
                 <span>PARAMETER</span>
                 <span>NEURAL PRED</span>
                 <span>PIXHAWK ACTUAL</span>
@@ -975,7 +1112,7 @@
                 <span>REAL I/Q WAVEFORM SLICE</span>
                 <span id="iqBinsText">1024 COMPLEX BINS</span>
               </div>
-              <canvas id="rfMiniWaveform" width="300" height="42" style="width:100%; height:42px; background:rgba(2,5,12,0.9); border:1px solid rgba(0,229,255,0.25); border-radius:4px; display:block;"></canvas>
+              <canvas id="rfMiniWaveform" width="300" height="42" style="width:100%; height:42px; background:#000000; border:1px solid var(--cyber-black); box-shadow:1px 1px 0px var(--cyber-black); display:block;"></canvas>
             </div>
           </div>
         </div>
@@ -993,24 +1130,85 @@
 
   <!-- Mission Accomplished Victory Modal -->
   <div id="victoryModal" class="modal-overlay">
-    <div class="modal-card">
-      <div style="font-size:42px; margin-bottom:10px">🎯💥</div>
-      <h2>TARGET DESTROYED</h2>
-      <p style="color:var(--muted); font-size:15px">STRATEGIC ENEMY COMMAND BUNKER ELIMINATED</p>
+    <div class="modal-card victory-cyber-card">
+      <!-- Modal Top Bar with Close Button -->
+      <div class="modal-cyber-header">
+        <div class="modal-header-left">
+          <span class="modal-cyber-tag">/09 TACTICAL DEBRIEF</span>
+          <span class="modal-cyber-pill">DIRECT KINETIC HIT</span>
+        </div>
+        <button id="closeVictoryModalBtn" class="modal-cyber-close" title="Close Debrief (ESC)" aria-label="Close Modal">✕</button>
+      </div>
 
-      <table class="debrief-table">
-        <tr><td>Mission Status:</td><td style="color:var(--green)">100% ACCOMPLISHED</td></tr>
-        <tr><td>Target Impact:</td><td style="color:var(--green)">DIRECT KINETIC HIT</td></tr>
-        <tr><td>Survivability Rating:</td><td style="color:var(--cyan)">A+ (98.5%)</td></tr>
-        <tr><td>SAM Missiles Evaded:</td><td id="mEvadedDebrief" style="color:var(--purple)">--</td></tr>
-        <tr><td>Radar Sites Jammed:</td><td id="rJammedDebrief" style="color:var(--purple)">--</td></tr>
-        <tr><td>Final Flight Duration:</td><td id="timeDebrief">-- s</td></tr>
-        <tr><td>RF Intelligence Source:</td><td style="color:var(--green)">RadioML 2018.01A HDF5</td></tr>
-      </table>
+      <!-- Modal Body -->
+      <div class="modal-cyber-body">
+        <div class="victory-hero-badge">
+          <div class="victory-icon-frame">🎯</div>
+          <div>
+            <div class="victory-category-tag">OBJECTIVE STATUS: DESTROYED</div>
+            <h2 class="victory-title">TARGET ELIMINATED</h2>
+            <div class="victory-subtitle">STRATEGIC ENEMY COMMAND BUNKER [HUB-4] SECTOR 4 NEUTRALIZED</div>
+          </div>
+        </div>
 
-      <div class="btn-group" style="justify-content:center; margin-top:20px">
-        <button id="downloadLogBtn" class="btn-secondary">📥 Export Flight Telemetry</button>
-        <button id="replayBtn" class="btn-cyan">↺ Replay Mission</button>
+        <!-- 4-Tile High-Impact Metric Grid -->
+        <div class="victory-stats-grid">
+          <div class="victory-stat-tile">
+            <span class="tile-label">MISSION STATUS</span>
+            <span class="tile-val" style="color:var(--green)">100% SUCCESS</span>
+          </div>
+          <div class="victory-stat-tile">
+            <span class="tile-label">SURVIVABILITY</span>
+            <span class="tile-val" style="color:var(--cyan)">A+ (98.5%)</span>
+          </div>
+          <div class="victory-stat-tile">
+            <span class="tile-label">SAMs EVADED</span>
+            <span class="tile-val" id="mEvadedDebrief" style="color:var(--purple)">-- Defeated</span>
+          </div>
+          <div class="victory-stat-tile">
+            <span class="tile-label">RADARS JAMMED</span>
+            <span class="tile-val" id="rJammedDebrief" style="color:var(--purple)">-- Sites</span>
+          </div>
+        </div>
+
+        <!-- Detailed Telemetry Specs Wrap -->
+        <div class="victory-table-wrap">
+          <table class="debrief-table">
+            <tr>
+              <td><span class="table-dot">●</span> Strike Vector:</td>
+              <td style="color:var(--green)">PRECISION STANDOFF KINETIC RELEASE (MACH 6) · WAVERIDER EGRESS AT 32,500M</td>
+            </tr>
+            <tr>
+              <td><span class="table-dot">●</span> Aircraft Recovery:</td>
+              <td style="color:var(--cyan); font-weight:700;">SAFE SUPERSONIC EGRESS COMPLETED (REUSABLE STRATEGIC ASSET)</td>
+            </tr>
+            <tr>
+              <td><span class="table-dot">●</span> Flight Elapsed Time:</td>
+              <td id="timeDebrief" style="color:var(--cyber-black); font-weight:800;">-- s</td>
+            </tr>
+            <tr>
+              <td><span class="table-dot">●</span> Guidance Controller:</td>
+              <td style="color:var(--purple); font-weight:700;">Cognitive Autonomous Evasion (Holybro Pixhawk)</td>
+            </tr>
+            <tr>
+              <td><span class="table-dot">●</span> RF Intelligence Model:</td>
+              <td style="color:var(--green)">RadioML 2018.01A ResNet (24-Class)</td>
+            </tr>
+          </table>
+        </div>
+
+        <!-- Modal Footer Actions -->
+        <div class="modal-cyber-footer">
+          <button id="closeVictoryModalBtn2" class="btn-cyber-outline">
+            Close / Inspect Battlefield ✕
+          </button>
+          <button id="downloadLogBtn" class="btn-cyber-black">
+            📥 Export Flight Telemetry
+          </button>
+          <button id="replayBtn" class="btn-cyber-purple">
+            ↺ Replay Mission
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -1025,18 +1223,18 @@
             Configuration: <strong style="color:var(--cyan)">60% Training (72 Flights)</strong> · <strong style="color:var(--purple)">15% Validation (18 Flights)</strong> · <strong style="color:var(--green)">15% Testing (18 Flights)</strong> · <strong style="color:#d2a8ff">10% 5-Fold Cross-Val (12 Flights)</strong>
           </div>
         </div>
-        <button id="closeBenchmarkModalBtn" class="btn-secondary" style="padding:4px 10px; font-size:14px; cursor:pointer;">✕</button>
+        <button id="closeBenchmarkModalBtn" class="modal-cyber-close" title="Close Modal (ESC)">✕</button>
       </div>
 
       <!-- Best Model Spotlight Card -->
-      <div style="background:rgba(0,230,118,0.08); border:1px solid var(--green); border-radius:8px; padding:12px 16px; margin-bottom:16px;">
+      <div style="background:#ecfdf5; border:1.5px solid #16a34a; box-shadow:2px 2px 0px #16a34a; padding:12px 16px; margin-bottom:16px;">
         <div style="display:flex; justify-content:space-between; align-items:center;">
           <div id="benchmarkSpotlightName" style="font-family:var(--font-mono); font-size:13.5px; color:var(--green); font-weight:700;">
             ★ ACTIVE BEST MODEL: TCNResNet (Dilated 1D Causal ConvNet)
           </div>
           <span class="badge" style="border-color:var(--green); color:var(--green); background:rgba(0,230,118,0.2);">RANK 1 WINNER</span>
         </div>
-        <div id="benchmarkSpotlightDesc" style="font-size:12px; color:#d8e6f5; margin-top:4px;">
+        <div id="benchmarkSpotlightDesc" style="font-size:12px; color:#333333; margin-top:4px;">
           Lowest Test Average Displacement Error (ADE: <strong>20.13 m</strong>) and Final Displacement Error (FDE: <strong>20.30 m</strong>), with <strong>4.82°</strong> Roll MAE and <strong>0.027 ms</strong> GPU latency on NVIDIA RTX 4050.
         </div>
       </div>
@@ -1312,6 +1510,9 @@
     // ======================================================================
     // 3D THREE.JS TACTICAL BATTLEFIELD RENDERER
     // ======================================================================
+    // ======================================================================
+    // 3D THREE.JS TACTICAL BATTLEFIELD RENDERER (ELITE AEROSPACE SIMULATOR)
+    // ======================================================================
     class Tactical3DRenderer {
       constructor(container) {
         this.container = container;
@@ -1323,15 +1524,40 @@
         // Visual groups & mesh references
         this.vehicleGroup = null;
         this.shockConeMesh = null;
+        this.shockConeInner = null;
         this.exhaustLeft = null;
         this.exhaustRight = null;
+        this.shockDiamonds = [];
         this.exhaustParticles = [];
+        this.contrailParticles = [];
         this.ghostDecoyGroup = null;
         this.radarMeshes = new Map();
         this.missileMeshes = new Map();
         this.targetGroup = null;
-        this.targetExplosionParticles = [];
+        this.bunkerDetonation = null;
         this.noiseJamSphere = null;
+        this.jamLightningRings = [];
+        this.radarPulseWaves = [];
+        this.laserBeamMesh = null;
+
+        // Smooth 60-120 FPS continuous interpolation engine
+        this.vRender = {
+          pos: new THREE.Vector3(0, 50, 0),
+          targetPos: new THREE.Vector3(0, 50, 0),
+          yaw: 0,
+          targetYaw: 0,
+          pitch: 0,
+          targetPitch: 0,
+          roll: 0,
+          targetRoll: 0,
+          initialized: false
+        };
+        this.missileRenders = new Map(); // id -> { pos, targetPos, yaw, targetYaw }
+        this.camPosTarget = new THREE.Vector3(-350, 240, 420);
+        this.camLookTarget = new THREE.Vector3(0, 30, 0);
+        this.currentCamPreset = 'orbit';
+        this.cameraShake = 0.0;
+        this.simTimeSec = 0;
 
         this.init();
       }
@@ -1340,63 +1566,75 @@
         const width = this.container.clientWidth || 1200;
         const height = this.container.clientHeight || 650;
 
-        // 1. Scene & Fog
+        // 1. Scene & Deep Contested Aerospace Fog
         this.scene = new THREE.Scene();
         this.scene.background = new THREE.Color(0x02050e);
-        this.scene.fog = new THREE.FogExp2(0x02050e, 0.00065);
+        this.scene.fog = new THREE.FogExp2(0x02050e, 0.00055);
 
-        // 2. Camera
-        this.camera = new THREE.PerspectiveCamera(52, width / height, 5, 4500);
-        this.setCameraPreset('orbit');
+        // 2. Camera with cinematic FOV
+        this.camera = new THREE.PerspectiveCamera(50, width / height, 2, 6000);
+        this.camera.position.set(-350, 240, 420);
 
-        // 3. WebGL Renderer
-        this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: 'high-performance' });
+        // 3. WebGL Renderer with High-Precision Shadows & Antialiasing
+        this.renderer = new THREE.WebGLRenderer({
+          antialias: true,
+          alpha: false,
+          powerPreference: 'high-performance',
+          stencil: false,
+          depth: true
+        });
         this.renderer.setSize(width, height);
         this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
         this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-        this.renderer.toneMappingExposure = 1.25;
+        this.renderer.toneMappingExposure = 1.35;
         this.container.appendChild(this.renderer.domElement);
 
-        // 4. OrbitControls
+        // 4. OrbitControls for Free Tactical Inspection
         if (typeof THREE.OrbitControls !== 'undefined') {
           this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
           this.controls.enableDamping = true;
-          this.controls.dampingFactor = 0.05;
-          this.controls.maxPolarAngle = Math.PI / 2 - 0.02; // Don't clip below ground
-          this.controls.minDistance = 30;
-          this.controls.maxDistance = 2200;
+          this.controls.dampingFactor = 0.06;
+          this.controls.maxPolarAngle = Math.PI / 2 - 0.015;
+          this.controls.minDistance = 25;
+          this.controls.maxDistance = 2600;
           this.controls.target.set(0, 30, 0);
         }
 
-        // 5. Tactical Lighting
-        const ambLight = new THREE.AmbientLight(0x16243b, 1.2);
+        // 5. Tactical Lighting System (Multi-Source High-Contrast Cyber Aesthetics)
+        const ambLight = new THREE.AmbientLight(0x0e1b2f, 1.4);
         this.scene.add(ambLight);
 
-        const dirLight = new THREE.DirectionalLight(0xa5c9eb, 1.5);
-        dirLight.position.set(400, 700, 500);
-        this.scene.add(dirLight);
+        const keyLight = new THREE.DirectionalLight(0xaad3f5, 1.8);
+        keyLight.position.set(450, 850, 550);
+        this.scene.add(keyLight);
 
-        const fillLight = new THREE.DirectionalLight(0x00e5ff, 0.6);
-        fillLight.position.set(-600, 300, -400);
-        this.scene.add(fillLight);
+        const cyanFill = new THREE.DirectionalLight(0x00e5ff, 0.85);
+        cyanFill.position.set(-600, 350, -450);
+        this.scene.add(cyanFill);
 
-        // 6. Tactical Battlefield Ground Grid & Rings
+        const purpleRim = new THREE.DirectionalLight(0x7c3aed, 0.75);
+        purpleRim.position.set(0, -200, -600);
+        this.scene.add(purpleRim);
+
+        // 6. Topographic Digital Elevation Environment & Holographic Grid
         this.buildEnvironment();
 
-        // 7. Hypersonic Waverider 3D Model
+        // 7. Elite Hypersonic Waverider 3D Geometry
         this.buildVehicle();
 
-        // 8. Electronic Warfare Jamming Shields & Ghost Decoy
+        // 8. Electronic Warfare Shields, Deceptive Decoy & Shockwave FX
         this.buildEWDecorations();
 
-        // 9. Strategic Bunker Target at Sector 4
+        // 9. Fortified Strategic Command Bunker with Kinetic Target Systems
         this.buildTargetBunker();
 
-        // 10. Resize handler
+        // 10. Responsive Resizing
         window.addEventListener('resize', () => this.onResize());
         if (window.ResizeObserver) {
           new ResizeObserver(() => this.onResize()).observe(this.container);
         }
+
+        this.setCameraPreset('orbit');
       }
 
       onResize() {
@@ -1410,39 +1648,130 @@
       }
 
       buildEnvironment() {
-        // Ground holographic tactical grid
-        const gridHelper = new THREE.GridHelper(1600, 80, 0x00e5ff, 0x0d223a);
-        gridHelper.position.y = 0;
+        // A. Topographic Digital Elevation Holographic Terrain Grid
+        const terrainSize = 2200;
+        const terrainSegs = 70;
+        const terrainGeo = new THREE.PlaneGeometry(terrainSize, terrainSize, terrainSegs, terrainSegs);
+        terrainGeo.rotateX(-Math.PI / 2);
+
+        // Generate stylized mountain ranges, ridges, and valleys
+        const posAttr = terrainGeo.attributes.position;
+        for (let i = 0; i < posAttr.count; i++) {
+          const x = posAttr.getX(i);
+          const z = posAttr.getZ(i);
+          // Procedural cybernetic terrain elevation
+          let elevation = 0;
+          elevation += Math.sin(x * 0.0035) * Math.cos(z * 0.0035) * 42.0;
+          elevation += Math.sin(x * 0.007 + 1.2) * Math.cos(z * 0.006 - 0.5) * 22.0;
+          elevation += Math.sin((x + z) * 0.012) * 9.0;
+          // Flatten target bunker zone and runway corridor
+          const distToCenter = Math.hypot(x, z);
+          if (distToCenter < 280) {
+            elevation *= (distToCenter / 280);
+          }
+          posAttr.setY(i, Math.max(0, elevation));
+        }
+        terrainGeo.computeVertexNormals();
+
+        const terrainMat = new THREE.MeshStandardMaterial({
+          color: 0x050e1a,
+          roughness: 0.8,
+          metalness: 0.2,
+          wireframe: false,
+          flatShading: true
+        });
+        const terrainMesh = new THREE.Mesh(terrainGeo, terrainMat);
+        terrainMesh.position.y = -2;
+        this.scene.add(terrainMesh);
+
+        // Topographic Wireframe Overlay for Cyber Brutalism HUD feel
+        const wireMat = new THREE.MeshBasicMaterial({
+          color: 0x00e5ff,
+          wireframe: true,
+          transparent: true,
+          opacity: 0.12
+        });
+        const terrainWire = new THREE.Mesh(terrainGeo, wireMat);
+        terrainWire.position.y = -1.5;
+        this.scene.add(terrainWire);
+
+        // B. Main Holographic Tactical Grid Floor
+        const gridHelper = new THREE.GridHelper(2000, 80, 0x00e5ff, 0x0a2238);
+        gridHelper.position.y = 0.5;
         this.scene.add(gridHelper);
 
-        // High-altitude flight ceiling grid markers (at 30,000m ~ Y=125)
-        const ceilingGrid = new THREE.GridHelper(1600, 40, 0x00e5ff, 0x071526);
+        // High-Altitude Supersonic Cruise Ceiling Grid (30,000m ~ Y=125)
+        const ceilingGrid = new THREE.GridHelper(2000, 40, 0x00e5ff, 0x071526);
         ceilingGrid.position.y = 125;
-        ceilingGrid.material.opacity = 0.15;
+        ceilingGrid.material.opacity = 0.14;
         ceilingGrid.material.transparent = true;
         this.scene.add(ceilingGrid);
 
-        // Distance Range Rings around center
-        [300, 600, 900].forEach(r => {
-          const ringGeo = new THREE.RingGeometry(r - 0.75, r + 0.75, 64);
-          const ringMat = new THREE.MeshBasicMaterial({ color: 0x00e5ff, opacity: 0.12, transparent: true, side: THREE.DoubleSide });
+        // C. Cardinal Azimuth Compass Rose on Ground
+        const compassGroup = new THREE.Group();
+        [200, 450, 750, 1000].forEach(r => {
+          const ringGeo = new THREE.RingGeometry(r - 0.9, r + 0.9, 80);
+          const ringMat = new THREE.MeshBasicMaterial({
+            color: 0x00e5ff,
+            opacity: r === 450 ? 0.22 : 0.09,
+            transparent: true,
+            side: THREE.DoubleSide
+          });
           const ringMesh = new THREE.Mesh(ringGeo, ringMat);
           ringMesh.rotation.x = Math.PI / 2;
-          ringMesh.position.y = 0.5;
-          this.scene.add(ringMesh);
+          ringMesh.position.y = 1.0;
+          compassGroup.add(ringMesh);
         });
 
-        // Atmospheric Dust / Star Particle Field
+        // Azimuth Crosshair Axes
+        const axisMat = new THREE.LineBasicMaterial({ color: 0x00e5ff, transparent: true, opacity: 0.18 });
+        const axisGeoX = new THREE.BufferGeometry().setFromPoints([
+          new THREE.Vector3(-1050, 1.2, 0),
+          new THREE.Vector3(1050, 1.2, 0)
+        ]);
+        const axisGeoZ = new THREE.BufferGeometry().setFromPoints([
+          new THREE.Vector3(0, 1.2, -1050),
+          new THREE.Vector3(0, 1.2, 1050)
+        ]);
+        compassGroup.add(new THREE.Line(axisGeoX, axisMat));
+        compassGroup.add(new THREE.Line(axisGeoZ, axisMat));
+        this.scene.add(compassGroup);
+
+        // D. Sector Airspace Boundary Light Pillars
+        [
+          [-800, -800], [800, -800], [-800, 800], [800, 800],
+          [0, -950], [0, 950], [-950, 0], [950, 0]
+        ].forEach(([px, pz]) => {
+          const pillarGeo = new THREE.CylinderGeometry(0.8, 1.4, 280, 8);
+          pillarGeo.translate(0, 140, 0);
+          const pillarMat = new THREE.MeshBasicMaterial({
+            color: 0x00e5ff,
+            transparent: true,
+            opacity: 0.22,
+            blending: THREE.AdditiveBlending
+          });
+          const pillar = new THREE.Mesh(pillarGeo, pillarMat);
+          pillar.position.set(px, 0, pz);
+          this.scene.add(pillar);
+        });
+
+        // E. Atmospheric Stellar & Sensor Dust Particle Field
         const dustGeo = new THREE.BufferGeometry();
-        const dustCount = 450;
+        const dustCount = 650;
         const dustPos = new Float32Array(dustCount * 3);
         for (let i = 0; i < dustCount * 3; i += 3) {
-          dustPos[i] = (Math.random() - 0.5) * 1800;
-          dustPos[i + 1] = Math.random() * 300 + 10;
-          dustPos[i + 2] = (Math.random() - 0.5) * 1200;
+          dustPos[i] = (Math.random() - 0.5) * 2200;
+          dustPos[i + 1] = Math.random() * 320 + 8;
+          dustPos[i + 2] = (Math.random() - 0.5) * 1600;
         }
         dustGeo.setAttribute('position', new THREE.BufferAttribute(dustPos, 3));
-        const dustMat = new THREE.PointsMaterial({ color: 0x00e5ff, size: 2.2, opacity: 0.35, transparent: true });
+        const dustMat = new THREE.PointsMaterial({
+          color: 0x00e5ff,
+          size: 2.4,
+          opacity: 0.4,
+          transparent: true,
+          blending: THREE.AdditiveBlending
+        });
         this.dustPoints = new THREE.Points(dustGeo, dustMat);
         this.scene.add(this.dustPoints);
       }
@@ -1450,124 +1779,218 @@
       buildVehicle() {
         this.vehicleGroup = new THREE.Group();
 
-        // 1. Aerodynamic Waverider Lifting Fuselage
-        // Delta-wing wedge shape
+        // 1. Aerodynamic Titanium-Carbon Waverider Stealth Fuselage
+        // Multi-vertex faceted delta-wedge geometry with chined nose
         const shape = new THREE.Shape();
-        shape.moveTo(0, 32);       // Sharp supersonic nose
-        shape.lineTo(16, -18);     // Right delta wingtip
-        shape.lineTo(9, -15);      // Right wing trailing edge
-        shape.lineTo(6, -20);      // Right engine cowl
-        shape.lineTo(0, -18);      // Tail centerline
-        shape.lineTo(-6, -20);     // Left engine cowl
-        shape.lineTo(-9, -15);     // Left wing trailing edge
-        shape.lineTo(-16, -18);    // Left delta wingtip
+        shape.moveTo(0, 36);         // Needle nose tip (air data probe)
+        shape.lineTo(3.2, 24);       // Forward chine blend
+        shape.lineTo(19, -18);       // Right delta wingtip
+        shape.lineTo(12, -15);       // Right elevon hinge
+        shape.lineTo(7.5, -22);      // Right scramjet exhaust cowl
+        shape.lineTo(0, -19);        // Tail centerline keel
+        shape.lineTo(-7.5, -22);     // Left scramjet exhaust cowl
+        shape.lineTo(-12, -15);      // Left elevon hinge
+        shape.lineTo(-19, -18);      // Left delta wingtip
+        shape.lineTo(-3.2, 24);      // Left chine blend
         shape.closePath();
 
         const extrudeSettings = {
-          depth: 3.5,
+          depth: 4.2,
           bevelEnabled: true,
-          bevelSegments: 3,
-          steps: 1,
-          bevelSize: 1.2,
-          bevelThickness: 1.2,
+          bevelSegments: 4,
+          steps: 2,
+          bevelSize: 1.5,
+          bevelThickness: 1.5,
         };
 
         const fuselageGeo = new THREE.ExtrudeGeometry(shape, extrudeSettings);
         fuselageGeo.center();
 
-        const carbonMat = new THREE.MeshStandardMaterial({
-          color: 0x0c1421,
-          roughness: 0.25,
-          metalness: 0.85,
+        const titaniumMat = new THREE.MeshStandardMaterial({
+          color: 0x09111e,
+          roughness: 0.28,
+          metalness: 0.88,
         });
 
-        const fuselageMesh = new THREE.Mesh(fuselageGeo, carbonMat);
-        // In local coordinates, nose points +X
+        const fuselageMesh = new THREE.Mesh(fuselageGeo, titaniumMat);
         fuselageMesh.rotation.z = -Math.PI / 2;
         fuselageMesh.rotation.x = Math.PI / 2;
         this.vehicleGroup.add(fuselageMesh);
 
-        // 2. Cockpit Glass Canopy
-        const canopyGeo = new THREE.CylinderGeometry(1.6, 2.2, 11, 8);
+        // 2. Ventral Scramjet Intake Scoop (Underbelly compression ramp)
+        const scoopGeo = new THREE.BoxGeometry(11, 2.8, 14);
+        const scoopMat = new THREE.MeshStandardMaterial({
+          color: 0x040811,
+          roughness: 0.45,
+          metalness: 0.95
+        });
+        const scoopMesh = new THREE.Mesh(scoopGeo, scoopMat);
+        scoopMesh.position.set(-2, -2.6, 0);
+        this.vehicleGroup.add(scoopMesh);
+
+        // 3. Faceted Tinted Pilot Canopy with Internal Holographic HUD
+        const canopyGeo = new THREE.CylinderGeometry(1.5, 2.6, 13, 8);
         const canopyMat = new THREE.MeshPhysicalMaterial({
           color: 0x00e5ff,
-          emissive: 0x003344,
-          roughness: 0.1,
-          transmission: 0.6,
+          emissive: 0x002d3f,
+          emissiveIntensity: 0.6,
+          roughness: 0.08,
+          transmission: 0.72,
           transparent: true,
-          opacity: 0.85,
+          opacity: 0.88,
+          reflectivity: 0.9
         });
         const canopyMesh = new THREE.Mesh(canopyGeo, canopyMat);
         canopyMesh.rotation.z = Math.PI / 2;
-        canopyMesh.position.set(4, 2.4, 0);
+        canopyMesh.position.set(5.5, 2.6, 0);
         this.vehicleGroup.add(canopyMesh);
 
-        // 3. Twin Canted Vertical Stabilizers (Fins)
-        const finGeo = new THREE.BoxGeometry(7, 4.5, 0.4);
-        const finMat = new THREE.MeshStandardMaterial({ color: 0x111c2e, metalness: 0.7, roughness: 0.3 });
+        // Internal Floating Holographic HUD Ring inside Cockpit
+        const hudRingGeo = new THREE.RingGeometry(0.7, 0.9, 16);
+        const hudRingMat = new THREE.MeshBasicMaterial({ color: 0x00e676, side: THREE.DoubleSide });
+        const hudRing = new THREE.Mesh(hudRingGeo, hudRingMat);
+        hudRing.rotation.y = Math.PI / 2;
+        hudRing.position.set(7.8, 2.7, 0);
+        this.vehicleGroup.add(hudRing);
 
+        // 4. Twin Canted Vertical Stabilizers with Formation Glow Strobes
+        const finGeo = new THREE.BoxGeometry(8.5, 5.2, 0.45);
+        const finMat = new THREE.MeshStandardMaterial({ color: 0x0c1626, metalness: 0.85, roughness: 0.25 });
+
+        // Starboard Fin (Canted outward)
         const rightFin = new THREE.Mesh(finGeo, finMat);
-        rightFin.position.set(-12, 3.2, 7);
-        rightFin.rotation.x = 0.35; // Canted outwards
+        rightFin.position.set(-13, 3.6, 8.2);
+        rightFin.rotation.x = 0.32;
         this.vehicleGroup.add(rightFin);
 
+        // Port Fin
         const leftFin = new THREE.Mesh(finGeo, finMat);
-        leftFin.position.set(-12, 3.2, -7);
-        leftFin.rotation.x = -0.35;
+        leftFin.position.set(-13, 3.6, -8.2);
+        leftFin.rotation.x = -0.32;
         this.vehicleGroup.add(leftFin);
 
-        // 4. Twin Scramjet Glowing Exhaust Nozzles
-        const exhaustGeo = new THREE.CylinderGeometry(1.2, 1.5, 3.5, 12);
-        const exhaustMat = new THREE.MeshBasicMaterial({ color: 0x00e5ff });
+        // Wingtip Navigation Formation Lights
+        const lightGeo = new THREE.SphereGeometry(0.6, 8, 8);
+        const greenMat = new THREE.MeshBasicMaterial({ color: 0x00e676 });
+        const redMat = new THREE.MeshBasicMaterial({ color: 0xff3d71 });
 
-        this.exhaustRight = new THREE.Mesh(exhaustGeo, exhaustMat);
+        const rightLight = new THREE.Mesh(lightGeo, greenMat);
+        rightLight.position.set(-18, 0.4, 18.5);
+        this.vehicleGroup.add(rightLight);
+
+        const leftLight = new THREE.Mesh(lightGeo, redMat);
+        leftLight.position.set(-18, 0.4, -18.5);
+        this.vehicleGroup.add(leftLight);
+
+        // 5. Dual Scramjet Exhaust Bells with Glowing Nozzle Rings
+        const exhaustGeo = new THREE.CylinderGeometry(1.6, 2.1, 4.2, 16);
+        const exhaustBellMat = new THREE.MeshStandardMaterial({ color: 0x1a2638, metalness: 0.9, roughness: 0.2 });
+
+        this.exhaustRight = new THREE.Mesh(exhaustGeo, exhaustBellMat);
         this.exhaustRight.rotation.z = Math.PI / 2;
-        this.exhaustRight.position.set(-17.5, 0, 4);
+        this.exhaustRight.position.set(-19.5, -0.4, 4.5);
         this.vehicleGroup.add(this.exhaustRight);
 
-        this.exhaustLeft = new THREE.Mesh(exhaustGeo, exhaustMat);
+        this.exhaustLeft = new THREE.Mesh(exhaustGeo, exhaustBellMat);
         this.exhaustLeft.rotation.z = Math.PI / 2;
-        this.exhaustLeft.position.set(-17.5, 0, -4);
+        this.exhaustLeft.position.set(-19.5, -0.4, -4.5);
         this.vehicleGroup.add(this.exhaustLeft);
 
-        // 5. Scramjet Afterburner Point Light
-        this.engineLight = new THREE.PointLight(0x00e5ff, 3.5, 45);
-        this.engineLight.position.set(-20, 0, 0);
+        // Incandescent Mach Shock Diamonds inside exhaust plume
+        this.shockDiamonds = [];
+        for (let i = 0; i < 4; i++) {
+          const diamondGeo = new THREE.ConeGeometry(1.3 - i * 0.22, 3.5, 12);
+          const diamondMat = new THREE.MeshBasicMaterial({
+            color: 0x00e5ff,
+            transparent: true,
+            opacity: 0.85 - i * 0.18,
+            blending: THREE.AdditiveBlending
+          });
+
+          const dR = new THREE.Mesh(diamondGeo, diamondMat);
+          dR.rotation.z = -Math.PI / 2;
+          dR.position.set(-22 - i * 3.2, -0.4, 4.5);
+          this.vehicleGroup.add(dR);
+          this.shockDiamonds.push(dR);
+
+          const dL = new THREE.Mesh(diamondGeo, diamondMat);
+          dL.rotation.z = -Math.PI / 2;
+          dL.position.set(-22 - i * 3.2, -0.4, -4.5);
+          this.vehicleGroup.add(dL);
+          this.shockDiamonds.push(dL);
+        }
+
+        // High-Intensity Afterburner Lighting
+        this.engineLight = new THREE.PointLight(0x00e5ff, 4.5, 75);
+        this.engineLight.position.set(-23, 0, 0);
         this.vehicleGroup.add(this.engineLight);
 
-        // 6. Supersonic Mach Shockwave Cone
-        const shockGeo = new THREE.ConeGeometry(14, 45, 24, 1, true);
+        // 6. Supersonic Mach Shockwave Compression Cone
+        const shockGeo = new THREE.ConeGeometry(16, 52, 28, 1, true);
         const shockMat = new THREE.MeshBasicMaterial({
           color: 0x00e5ff,
-          opacity: 0.14,
+          opacity: 0.15,
           transparent: true,
           side: THREE.DoubleSide,
           depthWrite: false,
+          blending: THREE.AdditiveBlending
         });
         this.shockConeMesh = new THREE.Mesh(shockGeo, shockMat);
         this.shockConeMesh.rotation.z = Math.PI / 2;
-        this.shockConeMesh.position.set(-6, 0, 0);
+        this.shockConeMesh.position.set(-8, 0, 0);
         this.vehicleGroup.add(this.shockConeMesh);
+
+        // Inner Mach Core Cone
+        const innerShockGeo = new THREE.ConeGeometry(8, 42, 20, 1, true);
+        const innerShockMat = new THREE.MeshBasicMaterial({
+          color: 0xffffff,
+          opacity: 0.12,
+          transparent: true,
+          side: THREE.DoubleSide,
+          depthWrite: false,
+          blending: THREE.AdditiveBlending
+        });
+        this.shockConeInner = new THREE.Mesh(innerShockGeo, innerShockMat);
+        this.shockConeInner.rotation.z = Math.PI / 2;
+        this.shockConeInner.position.set(-4, 0, 0);
+        this.vehicleGroup.add(this.shockConeInner);
 
         this.scene.add(this.vehicleGroup);
       }
 
       buildEWDecorations() {
-        // Active Spot Noise Jamming Electromagnetic Shield (Pulsing Sphere)
-        const jamGeo = new THREE.SphereGeometry(32, 24, 24);
+        // Active Spot Noise Jamming Electromagnetic Shield (Multi-Layer Pulsing Spheres)
+        const jamGeo = new THREE.SphereGeometry(36, 28, 28);
         const jamMat = new THREE.MeshBasicMaterial({
           color: 0x00e5ff,
           wireframe: true,
           transparent: true,
           opacity: 0.0,
           depthWrite: false,
+          blending: THREE.AdditiveBlending
         });
         this.noiseJamSphere = new THREE.Mesh(jamGeo, jamMat);
         this.scene.add(this.noiseJamSphere);
 
-        // RGPO Spoofing Holographic Ghost Decoy Aircraft
+        // Electric EMP Distortion Rings for Jamming Pulses
+        this.jamLightningRings = [];
+        for (let i = 0; i < 3; i++) {
+          const ringGeo = new THREE.RingGeometry(24 + i * 8, 25.5 + i * 8, 32);
+          const ringMat = new THREE.MeshBasicMaterial({
+            color: 0xb388ff,
+            transparent: true,
+            opacity: 0.0,
+            side: THREE.DoubleSide,
+            blending: THREE.AdditiveBlending
+          });
+          const rMesh = new THREE.Mesh(ringGeo, ringMat);
+          this.scene.add(rMesh);
+          this.jamLightningRings.push(rMesh);
+        }
+
+        // RGPO Spoofing Holographic Deceptive Ghost Decoy
         this.ghostDecoyGroup = new THREE.Group();
-        const ghostShape = new THREE.BoxGeometry(26, 3, 18);
+        const ghostShape = new THREE.BoxGeometry(28, 3.2, 20);
         const ghostMat = new THREE.MeshBasicMaterial({
           color: 0xb388ff,
           wireframe: true,
@@ -1576,41 +1999,71 @@
         });
         const ghostMesh = new THREE.Mesh(ghostShape, ghostMat);
         this.ghostDecoyGroup.add(ghostMesh);
+
+        // Decoy Ghost Thrust
+        const ghostLight = new THREE.PointLight(0xb388ff, 2.0, 40);
+        ghostLight.position.set(-16, 0, 0);
+        this.ghostDecoyGroup.add(ghostLight);
+
         this.scene.add(this.ghostDecoyGroup);
       }
 
       buildTargetBunker() {
         this.targetGroup = new THREE.Group();
 
-        // Fortified Hexagonal Concrete Command Bunker
-        const bunkerGeo = new THREE.CylinderGeometry(28, 34, 12, 6);
+        // Fortified Hexagonal Concrete Command Bunker [HUB-4]
+        const bunkerGeo = new THREE.CylinderGeometry(30, 38, 14, 6);
         const bunkerMat = new THREE.MeshStandardMaterial({
-          color: 0x1a2638,
-          roughness: 0.6,
-          metalness: 0.4,
+          color: 0x141f2e,
+          roughness: 0.7,
+          metalness: 0.35,
         });
         const bunkerBase = new THREE.Mesh(bunkerGeo, bunkerMat);
-        bunkerBase.position.y = 6;
+        bunkerBase.position.y = 7;
         this.targetGroup.add(bunkerBase);
 
-        // Upper Radome Dome
-        const domeGeo = new THREE.SphereGeometry(12, 16, 16, 0, Math.PI * 2, 0, Math.PI / 2);
-        const domeMat = new THREE.MeshStandardMaterial({ color: 0x243b55, metalness: 0.6 });
+        // Armored Radome Dome
+        const domeGeo = new THREE.SphereGeometry(14, 20, 20, 0, Math.PI * 2, 0, Math.PI / 2);
+        const domeMat = new THREE.MeshStandardMaterial({ color: 0x243b55, metalness: 0.75, roughness: 0.25 });
         const domeMesh = new THREE.Mesh(domeGeo, domeMat);
-        domeMesh.position.y = 12;
+        domeMesh.position.y = 14;
         this.targetGroup.add(domeMesh);
 
-        // Target Reticle Rings
-        const reticleGeo = new THREE.RingGeometry(38, 41, 32);
-        const reticleMat = new THREE.MeshBasicMaterial({ color: 0xff3d71, side: THREE.DoubleSide });
+        // Rotating Satellite Antenna Mast
+        const mastGeo = new THREE.CylinderGeometry(1.2, 1.6, 26, 8);
+        const mastMat = new THREE.MeshStandardMaterial({ color: 0x38bdf8 });
+        const mastMesh = new THREE.Mesh(mastGeo, mastMat);
+        mastMesh.position.set(0, 25, 0);
+        this.targetGroup.add(mastMesh);
+
+        // Ground Target Reticle Rings
+        const reticleGeo = new THREE.RingGeometry(42, 45, 48);
+        const reticleMat = new THREE.MeshBasicMaterial({
+          color: 0xff3d71,
+          side: THREE.DoubleSide,
+          transparent: true,
+          opacity: 0.85
+        });
         this.targetRing = new THREE.Mesh(reticleGeo, reticleMat);
         this.targetRing.rotation.x = Math.PI / 2;
-        this.targetRing.position.y = 1;
+        this.targetRing.position.y = 1.2;
         this.targetGroup.add(this.targetRing);
 
-        // Red Flashing Bunker Strobe Light
-        this.bunkerLight = new THREE.PointLight(0xff3d71, 2.0, 90);
-        this.bunkerLight.position.set(0, 20, 0);
+        // Vertical Laser Target Designation Beam
+        const beamGeo = new THREE.CylinderGeometry(0.8, 1.8, 450, 12);
+        beamGeo.translate(0, 225, 0);
+        const beamMat = new THREE.MeshBasicMaterial({
+          color: 0xff3d71,
+          transparent: true,
+          opacity: 0.25,
+          blending: THREE.AdditiveBlending
+        });
+        this.targetLaserBeam = new THREE.Mesh(beamGeo, beamMat);
+        this.targetGroup.add(this.targetLaserBeam);
+
+        // High-Intensity Warning Strobe Light
+        this.bunkerLight = new THREE.PointLight(0xff3d71, 3.5, 140);
+        this.bunkerLight.position.set(0, 28, 0);
         this.targetGroup.add(this.bunkerLight);
 
         this.scene.add(this.targetGroup);
@@ -1631,13 +2084,13 @@
 
         if (!this.camera) return;
 
-        // Reset camera default up vector
+        // Reset camera roll & up vector
         this.camera.up.set(0, 1, 0);
 
         if (preset === 'orbit') {
           if (this.controls) this.controls.enabled = true;
-          this.camera.position.set(-350, 240, 420);
-          if (this.controls) this.controls.target.set(0, 30, 0);
+          this.camPosTarget.set(-350, 240, 420);
+          this.camLookTarget.set(0, 30, 0);
           document.getElementById('hudCamText').innerText = 'TACTICAL ORBIT (Free 360° Inspection)';
         } else if (preset === 'chase') {
           if (this.controls) this.controls.enabled = false;
@@ -1656,13 +2109,17 @@
           document.getElementById('hudCamText').innerText = 'SECTOR 4 BUNKER (Terminal Defense Cam)';
         } else if (preset === 'top') {
           if (this.controls) this.controls.enabled = true;
-          this.camera.position.set(0, 850, 0.1);
-          if (this.controls) this.controls.target.set(0, 0, 0);
-          document.getElementById('hudCamText').innerText = 'TOP-DOWN RECON (Satellite Reconnaissance)';
+          this.camPosTarget.set(0, 950, 0.1);
+          this.camLookTarget.set(0, 0, 0);
+          if (this.controls) {
+            this.camera.position.copy(this.camPosTarget);
+            this.controls.target.copy(this.camLookTarget);
+          }
+          document.getElementById('hudCamText').innerText = 'TOP-DOWN RECON (Overhead Satellite Reconnaissance)';
         }
       }
 
-      // Convert 2D simulation coords (1200x650) to 3D Three.js space
+      // Convert 2D tactical simulation coords (1200x650) to 3D world space
       to3D(x2d, y2d, alt_m = 29500) {
         const x3d = (x2d - 600.0) * 1.0;
         const z3d = (y2d - 325.0) * 1.0;
@@ -1670,54 +2127,162 @@
         return { x: x3d, y: y3d, z: z3d };
       }
 
-      // Sync entities with tactical engine state
+      // Shortest-arc angular distance helper
+      angleDiff(target, current) {
+        let diff = (target - current) % (Math.PI * 2);
+        if (diff < -Math.PI) diff += Math.PI * 2;
+        if (diff > Math.PI) diff -= Math.PI * 2;
+        return diff;
+      }
+
+      // Advance and render 3D simulation smoothly
       update(simState, dt) {
         if (!simState) return;
+        this.simTimeSec += dt;
 
         const veh = simState.vehicle;
         const tgt = simState.target;
         const ew = simState.electronic_warfare;
         const telem = simState.telemetry || {};
-        const vPos = this.to3D(veh.x, veh.y, veh.altitude_m);
+        const vPosTarget = this.to3D(veh.x, veh.y, veh.altitude_m);
 
-        // 1. Update Hypersonic Waverider Position & Attitude
-        this.vehicleGroup.position.set(vPos.x, vPos.y, vPos.z);
-
-        // Yaw, Pitch, Roll (Authentic Holybro Pixhawk Flight Measurements)
-        const yaw = -((veh.heading_deg * Math.PI) / 180);
+        // Target Euler angles from Holybro Pixhawk flight telemetry
+        const targetYaw = -((veh.heading_deg * Math.PI) / 180);
         const rollDeg = telem.roll_deg !== undefined ? telem.roll_deg : (veh.bank_angle_deg || 0);
         const pitchDeg = telem.pitch_deg !== undefined ? telem.pitch_deg : (veh.aoa_deg || 2.5);
-        const roll = -((rollDeg * Math.PI) / 180);
-        const pitch = simState.status === 'terminal_dive' ? -0.35 : ((pitchDeg * Math.PI) / 180);
+        const targetRoll = -((rollDeg * Math.PI) / 180);
+        const targetPitch = ((pitchDeg * Math.PI) / 180);
 
-        this.vehicleGroup.rotation.order = 'YXZ';
-        this.vehicleGroup.rotation.y = yaw;
-        this.vehicleGroup.rotation.x = pitch;
-        this.vehicleGroup.rotation.z = roll;
-
-        // Mach Shockwave Cone Visual
-        const machScale = Math.max(1.0, veh.speed_mach / 4.0);
-        this.shockConeMesh.scale.set(machScale, machScale, machScale);
-        if (veh.evading) {
-          this.shockConeMesh.material.color.setHex(0xb388ff);
-          this.engineLight.color.setHex(0xb388ff);
-        } else {
-          this.shockConeMesh.material.color.setHex(0x00e5ff);
-          this.engineLight.color.setHex(0x00e5ff);
+        // 1. BUTTERY SMOOTH 60-120 FPS CONTINUOUS POSITION & ANGLE INTERPOLATION
+        if (!this.vRender.initialized) {
+          this.vRender.pos.set(vPosTarget.x, vPosTarget.y, vPosTarget.z);
+          this.vRender.yaw = targetYaw;
+          this.vRender.pitch = targetPitch;
+          this.vRender.roll = targetRoll;
+          this.vRender.initialized = true;
         }
 
-        // 1B. 3D Neural Lookahead Horizon Trajectory (Trained Model Forecast)
+        // Exponential smoothing factor: frame-rate independent
+        const lerpFactor = Math.min(1.0, 1.0 - Math.exp(-dt * 18.0));
+        this.vRender.pos.lerp(new THREE.Vector3(vPosTarget.x, vPosTarget.y, vPosTarget.z), lerpFactor);
+        this.vRender.yaw += this.angleDiff(targetYaw, this.vRender.yaw) * lerpFactor;
+        this.vRender.pitch += this.angleDiff(targetPitch, this.vRender.pitch) * lerpFactor;
+        this.vRender.roll += this.angleDiff(targetRoll, this.vRender.roll) * lerpFactor;
+
+        // Apply interpolated state to Waverider 3D mesh
+        this.vehicleGroup.position.copy(this.vRender.pos);
+        this.vehicleGroup.rotation.order = 'YXZ';
+        this.vehicleGroup.rotation.y = this.vRender.yaw;
+        this.vehicleGroup.rotation.x = this.vRender.pitch;
+        this.vehicleGroup.rotation.z = this.vRender.roll;
+
+        const currentPos = this.vRender.pos;
+        const currentYaw = this.vRender.yaw;
+        const currentRoll = this.vRender.roll;
+
+        // 2. Mach Shockwave Cone Dynamics & Shock Diamonds
+        const mach = veh.speed_mach || 5.2;
+        const machScale = Math.max(1.0, mach / 3.8);
+        this.shockConeMesh.scale.set(machScale, machScale, machScale);
+        if (this.shockConeInner) {
+          this.shockConeInner.scale.set(machScale * 0.9, machScale * 0.9, machScale * 0.9);
+        }
+
+        const isEvading = veh.evading || simState.status === 'evading';
+        const primaryColor = isEvading ? 0xb388ff : 0x00e5ff;
+        this.shockConeMesh.material.color.setHex(primaryColor);
+        this.engineLight.color.setHex(primaryColor);
+
+        // Shock diamonds pulsation
+        this.shockDiamonds.forEach((d, i) => {
+          d.material.color.setHex(primaryColor);
+          const pulse = 0.8 + Math.sin(this.simTimeSec * 16.0 + i * 1.2) * 0.25;
+          d.scale.set(pulse, 1.0, pulse);
+        });
+
+        // 3. High-G Wingtip Vortex Contrails
+        const gLoad = veh.g_load || 1.1;
+        const rollAbs = Math.abs(rollDeg);
+        if (gLoad > 1.8 || rollAbs > 12 || isEvading) {
+          // Spawn contrails from both wingtips
+          [-18.5, 18.5].forEach(zOffset => {
+            const cpGeo = new THREE.SphereGeometry(1.2, 6, 6);
+            const cpMat = new THREE.MeshBasicMaterial({
+              color: 0xffffff,
+              transparent: true,
+              opacity: 0.65,
+              blending: THREE.AdditiveBlending
+            });
+            const cp = new THREE.Mesh(cpGeo, cpMat);
+            // Transform local wingtip coordinate to world space
+            const localTip = new THREE.Vector3(-18, 0.4, zOffset);
+            localTip.applyEuler(this.vehicleGroup.rotation);
+            cp.position.copy(currentPos).add(localTip);
+            cp.life = 0.85;
+            this.scene.add(cp);
+            this.contrailParticles.push(cp);
+          });
+        }
+
+        // Animate Contrail Particles
+        for (let i = this.contrailParticles.length - 1; i >= 0; i--) {
+          const cp = this.contrailParticles[i];
+          cp.life -= dt * 1.5;
+          cp.scale.multiplyScalar(1.05);
+          cp.material.opacity = cp.life * 0.65;
+          if (cp.life <= 0) {
+            this.scene.remove(cp);
+            cp.geometry.dispose();
+            cp.material.dispose();
+            this.contrailParticles.splice(i, 1);
+          }
+        }
+
+        // 4. Scramjet Smoke & Plasma Plume (Continuous high-speed emission)
+        if (Math.random() < 0.9) {
+          const trailGeo = new THREE.SphereGeometry(1.8, 8, 8);
+          const trailMat = new THREE.MeshBasicMaterial({
+            color: primaryColor,
+            transparent: true,
+            opacity: 0.85,
+            blending: THREE.AdditiveBlending
+          });
+          const p = new THREE.Mesh(trailGeo, trailMat);
+          const nozzleOffset = new THREE.Vector3(-22, -0.4, (Math.random() - 0.5) * 8.0);
+          nozzleOffset.applyEuler(this.vehicleGroup.rotation);
+          p.position.copy(currentPos).add(nozzleOffset);
+          p.life = 1.0;
+          p.velocity = new THREE.Vector3(-Math.cos(currentYaw) * 12, (Math.random() - 0.5) * 2, -Math.sin(currentYaw) * 12);
+          this.scene.add(p);
+          this.exhaustParticles.push(p);
+        }
+
+        // Animate Scramjet exhaust particles
+        for (let i = this.exhaustParticles.length - 1; i >= 0; i--) {
+          const ep = this.exhaustParticles[i];
+          ep.life -= dt * 2.8;
+          ep.position.addScaledVector(ep.velocity, dt);
+          ep.scale.multiplyScalar(1.06);
+          ep.material.opacity = ep.life * 0.8;
+          if (ep.life <= 0) {
+            this.scene.remove(ep);
+            ep.geometry.dispose();
+            ep.material.dispose();
+            this.exhaustParticles.splice(i, 1);
+          }
+        }
+
+        // 5. Neural Lookahead Trajectory Horizon (Deep Learning Forecast Line)
         if (telem.lookahead_horizon && telem.lookahead_horizon.length > 0) {
-          const pts = [new THREE.Vector3(vPos.x, vPos.y, vPos.z)];
-          let currX = vPos.x;
-          let currY = vPos.y;
-          let currZ = vPos.z;
+          const pts = [new THREE.Vector3(currentPos.x, currentPos.y, currentPos.z)];
+          let currX = currentPos.x;
+          let currY = currentPos.y;
+          let currZ = currentPos.z;
 
           telem.lookahead_horizon.forEach((step) => {
             const stepYaw = -((step.yaw_deg * Math.PI) / 180);
             const stepPitch = (step.pitch_deg * Math.PI) / 180;
             const stepRoll = (step.roll_deg * Math.PI) / 180;
-
             const forwardStep = (step.speed_ms || 28.5) * 0.1 * 1.6;
             const lateralDrift = Math.sin(stepRoll) * 3.2;
             const vertDrift = Math.sin(stepPitch) * 2.2;
@@ -1725,7 +2290,6 @@
             currX += Math.cos(stepYaw) * forwardStep;
             currZ += Math.sin(stepYaw) * forwardStep + lateralDrift;
             currY += vertDrift;
-
             pts.push(new THREE.Vector3(currX, Math.max(5.0, currY), currZ));
           });
 
@@ -1759,102 +2323,79 @@
           if (this.horizonMarker) this.horizonMarker.visible = false;
         }
 
-        // 2. Scramjet Particle Exhaust Trail
-        if (Math.random() < 0.8) {
-          const trailGeo = new THREE.SphereGeometry(1.8, 8, 8);
-          const trailMat = new THREE.MeshBasicMaterial({
-            color: veh.evading ? 0xb388ff : 0x00e5ff,
-            transparent: true,
-            opacity: 0.85,
-          });
-          const p = new THREE.Mesh(trailGeo, trailMat);
-          p.position.set(vPos.x - Math.cos(yaw) * 18, vPos.y + (Math.random() - 0.5) * 2, vPos.z - Math.sin(yaw) * 18);
-          p.life = 1.0;
-          this.scene.add(p);
-          this.exhaustParticles.push(p);
-        }
-
-        // Animate particles
-        for (let i = this.exhaustParticles.length - 1; i >= 0; i--) {
-          const ep = this.exhaustParticles[i];
-          ep.life -= dt * 2.5;
-          ep.scale.multiplyScalar(1.04);
-          ep.material.opacity = ep.life * 0.8;
-          if (ep.life <= 0) {
-            this.scene.remove(ep);
-            ep.geometry.dispose();
-            ep.material.dispose();
-            this.exhaustParticles.splice(i, 1);
-          }
-        }
-
-        // 3. Electronic Warfare 3D Visuals
-        // Active Spot Noise Jamming Shield
-        this.noiseJamSphere.position.set(vPos.x, vPos.y, vPos.z);
+        // 6. Electronic Warfare Active Jamming Shields & EMP Lightning Rings
+        this.noiseJamSphere.position.copy(currentPos);
         if (ew.active_jamming === 'NOISE_JAMMING') {
-          this.noiseJamSphere.material.opacity = 0.28 + Math.sin(Date.now() * 0.015) * 0.12;
+          this.noiseJamSphere.material.opacity = 0.32 + Math.sin(this.simTimeSec * 14.0) * 0.14;
           this.noiseJamSphere.rotation.y += 0.04;
           this.noiseJamSphere.rotation.x += 0.02;
+
+          this.jamLightningRings.forEach((r, idx) => {
+            r.position.copy(currentPos);
+            r.rotation.x = Math.PI / 2 + Math.sin(this.simTimeSec * 4 + idx) * 0.2;
+            r.rotation.y += 0.03 * (idx + 1);
+            r.material.opacity = 0.4 + Math.sin(this.simTimeSec * 20.0 + idx * 2.0) * 0.3;
+          });
         } else {
           this.noiseJamSphere.material.opacity = 0.0;
+          this.jamLightningRings.forEach(r => r.material.opacity = 0.0);
         }
 
         // RGPO Spoofing Deceptive Ghost Decoy
         if (ew.active_jamming === 'RGPO_SPOOFING') {
           const ghostPos = this.to3D(veh.x + 130, veh.y + 40, veh.altitude_m);
           this.ghostDecoyGroup.position.set(ghostPos.x, ghostPos.y, ghostPos.z);
-          this.ghostDecoyGroup.rotation.y = yaw;
-          this.ghostDecoyGroup.children[0].material.opacity = 0.45 + Math.sin(Date.now() * 0.02) * 0.2;
+          this.ghostDecoyGroup.rotation.y = currentYaw;
+          this.ghostDecoyGroup.children[0].material.opacity = 0.5 + Math.sin(this.simTimeSec * 16.0) * 0.25;
         } else {
           this.ghostDecoyGroup.children[0].material.opacity = 0.0;
         }
 
-        // 4. Update Radar Stations & Volumetric Scan Beams
+        // 7. Articulated Radar Defense Sites with Volumetric Beams & EMP Glitch FX
         simState.radars.forEach(r => {
           let rData = this.radarMeshes.get(r.id);
           const rPos = this.to3D(r.x, r.y, 0);
 
           if (!rData) {
-            // Build new 3D Radar Site
             const rGroup = new THREE.Group();
             rGroup.position.set(rPos.x, 0, rPos.z);
 
-            // Ground pad
-            const padGeo = new THREE.CylinderGeometry(20, 24, 4, 8);
-            const padMat = new THREE.MeshStandardMaterial({ color: 0x111c2e, metalness: 0.5 });
+            // Concrete Hexagonal Base
+            const padGeo = new THREE.CylinderGeometry(22, 26, 4, 6);
+            const padMat = new THREE.MeshStandardMaterial({ color: 0x111c2e, metalness: 0.5, roughness: 0.6 });
             const padMesh = new THREE.Mesh(padGeo, padMat);
             padMesh.position.y = 2;
             rGroup.add(padMesh);
 
-            // Antenna Tower & Dish
-            const towerGeo = new THREE.CylinderGeometry(3, 4, 14, 8);
-            const towerMat = new THREE.MeshStandardMaterial({ color: 0x22354d });
+            // Steel Lattice Radar Pedestal
+            const towerGeo = new THREE.CylinderGeometry(3.2, 4.5, 16, 8);
+            const towerMat = new THREE.MeshStandardMaterial({ color: 0x1f2e42, metalness: 0.8 });
             const towerMesh = new THREE.Mesh(towerGeo, towerMat);
-            towerMesh.position.y = 9;
+            towerMesh.position.y = 10;
             rGroup.add(towerMesh);
 
-            const dishGeo = new THREE.CylinderGeometry(8, 2, 4, 12, 1, true);
+            // Articulated Parabolic Dish Antenna
+            const dishGeo = new THREE.CylinderGeometry(9, 2.5, 4.5, 16, 1, true);
             const dishMat = new THREE.MeshStandardMaterial({ color: 0x00e5ff, wireframe: true });
             const dishMesh = new THREE.Mesh(dishGeo, dishMat);
-            dishMesh.position.y = 17;
+            dishMesh.position.y = 19;
             dishMesh.rotation.x = Math.PI / 2;
             rGroup.add(dishMesh);
 
-            // Ground Coverage Ring
-            const covGeo = new THREE.RingGeometry(r.range_radius - 1.5, r.range_radius + 1.5, 48);
-            const covMat = new THREE.MeshBasicMaterial({ color: 0x00e5ff, opacity: 0.18, transparent: true, side: THREE.DoubleSide });
+            // Ground Danger Range Perimeter Ring
+            const covGeo = new THREE.RingGeometry(r.range_radius - 2.0, r.range_radius + 2.0, 64);
+            const covMat = new THREE.MeshBasicMaterial({ color: 0x00e5ff, opacity: 0.2, transparent: true, side: THREE.DoubleSide });
             const covMesh = new THREE.Mesh(covGeo, covMat);
             covMesh.rotation.x = Math.PI / 2;
-            covMesh.position.y = 0.6;
+            covMesh.position.y = 0.8;
             rGroup.add(covMesh);
 
-            // 3D Volumetric Radar Scan Cone
-            // Cone radiating outwards along beam angle
+            // 3D Volumetric Scanning Radar Energy Cone
             const beamLength = r.range_radius * 1.05;
             const beamRadius = Math.tan(((r.beam_width_deg / 2) * Math.PI) / 180) * beamLength;
             const beamGeo = new THREE.ConeGeometry(beamRadius, beamLength, 24, 1, true);
-            beamGeo.translate(0, -beamLength / 2, 0); // Origin at tip
-            beamGeo.rotateX(-Math.PI / 2); // Point forward along +Z
+            beamGeo.translate(0, -beamLength / 2, 0);
+            beamGeo.rotateX(-Math.PI / 2);
 
             const beamMat = new THREE.MeshBasicMaterial({
               color: 0x00e5ff,
@@ -1865,158 +2406,358 @@
               blending: THREE.AdditiveBlending,
             });
             const beamMesh = new THREE.Mesh(beamGeo, beamMat);
-            beamMesh.position.y = 15;
+            beamMesh.position.y = 18;
             rGroup.add(beamMesh);
 
+            // Pulse wavefront sphere traveling outward
+            const waveGeo = new THREE.RingGeometry(2, 4, 32);
+            const waveMat = new THREE.MeshBasicMaterial({
+              color: 0x00e5ff,
+              transparent: true,
+              opacity: 0.0,
+              side: THREE.DoubleSide,
+              blending: THREE.AdditiveBlending
+            });
+            const waveMesh = new THREE.Mesh(waveGeo, waveMat);
+            waveMesh.rotation.x = Math.PI / 2;
+            waveMesh.position.y = 18;
+            rGroup.add(waveMesh);
+
             this.scene.add(rGroup);
-            rData = { group: rGroup, dish: dishMesh, beam: beamMesh, cov: covMesh };
+            rData = { group: rGroup, dish: dishMesh, beam: beamMesh, cov: covMesh, wave: waveMesh, waveDist: 0 };
             this.radarMeshes.set(r.id, rData);
           }
 
-          // Update beam rotation and color based on detection/jamming
+          // Articulated beam rotation
           const beamRad = ((r.beam_angle_deg * Math.PI) / 180);
           rData.beam.rotation.y = -beamRad;
           rData.dish.rotation.z = beamRad;
 
+          // Pulse wavefront traveling outwards
+          rData.waveDist = (rData.waveDist + dt * 140) % r.range_radius;
+          const waveScale = Math.max(1.0, rData.waveDist / 8.0);
+          rData.wave.scale.set(waveScale, waveScale, waveScale);
+          rData.wave.material.opacity = Math.max(0, (1.0 - rData.waveDist / r.range_radius) * 0.4);
+
+          // Threat alert colors: Cyan (Search) -> Red (Lock) -> Violet (Jammed)
           let colorHex = 0x00e5ff;
           let beamOpacity = 0.11;
           if (r.is_jammed) {
-            colorHex = 0xb388ff; // Purple when jammed
-            beamOpacity = 0.18 + Math.sin(Date.now() * 0.02) * 0.06;
+            colorHex = 0xb388ff; // Jammed: Electric violet glitch
+            beamOpacity = 0.22 + Math.sin(this.simTimeSec * 22.0) * 0.1;
           } else if (r.detection_prob > 0.4) {
-            colorHex = 0xff3d71; // Warning Red when target detected/locked
-            beamOpacity = 0.22;
+            colorHex = 0xff3d71; // Lock warning: High-alert red
+            beamOpacity = 0.26;
           }
 
           rData.beam.material.color.setHex(colorHex);
           rData.beam.material.opacity = beamOpacity;
           rData.cov.material.color.setHex(colorHex);
+          rData.wave.material.color.setHex(colorHex);
         });
 
-        // 5. Update Surface-to-Air (SAM) Missiles
+        // 8. Surface-to-Air (SAM) Interceptors with Smooth Pursuit Interpolation
         const activeMissileIds = new Set(simState.missiles.map(m => m.id));
 
-        // Remove expired missiles
+        // Purge expired missiles
         for (const [id, mMesh] of this.missileMeshes.entries()) {
           if (!activeMissileIds.has(id)) {
             this.scene.remove(mMesh);
             mMesh.geometry.dispose();
             mMesh.material.dispose();
             this.missileMeshes.delete(id);
+            this.missileRenders.delete(id);
           }
         }
 
-        // Update or spawn missiles
+        // Render active missiles
         simState.missiles.forEach(m => {
           let mMesh = this.missileMeshes.get(m.id);
-          // Missile climbs from ground toward vehicle altitude
-          const mPos = this.to3D(m.x, m.y, Math.min(veh.altitude_m, 29500 * (m.x / Math.max(1, veh.x))));
+          let mR = this.missileRenders.get(m.id);
+          const mPosTarget = this.to3D(m.x, m.y, Math.min(veh.altitude_m, 29500 * (m.x / Math.max(1, veh.x))));
+          const mYawTarget = -((m.heading_deg * Math.PI) / 180);
 
           if (!mMesh) {
-            const mGeo = new THREE.CylinderGeometry(0.8, 1.2, 9, 8);
+            const mGeo = new THREE.CylinderGeometry(0.9, 1.3, 11, 8);
             const mMat = new THREE.MeshStandardMaterial({
               color: m.locked ? 0xff3d71 : 0xb388ff,
-              emissive: m.locked ? 0x660011 : 0x330055,
-              metalness: 0.8,
+              emissive: m.locked ? 0x880011 : 0x440066,
+              metalness: 0.85,
             });
             mMesh = new THREE.Mesh(mGeo, mMat);
             mMesh.rotation.z = Math.PI / 2;
 
-            // Rocket flame
-            const flameGeo = new THREE.ConeGeometry(1.6, 5, 8);
-            const flameMat = new THREE.MeshBasicMaterial({ color: 0xffaa00 });
+            // 4 Cruciform Steering Fins
+            [-1, 1].forEach(side => {
+              const fin = new THREE.Mesh(
+                new THREE.BoxGeometry(3.5, 0.2, 1.2),
+                new THREE.MeshBasicMaterial({ color: 0x222222 })
+              );
+              fin.position.set(-3.5, 0, side * 1.4);
+              mMesh.add(fin);
+            });
+
+            // Solid Rocket Motor Flame Cone
+            const flameGeo = new THREE.ConeGeometry(1.8, 6.5, 8);
+            const flameMat = new THREE.MeshBasicMaterial({ color: 0xff7700, blending: THREE.AdditiveBlending });
             const flame = new THREE.Mesh(flameGeo, flameMat);
-            flame.position.y = -5.5;
+            flame.position.y = -7.5;
             mMesh.add(flame);
 
             this.scene.add(mMesh);
             this.missileMeshes.set(m.id, mMesh);
+
+            mR = {
+              pos: new THREE.Vector3(mPosTarget.x, mPosTarget.y, mPosTarget.z),
+              yaw: mYawTarget
+            };
+            this.missileRenders.set(m.id, mR);
           }
 
-          mMesh.position.set(mPos.x, mPos.y, mPos.z);
-          mMesh.rotation.y = -((m.heading_deg * Math.PI) / 180);
+          // Smooth missile trajectory interpolation
+          mR.pos.lerp(new THREE.Vector3(mPosTarget.x, mPosTarget.y, mPosTarget.z), Math.min(1.0, dt * 16.0));
+          mR.yaw += this.angleDiff(mYawTarget, mR.yaw) * Math.min(1.0, dt * 16.0);
+
+          mMesh.position.copy(mR.pos);
+          mMesh.rotation.y = mR.yaw;
         });
 
-        // 6. Update Strategic Bunker Target
+        // 8B. Precision Standoff Kinetic Munition (Hypersonic Penetrator)
         const tgtPos = this.to3D(tgt.x, tgt.y, 0);
+        const sw = simState.standoff_weapon;
+        if (sw && sw.active) {
+          const swPos = this.to3D(sw.x, sw.y, sw.altitude_m);
+          if (!this.standoffMesh) {
+            const swGroup = new THREE.Group();
+
+            // Kinetic penetrator dart body
+            const bGeo = new THREE.CylinderGeometry(0.8, 1.4, 12, 8);
+            const bMat = new THREE.MeshStandardMaterial({
+              color: 0xffaa00,
+              metalness: 0.9,
+              roughness: 0.2,
+              emissive: 0xff5500,
+              emissiveIntensity: 0.5
+            });
+            const bMesh = new THREE.Mesh(bGeo, bMat);
+            bMesh.rotation.z = Math.PI / 2;
+            swGroup.add(bMesh);
+
+            // Hypersonic titanium nose cone
+            const coneGeo = new THREE.ConeGeometry(1.0, 4.0, 8);
+            const coneMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+            const coneMesh = new THREE.Mesh(coneGeo, coneMat);
+            coneMesh.position.x = 6.8;
+            coneMesh.rotation.z = -Math.PI / 2;
+            swGroup.add(coneMesh);
+
+            // 4 Standoff steering fins
+            [-1, 1].forEach(side => {
+              const fin = new THREE.Mesh(
+                new THREE.BoxGeometry(3.0, 0.2, 1.0),
+                new THREE.MeshBasicMaterial({ color: 0xff3d71 })
+              );
+              fin.position.set(-4.0, 0, side * 1.5);
+              swGroup.add(fin);
+            });
+
+            // Plasma plume glow
+            const plGeo = new THREE.SphereGeometry(2.5, 8, 8);
+            const plMat = new THREE.MeshBasicMaterial({
+              color: 0xff7700,
+              transparent: true,
+              opacity: 0.75,
+              blending: THREE.AdditiveBlending
+            });
+            swGroup.add(new THREE.Mesh(plGeo, plMat));
+
+            this.scene.add(swGroup);
+            this.standoffMesh = swGroup;
+          }
+
+          // Orient standoff penetrator toward target bunker
+          const dxTgt = tgtPos.x - swPos.x;
+          const dyTgt = tgtPos.y - swPos.y;
+          const dzTgt = tgtPos.z - swPos.z;
+          const yawToTgt = Math.atan2(dzTgt, dxTgt);
+          const pitchToTgt = Math.atan2(-dyTgt, Math.hypot(dxTgt, dzTgt));
+
+          this.standoffMesh.position.set(swPos.x, swPos.y, swPos.z);
+          this.standoffMesh.rotation.y = -yawToTgt;
+          this.standoffMesh.rotation.z = pitchToTgt;
+          this.standoffMesh.visible = true;
+
+          // Munition plasma trail
+          if (Math.random() < 0.8) {
+            const trGeo = new THREE.SphereGeometry(1.2, 6, 6);
+            const trMat = new THREE.MeshBasicMaterial({
+              color: 0xff9900,
+              transparent: true,
+              opacity: 0.85,
+              blending: THREE.AdditiveBlending
+            });
+            const tr = new THREE.Mesh(trGeo, trMat);
+            tr.position.set(swPos.x, swPos.y, swPos.z);
+            tr.life = 0.6;
+            this.scene.add(tr);
+            this.contrailParticles.push(tr);
+          }
+        } else if (this.standoffMesh) {
+          this.standoffMesh.visible = false;
+        }
+
+        // 9. Strategic Bunker Target & Kinetic Impact Explosion Systems
         this.targetGroup.position.set(tgtPos.x, 0, tgtPos.z);
-        this.targetRing.rotation.z += 0.015;
+        this.targetRing.rotation.z += 0.02;
 
         if (tgt.destroyed) {
           this.targetRing.material.color.setHex(0x00e676);
+          this.targetLaserBeam.material.color.setHex(0x00e676);
           this.bunkerLight.color.setHex(0x00e676);
+
+          // Multi-Stage Kinetic Blast Shockwave & Debris Detonation
+          if (!this.bunkerDetonation) {
+            this.bunkerDetonation = {
+              shockRadius: 2.0,
+              flashIntensity: 12.0,
+              particles: []
+            };
+
+            // Spawn 70 Fiery Blast Debris Particles
+            for (let i = 0; i < 70; i++) {
+              const dGeo = new THREE.BoxGeometry(2.0 + Math.random() * 2, 2.0 + Math.random() * 2, 2.0 + Math.random() * 2);
+              const dMat = new THREE.MeshBasicMaterial({
+                color: Math.random() > 0.4 ? 0xff5500 : 0xffbb00
+              });
+              const p = new THREE.Mesh(dGeo, dMat);
+              p.position.set(tgtPos.x, 8, tgtPos.z);
+              const angle = Math.random() * Math.PI * 2;
+              const speed = 40 + Math.random() * 110;
+              p.vx = Math.cos(angle) * speed;
+              p.vy = 35 + Math.random() * 85;
+              p.vz = Math.sin(angle) * speed;
+              p.rotSpeed = (Math.random() - 0.5) * 8.0;
+              this.scene.add(p);
+              this.bunkerDetonation.particles.push(p);
+            }
+
+            // Expanding Shockwave Ring
+            const swGeo = new THREE.RingGeometry(1, 4, 48);
+            const swMat = new THREE.MeshBasicMaterial({
+              color: 0xffaa00,
+              transparent: true,
+              opacity: 0.9,
+              side: THREE.DoubleSide,
+              blending: THREE.AdditiveBlending
+            });
+            this.shockwaveRing = new THREE.Mesh(swGeo, swMat);
+            this.shockwaveRing.rotation.x = Math.PI / 2;
+            this.shockwaveRing.position.set(tgtPos.x, 1.5, tgtPos.z);
+            this.scene.add(this.shockwaveRing);
+
+            this.cameraShake = 1.0; // Trigger dramatic camera rumble
+          }
+
+          // Advance blast physics
+          if (this.bunkerDetonation) {
+            this.bunkerDetonation.shockRadius += dt * 180;
+            if (this.shockwaveRing) {
+              const r = this.bunkerDetonation.shockRadius;
+              this.shockwaveRing.scale.set(r, r, r);
+              this.shockwaveRing.material.opacity = Math.max(0, 0.9 - (r / 250));
+            }
+
+            // Debris gravity & velocity
+            this.bunkerDetonation.particles.forEach(p => {
+              p.vy -= 120 * dt; // Gravity
+              p.position.x += p.vx * dt;
+              p.position.y = Math.max(1.0, p.position.y + p.vy * dt);
+              p.position.z += p.vz * dt;
+              p.rotation.x += p.rotSpeed * dt;
+              p.rotation.y += p.rotSpeed * dt;
+            });
+          }
         } else {
           this.targetRing.material.color.setHex(0xff3d71);
+          this.targetLaserBeam.material.color.setHex(0xff3d71);
           this.bunkerLight.color.setHex(0xff3d71);
         }
 
-        // 7. Multi-Camera Direction Tracking
+        // 10. DYNAMIC MULTI-CAMERA TRANSITIONS & RUMBLE
         if (this.camera) {
-          if (currentCamPreset === 'chase') {
-            const chaseDist = 115;
-            const chaseHeight = 38;
-            const camX = vPos.x - Math.cos(yaw) * chaseDist;
-            const camZ = vPos.z - Math.sin(yaw) * chaseDist;
-            const camY = vPos.y + chaseHeight;
-            this.camera.position.lerp(new THREE.Vector3(camX, camY, camZ), 0.14);
-            const lookTarget = new THREE.Vector3(
-              vPos.x + Math.cos(yaw) * 160,
-              vPos.y,
-              vPos.z + Math.sin(yaw) * 160
+          if (this.currentCamPreset === 'chase') {
+            const chaseDist = 110;
+            const chaseHeight = 32;
+            const camX = currentPos.x - Math.cos(currentYaw) * chaseDist;
+            const camZ = currentPos.z - Math.sin(currentYaw) * chaseDist;
+            const camY = currentPos.y + chaseHeight;
+            this.camPosTarget.set(camX, camY, camZ);
+            this.camLookTarget.set(
+              currentPos.x + Math.cos(currentYaw) * 180,
+              currentPos.y,
+              currentPos.z + Math.sin(currentYaw) * 180
             );
-            this.camera.lookAt(lookTarget);
+            this.camera.position.lerp(this.camPosTarget, 0.12);
+            this.camera.lookAt(this.camLookTarget);
             this.camera.up.set(0, 1, 0);
-          } else if (currentCamPreset === 'cockpit') {
-            // First-person pilot canopy view
-            const camX = vPos.x + Math.cos(yaw) * 8;
-            const camY = vPos.y + 3.2;
-            const camZ = vPos.z + Math.sin(yaw) * 8;
+          } else if (this.currentCamPreset === 'cockpit') {
+            // First-person cockpit pilot POV
+            const camX = currentPos.x + Math.cos(currentYaw) * 7.5;
+            const camY = currentPos.y + 3.2;
+            const camZ = currentPos.z + Math.sin(currentYaw) * 7.5;
             this.camera.position.set(camX, camY, camZ);
             const lookTarget = new THREE.Vector3(
-              vPos.x + Math.cos(yaw) * 280,
-              vPos.y + (simState.status === 'terminal_dive' ? -80 : 0),
-              vPos.z + Math.sin(yaw) * 280
+              currentPos.x + Math.cos(currentYaw) * 280,
+              currentPos.y,
+              currentPos.z + Math.sin(currentYaw) * 280
             );
             this.camera.lookAt(lookTarget);
-            // Dynamic cockpit roll tilt matching aircraft banking
-            this.camera.up.set(Math.sin(-roll) * 0.7, Math.cos(-roll), 0);
-          } else if (currentCamPreset === 'wing') {
-            // Left wingtip action cam
-            const wingX = -Math.sin(yaw) * -19 - Math.cos(yaw) * 8;
-            const wingZ = Math.cos(yaw) * -19 - Math.sin(yaw) * 8;
-            const camX = vPos.x + wingX;
-            const camY = vPos.y + 4.5;
-            const camZ = vPos.z + wingZ;
-            this.camera.position.lerp(new THREE.Vector3(camX, camY, camZ), 0.18);
-            const lookTarget = new THREE.Vector3(
-              vPos.x + Math.cos(yaw) * 25,
-              vPos.y,
-              vPos.z + Math.sin(yaw) * 25
-            );
-            this.camera.lookAt(lookTarget);
+            this.camera.up.set(Math.sin(-currentRoll) * 0.75, Math.cos(-currentRoll), 0);
+          } else if (this.currentCamPreset === 'wing') {
+            // Wingtip action camera
+            const wingX = -Math.sin(currentYaw) * -19.5 - Math.cos(currentYaw) * 8;
+            const wingZ = Math.cos(currentYaw) * -19.5 - Math.sin(currentYaw) * 8;
+            this.camPosTarget.set(currentPos.x + wingX, currentPos.y + 4.5, currentPos.z + wingZ);
+            this.camLookTarget.set(currentPos.x + Math.cos(currentYaw) * 30, currentPos.y, currentPos.z + Math.sin(currentYaw) * 30);
+            this.camera.position.lerp(this.camPosTarget, 0.16);
+            this.camera.lookAt(this.camLookTarget);
             this.camera.up.set(0, 1, 0);
-          } else if (currentCamPreset === 'radar') {
-            // Threat Tracking Radar Ground Station looking up at vehicle
+          } else if (this.currentCamPreset === 'radar') {
+            // Threat Tracking Radar Ground Station looking up
             let rX = -100, rZ = 120;
             if (simState.radars && simState.radars.length > 1) {
               const rSite = simState.radars.find(r => r.type === 'tracking') || simState.radars[1];
-              const rPos = this.to3D(rSite.x, rSite.y, 0);
-              rX = rPos.x;
-              rZ = rPos.z;
+              const rP = this.to3D(rSite.x, rSite.y, 0);
+              rX = rP.x;
+              rZ = rP.z;
             }
-            this.camera.position.set(rX, 20, rZ);
-            this.camera.lookAt(vPos.x, vPos.y, vPos.z);
+            this.camera.position.set(rX, 22, rZ);
+            this.camera.lookAt(currentPos.x, currentPos.y, currentPos.z);
             this.camera.up.set(0, 1, 0);
-          } else if (currentCamPreset === 'target') {
-            // Sector 4 Command Bunker terminal defense camera
-            const bunkerPos = this.to3D(tgt.x, tgt.y, 0);
-            this.camera.position.set(bunkerPos.x - 55, 32, bunkerPos.z + 45);
-            this.camera.lookAt(vPos.x, vPos.y, vPos.z);
+          } else if (this.currentCamPreset === 'target') {
+            // Sector 4 Bunker terminal defense camera
+            this.camera.position.set(tgtPos.x - 65, 34, tgtPos.z + 55);
+            this.camera.lookAt(currentPos.x, currentPos.y, currentPos.z);
             this.camera.up.set(0, 1, 0);
+          }
+
+          // Procedural Camera Shake: ONLY during active evasion maneuver or explosive detonation (NEVER in idle)
+          const isSimActive = simState.status === 'running' || simState.status === 'evading' || simState.status === 'strike_egress';
+          if (!isSimActive) {
+            this.cameraShake = 0.0;
+          } else if (isEvading) {
+            this.cameraShake = Math.max(this.cameraShake, 0.06); // Subtle G-load rumble only during Split-S evasion
+          }
+          if (this.cameraShake > 0.001) {
+            this.camera.position.x += (Math.random() - 0.5) * this.cameraShake * 2.5;
+            this.camera.position.y += (Math.random() - 0.5) * this.cameraShake * 2.5;
+            this.cameraShake = Math.max(0, this.cameraShake - dt * 2.5);
+          } else {
+            this.cameraShake = 0.0;
           }
         }
 
-        // 8. Update In-Cockpit HUD Overlay
+        // 11. Cockpit HUD Overlay Real-Time Telemetry
         document.getElementById('hudAttitudeText').innerText = `AoA: ${(veh.aoa_deg || 2.5)}° | Roll: ${(veh.bank_angle_deg || 0.0)}° | Heading: ${veh.heading_deg}°`;
 
         if (this.controls && this.controls.enabled) {
@@ -2024,6 +2765,30 @@
         }
 
         this.renderer.render(this.scene, this.camera);
+      }
+
+      // Reset explosion artifacts and standoff weapons for clean simulation restarts
+      resetExplosions() {
+        if (this.bunkerDetonation) {
+          this.bunkerDetonation.particles.forEach(p => {
+            this.scene.remove(p);
+            p.geometry.dispose();
+            p.material.dispose();
+          });
+          this.bunkerDetonation = null;
+        }
+        if (this.shockwaveRing) {
+          this.scene.remove(this.shockwaveRing);
+          this.shockwaveRing.geometry.dispose();
+          this.shockwaveRing.material.dispose();
+          this.shockwaveRing = null;
+        }
+        if (this.standoffMesh) {
+          this.scene.remove(this.standoffMesh);
+          this.standoffMesh = null;
+        }
+        this.cameraShake = 0.0;
+        this.vRender.initialized = false;
       }
     }
 
@@ -2128,6 +2893,30 @@
         ctx.fillRect(-8, -2, 16, 4);
         ctx.restore();
       });
+
+      // Hypersonic Standoff Munition (2D Trajectory & Marker)
+      if (state.standoff_weapon && state.standoff_weapon.active) {
+        const sw = state.standoff_weapon;
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(sw.x, sw.y);
+        ctx.lineTo(tgt.x, tgt.y);
+        ctx.strokeStyle = 'rgba(255, 170, 0, 0.45)';
+        ctx.setLineDash([5, 4]);
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        ctx.fillStyle = '#ffaa00';
+        ctx.beginPath();
+        ctx.arc(sw.x, sw.y, 4.5, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = '#ffaa00';
+        ctx.font = 'bold 9.5px "Share Tech Mono", monospace';
+        ctx.fillText('STANDOFF KINETIC WARHEAD', sw.x + 8, sw.y - 6);
+        ctx.restore();
+      }
     }
 
     // ======================================================================
@@ -2310,6 +3099,9 @@
         const res = await fetch('/api/simulation/state');
         if (!res.ok) return;
         state = await res.json();
+        if (state && !state.target.destroyed && tactical3D && tactical3D.bunkerDetonation) {
+          tactical3D.resetExplosions();
+        }
         updateUI();
       } catch (err) {
         console.warn('Simulation sync error:', err);
@@ -2317,7 +3109,7 @@
     }
 
     async function tickSimulation() {
-      if (state && (state.status === 'running' || state.status === 'evading' || state.status === 'terminal_dive')) {
+      if (state && (state.status === 'running' || state.status === 'evading' || state.status === 'terminal_dive' || state.status === 'strike_egress')) {
         try {
           const res = await fetch('/api/simulation/tick', {
             method: 'POST',
@@ -2333,7 +3125,7 @@
     }
 
     async function syncRFClassification() {
-      if (state && (state.status === 'running' || state.status === 'evading')) {
+      if (state && (state.status === 'running' || state.status === 'evading' || state.status === 'strike_egress')) {
         try {
           const res = await fetch('/api/rf/classify-current');
           if (res.ok) {
@@ -2485,12 +3277,16 @@
 
       if (state.status === 'completed') {
         banner.className = 'alert-banner success';
-        bannerStatus.innerText = 'MISSION COMPLETE · TARGET ELIMINATED';
-        bannerSub.innerText = 'DIRECT IMPACT SUCCESSFUL';
+        bannerStatus.innerText = 'MISSION COMPLETE · TARGET DESTROYED';
+        bannerSub.innerText = 'STANDOFF KINETIC STRIKE CONFIRMED · WAVERIDER EGRESSING AT MACH 5.2';
         if (prevStatus !== 'completed') {
           sound.playExplosion();
           showVictoryModal();
         }
+      } else if (state.status === 'strike_egress') {
+        banner.className = 'alert-banner standoff';
+        bannerStatus.innerText = 'STANDOFF WEAPON RELEASED · SUPERSONIC EGRESS CLIMB';
+        bannerSub.innerText = 'HYPERSONIC KINETIC MUNITION DEPLOYED (MACH 6) · ASCENDING TO 32,500M';
       } else if (threat.incoming_missiles_count > 0 && veh.evading) {
         banner.className = 'alert-banner missile';
         bannerStatus.innerText = 'SAM MISSILE LAUNCH DETECTED · EVADING';
@@ -2526,11 +3322,22 @@
 
     function showVictoryModal() {
       const modal = document.getElementById('victoryModal');
-      document.getElementById('mEvadedDebrief').innerText = `${state.scorecard.missiles_evaded} SAMs Defeated`;
-      document.getElementById('rJammedDebrief').innerText = `${state.scorecard.radars_suppressed} Sites Suppressed`;
+      document.getElementById('mEvadedDebrief').innerText = `${state.scorecard.missiles_evaded} Defeated`;
+      document.getElementById('rJammedDebrief').innerText = `${state.scorecard.radars_suppressed} Sites`;
       document.getElementById('timeDebrief').innerText = `${state.elapsed_seconds} s`;
       modal.classList.add('active');
     }
+
+    function closeVictoryModal() {
+      const modal = document.getElementById('victoryModal');
+      if (modal) modal.classList.remove('active');
+    }
+
+    document.getElementById('closeVictoryModalBtn')?.addEventListener('click', closeVictoryModal);
+    document.getElementById('closeVictoryModalBtn2')?.addEventListener('click', closeVictoryModal);
+    document.getElementById('victoryModal')?.addEventListener('click', (e) => {
+      if (e.target.id === 'victoryModal') closeVictoryModal();
+    });
 
     // ======================================================================
     // VIEW CONTROLS & EVENT LISTENERS
@@ -2548,7 +3355,10 @@
       threeContainerEl.style.display = 'block';
       simCanvasEl.style.display = 'none';
       hud3DEl.style.display = 'flex';
-      document.getElementById('camPresetGroup').style.display = 'flex';
+      const camToolbar = document.getElementById('camToolbar');
+      if (camToolbar) camToolbar.style.display = 'flex';
+      const camGroup = document.getElementById('camPresetGroup');
+      if (camGroup) camGroup.style.display = 'flex';
       tactical3D.onResize();
     });
 
@@ -2559,7 +3369,10 @@
       threeContainerEl.style.display = 'none';
       simCanvasEl.style.display = 'block';
       hud3DEl.style.display = 'none';
-      document.getElementById('camPresetGroup').style.display = 'none';
+      const camToolbar = document.getElementById('camToolbar');
+      if (camToolbar) camToolbar.style.display = 'none';
+      const camGroup = document.getElementById('camPresetGroup');
+      if (camGroup) camGroup.style.display = 'none';
     });
 
     // Multi-Camera Direction Click Listeners
@@ -2579,8 +3392,14 @@
       });
     }
 
-    // Keyboard Hotkeys [1] - [7] for Instant Direction Switching
+    // Keyboard Hotkeys [1] - [7] for Instant Direction Switching & [ESC] for Modal Dismiss
     window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeVictoryModal();
+        const benchModal = document.getElementById('benchmarkModal');
+        if (benchModal) benchModal.classList.remove('active');
+        return;
+      }
       if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
       const camMap = {
         '1': 'orbit',
@@ -2857,6 +3676,12 @@
       });
     }
 
+    if (benchmarkModalEl) {
+      benchmarkModalEl.addEventListener('click', (e) => {
+        if (e.target.id === 'benchmarkModal') benchmarkModalEl.classList.remove('active');
+      });
+    }
+
     // Terminal Command Clipboard Copy
     const copyTrainCmdBtnEl = document.getElementById('copyTrainCmdBtn');
     if (copyTrainCmdBtnEl) {
@@ -2878,7 +3703,31 @@
       });
     }
 
+    async function checkHealthStatus() {
+      try {
+        const res = await fetch('/api/health');
+        if (res.ok) {
+          const h = await res.json();
+          const el = document.getElementById('apiStatus');
+          if (el) {
+            el.innerHTML = `<span>●</span> ${h.cuda_available ? 'GPU ONLINE (CUDA: RTX 3050)' : 'API ONLINE'}`;
+            el.style.background = '#bef264';
+            el.style.color = '#000000';
+          }
+        }
+      } catch (err) {
+        const el = document.getElementById('apiStatus');
+        if (el) {
+          el.innerHTML = '<span>●</span> API OFFLINE';
+          el.style.background = '#fecaca';
+          el.style.color = '#991b1b';
+        }
+      }
+    }
+
     // Startup
+    checkHealthStatus();
+    setInterval(checkHealthStatus, 4000);
     fetchSimulationState();
     loadTelemetryFlights();
     refreshBenchmarkModalFromAPI();

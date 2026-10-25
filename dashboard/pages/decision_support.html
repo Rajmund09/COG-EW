@@ -175,22 +175,28 @@
 </head>
 
 <body>
-    <!-- UNIFIED TOP NAVIGATION -->
-    <header class="topbar-unified">
-        <div class="brand" style="display:flex; align-items:center; gap:12px; font-family:'Orbitron',sans-serif; font-size:19px; font-weight:800; letter-spacing:1px; margin-bottom:0;">
-            <span>⚡ COG-EW</span> DECISION SUPPORT & OPERATOR REVIEW
-            <span class="badge" style="background:rgba(0,229,255,0.15); border:1px solid var(--accent-cyan); color:var(--accent-cyan); font-size:11px; padding:3px 8px; border-radius:4px; font-family:var(--font-mono)">COG-DECISION</span>
+    <!-- CYBER BRUTALISM NAVBAR -->
+    <header class="cyber-navbar">
+        <div class="cyber-brand">
+            COG<span>_EW_</span>
+            <span class="cyber-pill-tag">DECISION ENGINE</span>
         </div>
 
-        <nav style="display:flex; gap:8px; align-items:center;">
-            <a href="/">Overview</a>
-            <a href="/pages/simulation.html">Tactical Simulation</a>
-            <a href="/pages/rf_classification.html">RF Perception</a>
-            <a href="/pages/signal_analysis.html">Signal Analysis</a>
-            <a href="/pages/model_performance.html">Model Benchmarks</a>
+        <nav class="cyber-nav-links">
+            <a href="/">// 00 OVERVIEW</a>
+            <a href="/pages/simulation.html">// 01 TACTICAL SIM</a>
+            <a href="/pages/rf_classification.html">// 02 RF PERCEPTION</a>
+            <a href="/pages/signal_analysis.html">// 03 SPECTRAL DSP</a>
+            <a href="/pages/model_performance.html">// 04 BENCHMARKS</a>
         </nav>
 
-        <div id="systemStatus" class="status" style="font-family:var(--font-mono); font-size:12px; color:#10b981;">● Online</div>
+        <div class="cyber-sys-status">
+            <div class="cyber-time-pill">SYS.TIME <span>23:47:12</span></div>
+            <div class="status-telemetry-pill" style="border:1.5px solid #000; background:var(--cyber-lime); color:#000; padding:3px 7px; font-family:var(--cyber-mono); font-size:10.5px; font-weight:800; box-shadow:2px 2px 0px #000; white-space:nowrap;">
+                <span>●</span> ONLINE
+            </div>
+            <a href="/pages/rf_classification.html" class="cyber-btn-black">RF ENGINE ↗</a>
+        </div>
     </header>
 
     <main class="main" style="max-width: 1440px; margin: 0 auto; padding: 24px 30px 60px;">
