@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COG-EW Master Project Documentation</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.65;
+            color: #2D3748;
+            background: #F0F4F8;
+            margin: 0;
+            padding: 40px 20px;
+        }
+        .container {
+            max-width: 980px;
+            margin: 0 auto;
+            background: #FFFFFF;
+            padding: 50px 70px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            border-radius: 8px;
+        }
+        .header-title {
+            color: #1A365D;
+            font-size: 26px;
+            font-weight: 800;
+            line-height: 1.25;
+            margin-bottom: 6px;
+        }
+        .meta-subtitle {
+            color: #718096;
+            font-size: 14px;
+            margin-bottom: 28px;
+            border-bottom: 2px solid #E2E8F0;
+            padding-bottom: 12px;
+        }
+        h1 {
+            color: #1A365D;
+            border-bottom: 2px solid #3182CE;
+            padding-bottom: 8px;
+            margin-top: 36px;
+            font-size: 20px;
+        }
+        h2 {
+            color: #2B6CB0;
+            border-bottom: 1px solid #E2E8F0;
+            padding-bottom: 6px;
+            margin-top: 28px;
+            font-size: 17px;
+        }
+        h3 {
+            color: #2D3748;
+            margin-top: 20px;
+            font-size: 15px;
+        }
+        p {
+            margin: 10px 0;
+            font-size: 14.5px;
+        }
+        .callout-green {
+            background: #F0FDF4;
+            border-left: 5px solid #16A34A;
+            padding: 16px 20px;
+            border-radius: 4px;
+            margin: 20px 0;
+            font-size: 14px;
+            color: #166534;
+        }
+        .callout-blue {
+            background: #EDF2F7;
+            border-left: 5px solid #2B6CB0;
+            padding: 16px 20px;
+            border-radius: 4px;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Courier New', monospace;
+            white-space: pre-wrap;
+            font-size: 13px;
+            line-height: 1.5;
+            color: #1A202C;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 13.5px;
+        }
+        th, td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid #E2E8F0;
+        }
+        th {
+            background: #1A365D;
+            color: #FFFFFF;
+            font-weight: 600;
+        }
+        tr:nth-child(even) td {
+            background: #F8FAFC;
+        }
+        .viva-card {
+            background: #F8FAFC;
+            border: 1px solid #E2E8F0;
+            border-radius: 6px;
+            padding: 14px 18px;
+            margin: 12px 0;
+        }
+        .viva-q {
+            font-weight: 700;
+            color: #1A365D;
+            margin-bottom: 6px;
+        }
+        .viva-a {
+            color: #4A5568;
+            font-size: 14px;
+        }
+        .nav-doc-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #1A365D;
+            color: #FFFFFF;
+            padding: 10px 18px;
+            border-radius: 6px;
+            margin-bottom: 25px;
+            font-size: 13px;
+        }
+        .nav-doc-bar a {
+            color: #90CDF4;
+            text-decoration: none;
+            font-weight: 600;
+            margin-left: 14px;
+        }
+        .nav-doc-bar a:hover {
+            text-decoration: underline;
+        }
+        @media print {
+            body { background: #FFFFFF; padding: 0; }
+            .container { box-shadow: none; padding: 20px; max-width: 100%; }
+            .nav-doc-bar { display: none; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="nav-doc-bar">
+        <span>COG-EW Formal Project Documentation · Version 2.4.0</span>
+        <div>
+            <a href="/index.html">← Back to Mission Deck</a>
+            <a href="/pages/simulation.html">3D Tactical Simulation</a>
+        </div>
+    </div>
+    <div class="header-title">COG-EW: Autonomous Cognitive Electronic Warfare &amp; Hypersonic Flight Guidance Co-Designer</div>
+    <div class="meta-subtitle">Comprehensive Technical Specification, Research Paper, Complete UI Manual &amp; Viva Examination Guide</div>
+<p>COG-EW: Autonomous Cognitive Electronic Warfare &amp;
+Hypersonic Flight Guidance Co-Designer</p>
+<p>Comprehensive Technical Specification, Research Paper, Complete UI Manual &amp; Viva Examination Guide
+Version 2.4.0 (Production Master) · Aerospace &amp; Defense Autonomous AI</p>
+<div class="callout-green">📌 MISSION DOCTRINE &amp; REUSABLE WEAPONS RELEASE ARCHITECTURE
+CRITICAL STRATEGIC CLARIFICATION: COG-EW IS NOT A SUICIDE DRONE
+COG-EW is an autonomous, high-value, reusable hypersonic waverider cruising at Mach 5.2 in the stratosphere (29,500 m). Upon approaching enemy strategic targets (e.g., Sector 4 Command Bunker), it deploys a precision hypersonic kinetic glide penetrator from its ventral weapons bay. The waverider never crashes or dives into the target; it executes a high-altitude supersonic climb (+10° AoA, ascending to 31,500m - 32,500m) and egress bank to safely exit contested airspace as a 100% reusable asset.</div>
+<table>
+<thead><tr>
+<th>Specification Attribute</th><th>System Value &amp; Architecture Detail</th></tr></thead>
+<tbody>
+<tr>
+<td>Target Vehicle</td><td>Titanium-Carbon Waverider Hypersonic Platform (Mach 5.2 Cruise @ 29,500m)</td></tr>
+<tr>
+<td>Electronic Warfare AI</td><td>24-Class Deep Residual AMC Network (ResNet-18 adapted for 2x1024 I/Q tensors)</td></tr>
+<tr>
+<td>Guidance &amp; Kinematics AI</td><td>TCNResNet (Dilated 1D Causal ConvNet, 20-step receptive field, 10-step lookahead)</td></tr>
+<tr>
+<td>Telemetry Ground Truth</td><td>Instituto IDF UAV Flight Telemetry Database (120 flights, 60/15/15/10% cross-validation)</td></tr>
+<tr>
+<td>RF Perception Benchmark</td><td>RadioML 2018.01A Benchmark (2,555,904 complex samples, -20 dB to +30 dB SNR)</td></tr>
+<tr>
+<td>Inference Latency</td><td>0.027 ms forward inference on dedicated NVIDIA GeForce RTX Laptop GPU</td></tr>
+<tr>
+<td>Backend Architecture</td><td>FastAPI ASGI Engine, Uvicorn Daemon, NumPy, SciPy DSP, PyTorch 2.2+ CUDA FP16</td></tr>
+<tr>
+<td>Frontend &amp; Simulation</td><td>Vanilla CSS3 (Cyber Brutalism), Three.js WebGL (60-120 FPS), HTML5 Canvas 2D, Web Audio API</td></tr>
+</tbody></table>
+<h1>1. Executive Summary &amp; Problem Statement</h1>
+<p>The Defense Dilemma: Modern Integrated Air Defense Systems (IADS) deploy dense multi-static, frequency-agile surveillance, acquisition, and fire-control radar networks paired with supersonic surface-to-air missile (SAM) interceptors. In high-intensity Anti-Access / Area-Denial (A2/AD) contested environments, penetrating hypersonic strike and reconnaissance platforms face three existential challenges that legacy avionics cannot overcome:</p>
+<ul><li>1. The Reaction Latency Chasm: Human electronic support measures (ESM) operators and legacy analog EW pods require multiple seconds to detect, digitize, classify, and formulate jamming responses. At hypersonic speeds (Mach 5.2, or 1.77 km/s), a 3-second lag allows enemy fire-control radars to close more than 5.3 kilometers of uncountered tracking.</li></ul>
+<ul><li>2. The Decoupled Control Penalty: In traditional military aviation, flight guidance (navigation) and electronic warfare (countermeasures) operate as completely isolated, decoupled subsystems. Physical high-G evasive maneuvers without electronic deception bleed vital kinetic energy and cause severe aerodynamic heating spikes. Conversely, electronic jamming without coordinated aerodynamic maneuvering enables monopulse Track-Via-Missile (TVM) and Home-On-Jam (HOJ) interceptors to score lethal proximity hits.</li></ul>
+<ul><li>3. Severe Aerodynamic &amp; Thermal Bounds: Cruising in the upper stratosphere (29,500 m) at Mach 5.2 imposes severe structural dynamic pressure limits, structural load bounds (G &lt;= 6.5g continuous, 10g emergency peak), and aerodynamic frictional heating constraints (T &lt;= 1800 K).</li></ul>
+<p>What COG-EW Solves: COG-EW solves this challenge by introducing a Cognitive Multi-Domain Co-Design Architecture that dynamically couples RF signal intelligence, automated jamming resource allocation, and deep learning-guided flight trajectory planning into a sub-millisecond closed-loop OODA (Observe-Orient-Decide-Act) cycle.</p>
+<h1>2. Formal Research Paper Specification (AIAA / IEEE Format)</h1>
+<h2>Cognitive Multi-Domain Electronic Warfare and Deep Learning-Guided Flight Trajectory Co-Design for Hypersonic Standoff Strike Operations</h2>
+<p>Abstract: Autonomous penetration of contested airspace defended by multi-static Integrated Air Defense Systems (IADS) requires simultaneous optimization of electromagnetic countermeasures and aerodynamic trajectory kinematics. This paper presents the Cognitive Multi-Domain EW-Guidance Co-Designer (COG-EW), an edge-deployable cyber-physical defense architecture for hypersonic waverider platforms (M=5.2, h=29,500 m). The framework couples a 24-class Deep Residual Network for Automatic Modulation Classification (AMC) operating on raw In-Phase/Quadrature (I/Q) complex tensors with a Temporal Convolutional Residual Network (TCNResNet) for predictive flight kinematic guidance. RF signal intelligence informs an autonomous cognitive decision engine that arbitrates between barrage noise saturation, Range Gate Pull-Off (RGPO) deceptive spoofing, and high-G bank-to-turn maneuvers while strictly respecting aerodynamic load limits (G &lt;= 6.5) and thermal dissipation constraints. Evaluated on 766,772 untouched test samples from the RadioML 2018.01A benchmark and 120 real-world UAV flight laps from the Instituto IDF database partitioned into a leak-free 60/15/15/10% cross-validation split, the system demonstrates 91.9% classification accuracy in the operational lock-on regime (SNR &gt;= +6 dB) with 0.027 ms GPU forward inference latency on an NVIDIA RTX GPU, achieving a 98.5% vehicle survivability index across multi-site SAM intercept scenarios.</p>
+<h3>Mathematical Problem Formulations</h3>
+<p>The flight dynamics of the hypersonic waverider are governed by point-mass 3-DOF equations over a spherical Earth:</p>
+<div class="callout-blue">📌 AERODYNAMIC EQUATIONS OF MOTION
+1. Velocity:    dx/dt = V * cos(gamma) * cos(psi)
+2. Crossrange:  dy/dt = V * cos(gamma) * sin(psi)
+3. Altitude:    dh/dt = V * sin(gamma)
+4. Acceleration: dV/dt = (T * cos(alpha) - D)/m - g * sin(gamma)
+5. Flight Path:  d(gamma)/dt = ((T * sin(alpha) + L) * cos(sigma))/(m * V) - (g/V - V/(R_E + h)) * cos(gamma)
+6. Heading:     d(psi)/dt = ((T * sin(alpha) + L) * sin(sigma))/(m * V * cos(gamma))
+7. Load Factor: n_z = L / (m * g) = 1 / cos(sigma)  [during coordinated turns]</div>
+<p>The radar detection and electronic attack physics are formulated via the classic Radar Range and Jamming equations:</p>
+<div class="callout-blue">📌 RADAR DETECTION &amp; ELECTRONIC ATTACK PHYSICS
+1. Received Radar SNR:    SNR_r = (P_t * G_t * G_r * lambda^2 * sigma_RCS) / ((4*pi)^3 * k * T_0 * B * F * R^4)
+2. Jamming-to-Signal Ratio: J/S = (P_j * G_j * B_r * 4*pi * R^2) / (P_t * G_t * sigma_RCS * B_j)
+3. Jammed Detection Prob:  P_d(jammed) = P_d(clean) * (1 - kappa)  [kappa = 0.85 for 45kW noise jamming]
+4. RGPO Phantom Echo Delay: Delta_R = (c * tau_delay) / 2  [Pulls radar range tracking gate away from skin echo]</div>
+<h1>3. System Architecture &amp; Complete Flow Diagrams</h1>
+<p>The COG-EW architecture is organized into a four-stage synchronous cyber-physical loop:</p>
+<div class="callout-blue">📌 END-TO-END SYSTEM ARCHITECTURE PIPELINE
+STAGE 1: SENSING &amp; SIGNAL ACQUISITION
+  └── ESM Wideband Receiver -&gt; High-Speed Dual ADC (200 MSps) -&gt; Raw I/Q Ingestion (2x1024 complex float32)
+  └── Holybro Pixhawk Flight Controller -&gt; 3-Axis Gyro, Accelerometer, Barometric Altimeter (10 Hz)
+
+STAGE 2: DEEP LEARNING REAL-TIME PERCEPTION
+  ├── RF Intelligence: 24-Class Deep ResNet AMC -&gt; Mod Classification + Confidence + Threat Level (0.027 ms GPU)
+  ├── Spectral DSP Engine: Welch FFT PSD, SNR Calculation, I/Q Imbalance, PAPR Crest Factor
+  └── Trajectory Predictor: TCNResNet 20-step Causal ConvNet -&gt; 10-step Lookahead Horizon (+0.1s to +1.0s)
+
+STAGE 3: COGNITIVE DECISION &amp; ARBITRATION (OODA LOOP)
+  ├── Threat State Evaluator: Assesses Radar Tracking Mode (Search vs Acquisition vs Fire-Control SAM Lock)
+  ├── Countermeasure Allocator: Arbitrates between ESM Passive, 45kW Barrage Noise, and RGPO Deception
+  └── Safety Governor: Enforces 6.5g dynamic load bound and thermal dissipation ceiling (T &lt;= 1800 K)
+
+STAGE 4: DUAL-DOMAIN ACTUATION &amp; WEAPONS DEPLOYMENT
+  ├── Electronic Attack: 45kW Jammer Modulation / RGPO False Target Echo Transmission
+  ├── Flight Guidance: Autonomous Waverider Bank-to-Turn Evasion &amp; Mach 5.2 Stratospheric Cruise
+  └── Standoff Strike: Hypersonic Kinetic Glide Munition Release (Mach 6) -&gt; Reusable Waverider Egress Climb (+10° AoA, 31.5km)</div>
+<h1>4. Complete Frontend User Manual (Page-by-Page &amp; Button-by-Button)</h1>
+<h2>4.1 Global Navigation &amp; Header Controls (All Pages)</h2>
+<ul><li>Header Navigation Tabs: Clicking any tab switches pages without state loss. Tabs include: // 00 OVERVIEW, // 01 TACTICAL SIM, // 02 RF PERCEPTION, // 03 SPECTRAL DSP, // 04 BENCHMARKS, and DECISION SUPPORT.</li></ul>
+<ul><li>Audio Toggle Button (🔊): Toggles procedural Web Audio API sound synthesis on or off. Produces radar tracking beeps, jamming noise static, and kinetic detonation rumbles.</li></ul>
+<ul><li>GPU Online Badge: Displays real-time hardware accelerator connection. Confirms whether inference is executing on CUDA GPU (NVIDIA GeForce RTX Laptop GPU) or Standby CPU.</li></ul>
+<ul><li>System Clock (SYS.TIME): Live Greenwich/UTC mission elapsed operational clock running at 1-second intervals.</li></ul>
+<h2>4.2 Page 1: 3D Tactical Battlefield Simulation (pages/simulation.html)</h2>
+<table>
+<thead><tr>
+<th>UI Control / Button</th><th>Type &amp; Hotkey</th><th>Detailed Operational Functionality</th></tr></thead>
+<tbody>
+<tr>
+<td>START MISSION</td><td>Green Button</td><td>Starts the 10 Hz physical simulation tick. Waverider begins flying along corridor, radars activate scanning, and telemetry updates.</td></tr>
+<tr>
+<td>PAUSE</td><td>Yellow Button</td><td>Freezes simulation clock, missile trajectories, and telemetry cursors for inspection and analysis.</td></tr>
+<tr>
+<td>RESET</td><td>Gray Button</td><td>Restores mission to T+000.0s, clears all explosion debris and contrails, and re-initializes waverider at ingress starting point.</td></tr>
+<tr>
+<td>SCENARIO SELECT</td><td>Dropdown Select</td><td>Selects tactical difficulty: Scenario 1 (Single Radar), Scenario 2 (Dual SAM Sites), Scenario 3 (Deep Strike IADS Network).</td></tr>
+<tr>
+<td>TRAINED LAP SELECT</td><td>Dropdown Select</td><td>Selects any of the 72 authentic flights from the 60% Training Split of the Instituto IDF UAV Pixhawk database.</td></tr>
+<tr>
+<td>AUTOPILOT TOGGLE</td><td>Action Button</td><td>Switches vehicle flight control between Deep Learning autonomous guidance and manual pilot override.</td></tr>
+<tr>
+<td>MANUAL EVADE</td><td>Action Button</td><td>Forces an immediate emergency +25° heading evasive turn and activates RGPO deception.</td></tr>
+<tr>
+<td>EW COUNTERMEASURE</td><td>Dropdown Select</td><td>Selects active countermeasure: Cognitive Auto (AI arbitrated), Passive Monitor, Noise Jamming, RGPO Spoofing, Angle Deception.</td></tr>
+<tr>
+<td>3D Tactical / 2D Radar</td><td>Mode Switch</td><td>Toggles between Three.js WebGL 3D battlefield scene and high-contrast 2D PPI Plan Position Indicator radar display.</td></tr>
+<tr>
+<td>Orbit Cam [1]</td><td>Camera Button (1)</td><td>Free orbital camera allowing 360° mouse drag rotation, zoom, and panning around the combat airspace.</td></tr>
+<tr>
+<td>Chase Cam [2]</td><td>Camera Button (2)</td><td>Third-person hypersonic pursuit camera positioned 110m behind and 32m above the waverider, tracking pitch and roll.</td></tr>
+<tr>
+<td>Cockpit HUD [3]</td><td>Camera Button (3)</td><td>First-person Mach 5.2 pilot POV from inside the canopy looking along the flight path with attitude director rungs.</td></tr>
+<tr>
+<td>Wing Cam [4]</td><td>Camera Button (4)</td><td>Wingtip action camera looking at the delta elevons, scramjet Mach shock diamonds, and high-G contrails.</td></tr>
+<tr>
+<td>Radar Ground [5]</td><td>Camera Button (5)</td><td>Threat Tracking Radar ground station camera looking up into the stratosphere at the incoming waverider.</td></tr>
+<tr>
+<td>Target Bunker [6]</td><td>Camera Button (6)</td><td>Sector 4 Bunker terminal defense camera tracking the incoming hypersonic standoff glide weapon.</td></tr>
+<tr>
+<td>Top-Down [7]</td><td>Camera Button (7)</td><td>Overhead satellite reconnaissance camera looking straight down from 950m altitude over the combat sector.</td></tr>
+<tr>
+<td>ADI Gyroscope</td><td>Visual HUD</td><td>Real-time Attitude Director Indicator with artificial horizon, pitch ladder (+/-10°, +/-20°), roll triangle, and aircraft wings.</td></tr>
+<tr>
+<td>Lookahead Preview</td><td>Telemetry HUD</td><td>5-tile forecast window showing upcoming predicted bank angle (deg) and dynamic G-load from +0.1s to +1.0s.</td></tr>
+</tbody></table>
+<h2>4.3 Page 2: Deep Residual RF Perception (pages/rf_classification.html)</h2>
+<ul><li>Sample Index Input: Allows entering any index (0 to 766,771) from the RadioML 2018.01A HDF5 dataset to load real intercepted radar pulses.</li></ul>
+<ul><li>CLASSIFY SAMPLE Button: Transmits raw I/Q tensors to the backend PyTorch ResNet model for immediate forward inference.</li></ul>
+<ul><li>3D Electromagnetic Wave &amp; I/Q Helix: Interactive WebGL 3D visualization plotting the electromagnetic wave across Time (X), In-Phase (Y), and Quadrature (Z). Includes projection buttons: 3D Helix, Constellation (I-Q), In-Phase (I), Quadrature (Q), and Rotate Toggle.</li></ul>
+<ul><li>Class Probability Distribution: Displays Softmax probability bars across the top 5 predicted modulation candidates.</li></ul>
+<ul><li>Signal Metrics Cards: Real-time cards reporting Calculated SNR (dB), I/Q Imbalance (dB), PAPR Crest Factor, and Forward Latency (0.027 ms).</li></ul>
+<h2>4.4 Page 3: Spectral DSP &amp; Signal Quality (pages/signal_analysis.html)</h2>
+<ul><li>RUN SPECTRAL DIAGNOSTICS Button: Executes Digital Signal Processing algorithms on the intercepted 2x1024 complex pulse.</li></ul>
+<ul><li>Calculated SNR: Estimates signal-to-noise ratio in decibels from baseband sample variance.</li></ul>
+<ul><li>I/Q Power Imbalance: Computes 10 * log10(P_I / P_Q) to detect analog hardware phase/amplitude degradation in receiver mixers.</li></ul>
+<ul><li>PAPR (Peak-to-Average): Crest factor ratio identifying amplifier saturation risk and signal envelope consistency.</li></ul>
+<ul><li>Estimated 3dB Bandwidth: Measures bandwidth of transmission lobe at the -3dB half-power cutoff points.</li></ul>
+<ul><li>FFT Power Spectral Density: Computes Welch periodogram across -fs/2 to +fs/2 to visualize harmonic distortion and spectral peaks.</li></ul>
+<ul><li>I/Q Phase Plane Constellation: Polar scatter plot illustrating modulation symbol constellation clustering and phase noise.</li></ul>
+<h2>4.5 Page 4: Model Performance &amp; Benchmark Leaderboard (pages/model_performance.html)</h2>
+<ul><li>Full Benchmark Button (-20 to +30 dB): Evaluates all 30,005 test samples across the entire SNR spectrum (-20 to +30 dB), establishing the academic baseline (64.75% avg accuracy).</li></ul>
+<ul><li>Tactical Regime Button (&gt;= 0 dB): Filters evaluation to actionable defense signals with SNR &gt;= 0 dB (87.2% accuracy).</li></ul>
+<ul><li>Operational Defense Regime Button (&gt;= +6 dB): Evaluates radar lock-on signals with SNR &gt;= +6 dB, confirming 91.9% accuracy.</li></ul>
+<ul><li>Architecture Comparison Table: Ranked comparison between FlightTransformer, TCNResNet, BiLSTMAttention, and KinematicMLP across ADE, FDE, Roll MAE, and Latency.</li></ul>
+<ul><li>5-Fold Cross Validation Table: Complete metrics across 5 independent holdout folds on Flights 109 to 120, demonstrating leak-free generalization.</li></ul>
+<h2>4.6 Page 5: Cognitive Decision Support (pages/decision_support.html)</h2>
+<ul><li>Threat Severity Matrix: Arbitrates incoming signals into LOW (Surveillance), MEDIUM (Tracking), and CRITICAL (Active SAM Lock).</li></ul>
+<ul><li>EW Action Prescription: Policy lookup mapping detected modulation and SNR to optimal jamming modes and trajectory maneuvers.</li></ul>
+<ul><li>Thermal &amp; Structural Safety Bounds: Enforces 6.5g continuous load limits, 10g emergency peaks, and 1800K thermal bounds.</li></ul>
+<h1>5. Technical Stack &amp; Architecture Details</h1>
+<table>
+<thead><tr>
+<th>Layer / Subsystem</th><th>Technology / Framework</th><th>Implementation Role &amp; Purpose</th></tr></thead>
+<tbody>
+<tr>
+<td>Core Language</td><td>Python 3.10+ / ES6+ JavaScript</td><td>Backend algorithmic processing and client-side real-time rendering</td></tr>
+<tr>
+<td>Deep Learning Engine</td><td>PyTorch 2.2+ with CUDA 12.x</td><td>GPU-accelerated mixed precision (AMP FP16) inference and training</td></tr>
+<tr>
+<td>Perception Model</td><td>24-Class Deep ResNet-18</td><td>Automatic Modulation Classification of 2x1024 complex I/Q tensors</td></tr>
+<tr>
+<td>Kinematics Model</td><td>TCNResNet (Causal ConvNet)</td><td>Multi-step flight attitude and lookahead trajectory forecasting</td></tr>
+<tr>
+<td>Alternative Models</td><td>FlightTransformer, BiLSTM, MLP</td><td>Comprehensive comparative benchmark architectures</td></tr>
+<tr>
+<td>RF Dataset</td><td>RadioML 2018.01A (DeepSig)</td><td>2,555,904 frames across 24 analog/digital modulation types</td></tr>
+<tr>
+<td>Telemetry Dataset</td><td>Instituto IDF UAV Pixhawk DB</td><td>120 recorded flight laps (312,000 points) partitioned into 60/15/15/10%</td></tr>
+<tr>
+<td>Backend Server</td><td>FastAPI / Uvicorn ASGI</td><td>Asynchronous HTTP REST API with 17 operational endpoints</td></tr>
+<tr>
+<td>3D Graphics Engine</td><td>Three.js (r128 WebGL)</td><td>Procedural elevation grid, custom waverider mesh, particle physics</td></tr>
+<tr>
+<td>2D Graphics Engine</td><td>HTML5 Canvas 2D API</td><td>PPI radar scope, Attitude Director Indicator, Oscilloscope</td></tr>
+<tr>
+<td>Audio Engine</td><td>Web Audio API</td><td>Hardware oscillator audio synthesis (radar chirps, jamming static)</td></tr>
+</tbody></table>
+<h1>6. Comprehensive Viva Defense Examination Questions &amp; Answers</h1>
+<div class="viva-card"><div class="viva-q">Q1: Is COG-EW a suicide drone or kamikaze weapon?</div><div class="viva-a">Answer: Absolutely not. COG-EW is an autonomous Hypersonic Reconnaissance and Standoff Strike Waverider cruising at Mach 5.2 in the upper stratosphere (29,500 m). Upon reaching terminal standoff range (within 220 km of the target bunker), it releases a dedicated hypersonic kinetic glide penetrator from its ventral weapons bay. The waverider never crashes; it initiates a supersonic climb (+10° AoA, ascending to 31,500m - 32,500m) and egress bank to safely exit contested airspace as a 100% reusable strategic asset.</div></div>
+<div class="viva-card"><div class="viva-q">Q2: What is the military and aerodynamic advantage of cruising at 29,500m at Mach 5.2?</div><div class="viva-a">Answer: At 29,500m (upper stratosphere), atmospheric density is less than 1.8% of sea-level density. This drastically reduces parasitic drag and aerodynamic frictional heating while maintaining sufficient dynamic pressure for scramjet combustion and waverider compression lift. Additionally, it places the aircraft above the engagement ceilings of short- and medium-range air defense systems, forcing adversaries to rely on expensive strategic SAM batteries.</div></div>
+<div class="viva-card"><div class="viva-q">Q3: Why does traditional decoupled EW and guidance fail during hypersonic penetration?</div><div class="viva-a">Answer: At Mach 5.2 (1.77 km/s), engagement windows last only tenths of a second. If electronic warfare operates without flight coordination, a high-G turn may expose the aircraft&#x27;s maximum radar cross-section (RCS) specular flash directly toward enemy illuminators, or bleed vital kinetic energy into an unrecoverable stall. Conversely, jamming without flight maneuver allows monopulse tracking radars to guide interceptors to proximity detonation. COG-EW optimizes both domains concurrently.</div></div>
+<div class="viva-card"><div class="viva-q">Q4: What is the physical difference between Barrage Noise Jamming and RGPO Spoofing?</div><div class="viva-a">Answer: Barrage Noise Jamming is a brute-force Electronic Attack technique that floods the enemy radar&#x27;s receiver bandwidth with high-power Gaussian noise (45 kW), reducing the signal-to-noise ratio to blind the receiver. Its drawback is high power consumption and beaconing the jammer&#x27;s azimuth (Home-On-Jam risk). Range Gate Pull-Off (RGPO) is a deceptive countermeasure: it receives the enemy radar pulse, amplifies it, and retransmits it with progressively increasing time delays. The radar&#x27;s automated range tracking gate locks onto the stronger false echo and &#x27;pulls&#x27; away from the true skin return. Once pulled off, the jammer ceases transmission, leaving the radar with no target and breaking missile lock.</div></div>
+<div class="viva-card"><div class="viva-q">Q5: What are In-Phase (I) and Quadrature (Q) components, and why are they formatted as 2x1024?</div><div class="viva-a">Answer: Any bandpass RF signal can be expressed as s(t) = I(t)*cos(2*pi*f_c*t) - Q(t)*sin(2*pi*f_c*t). I(t) is the in-phase (real) component and Q(t) is the quadrature (imaginary, 90° phase-shifted) component. Downconverting to baseband and sampling both channels at 1024 discrete time steps captures complete instantaneous amplitude, phase, and frequency information as a 2x1024 real tensor, which directly feeds into the convolutional neural network.</div></div>
+<div class="viva-card"><div class="viva-q">Q6: Why is Peak-to-Average Power Ratio (PAPR) critical in radar and communications?</div><div class="viva-a">Answer: PAPR is defined as the peak signal power divided by average signal power: PAPR = max|s(t)|^2 / E[|s(t)|^2]. High PAPR signals (such as multi-carrier QAM or OFDM) require power amplifiers with wide linear dynamic ranges to avoid intermodulation distortion and spectral regrowth. Measuring PAPR allows our ESM engine to rapidly distinguish constant-envelope modulations (e.g., FSK, PSK) from complex digital multi-carrier modulations.</div></div>
+<div class="viva-card"><div class="viva-q">Q7: Why does the academic benchmark accuracy show 64.75% across the full dataset, but &gt;91.9% in the operational regime?</div><div class="viva-a">Answer: The RadioML 2018.01A dataset includes samples from -20 dB to +30 dB SNR. At negative SNRs (-20 dB to -6 dB), noise power is 10 to 100 times greater than signal power, placing it beyond the Shannon channel capacity limit where even human radar operators cannot identify modulation. In actual military engagements, radar lock-on occurs at positive SNRs (&gt;= +6 dB), where our Deep ResNet achieves 91.9% to 96.5% accuracy. Evaluating both envelopes demonstrates academic honesty and operational validity.</div></div>
+<div class="viva-card"><div class="viva-q">Q8: How is the Instituto IDF UAV flight telemetry dataset partitioned, and why?</div><div class="viva-a">Answer: The 120 recorded flights (&gt;312,000 telemetry points) are strictly partitioned by entire flight laps to eliminate temporal and spatial data leakage: 60% Training Split (Flights 1 to 72) for model gradient backpropagation; 15% Validation Split (Flights 73 to 90) for learning rate scheduling and early stopping; 15% Testing Split (Flights 91 to 108) for untouched evaluation; and 10% Holdout Split (Flights 109 to 120) dedicated to 5-Fold Stratified Cross-Validation across independent 2-to-3 lap folds.</div></div>
+<div class="viva-card"><div class="viva-q">Q9: What is TCNResNet, and why is it superior to standard LSTMs for flight guidance?</div><div class="viva-a">Answer: TCNResNet is a Temporal Convolutional Network that uses 1D Dilated Causal Convolutions with residual connections. Causality guarantees that predictions at time t depend strictly on inputs &lt;= t, eliminating future-to-past leakage. Exponential dilation factors (d=1, 2, 4, 8) provide a 20-step receptive field without recurrent looping. Crucially, TCNs process entire sequence windows in parallel on GPU tensor cores, achieving 0.027 ms latency—over 10 times faster than sequential LSTMs.</div></div>
+<div class="viva-card"><div class="viva-q">Q10: What caused the previous camera vibration bug, and how was it permanently fixed?</div><div class="viva-a">Answer: The simulation code previously checked &#x27;if (mach &gt; 4.5 || isEvading) cameraShake = Math.max(cameraShake, 0.18);&#x27;. Because the waverider&#x27;s default cruise velocity is Mach 5.2, this condition evaluated to true on every single frame even when the simulation had never been started (status === &#x27;ready&#x27;). This was adding random offsets to the camera position at 60 FPS. The fix forces cameraShake = 0.0 when idle or during smooth stratospheric cruise, reserving camera shake strictly for active kinetic detonations or high-G Split-S evasion maneuvers.</div></div>
+<div class="viva-card"><div class="viva-q">Q11: What do ADE and FDE metrics represent?</div><div class="viva-a">Answer: Average Displacement Error (ADE) is the mean Euclidean distance between predicted and ground-truth coordinates across all K forecast steps: ADE = (1/K) * sum(||p_k - p_hat_k||_2). Final Displacement Error (FDE) is the Euclidean distance at the final forecast step K (at T = +1.0s): FDE = ||p_K - p_hat_K||_2. Lower values indicate superior kinematic trajectory accuracy.</div></div>
+<div class="viva-card"><div class="viva-q">Q12: How does the backend communicate with the frontend?</div><div class="viva-a">Answer: The frontend communicates with the FastAPI backend via asynchronous HTTP REST endpoints: GET /api/simulation/state retrieves full vehicle, radar, and missile states; POST /api/simulation/tick advances physics by dt=0.1s; POST /api/simulation/reset re-initializes scenarios; GET /api/rf/classify-current executes real-time ResNet AMC forward inference; and GET /api/rf/sample/{index} extracts raw I/Q pulses from the RadioML HDF5 dataset.</div></div>
+
+</div>
+</body>
+</html>

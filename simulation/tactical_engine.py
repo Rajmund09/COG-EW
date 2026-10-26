@@ -289,6 +289,13 @@ class TacticalSimulationEngine:
         self.autopilot_enabled = True
         self.evasion_active = False
 
+        # Standoff Kinetic Munition State (Non-kamikaze strategic strike)
+        self.standoff_weapon_released = False
+        self.standoff_weapon_active = False
+        self.standoff_weapon_x = 0.0
+        self.standoff_weapon_y = 0.0
+        self.standoff_weapon_alt = 29500.0
+
         # Electronic Warfare Jamming settings
         self.ew_mode = "cognitive_auto"  # 'passive', 'noise_jamming', 'rgpo_spoofing', 'angle_deception', 'cognitive_auto'
         self.active_jamming_type = "NONE"
@@ -353,7 +360,7 @@ class TacticalSimulationEngine:
         return self.get_state()
 
     def pause(self) -> dict[str, Any]:
-        if self.status in ("running", "evading", "terminal_dive"):
+        if self.status in ("running", "evading", "terminal_dive", "strike_egress"):
             self.status = "paused"
             self._log_event("MISSION_PAUSED", "Simulation paused by operator.")
         return self.get_state()
@@ -382,7 +389,7 @@ class TacticalSimulationEngine:
 
     def step(self, dt: float = 0.1) -> dict[str, Any]:
         """Advance tactical simulation by time step dt using 60% Training Split telemetry."""
-        if self.status not in ("running", "evading", "terminal_dive"):
+        if self.status not in ("running", "evading", "terminal_dive", "strike_egress"):
             return self.get_state()
 
         dt = float(np.clip(dt, 0.01, 0.25))
@@ -553,9 +560,10 @@ class TacticalSimulationEngine:
                 self.trajectory_history.pop(0)
 
         # -------------------------------------------------------------
-        # 6. Update Surface-to-Air Missiles
+        # 6. Update Surface-to-Air Missiles & Standoff Strike Munition
         # -------------------------------------------------------------
         self._update_missiles(dt)
+        self._update_standoff_weapon(dt)
 
         # -------------------------------------------------------------
         # 7. Check Target Penetration & Impact
@@ -682,16 +690,33 @@ class TacticalSimulationEngine:
             self.vehicle_x += vx * dt
             self.vehicle_y += vy * dt
 
-        elif dist_to_target < 180.0:
-            # TERMINAL DIVE TO TARGET
-            self.status = "terminal_dive"
+        elif dist_to_target < 220.0:
+            # STANDOFF PRECISION WEAPON RELEASE & SUPERSONIC EGRESS (NOT A SUICIDE DIVE)
+            self.status = "strike_egress"
             self.evasion_active = False
-            self.vehicle_altitude = max(200.0, 29500.0 * (dist_to_target / 180.0))
-            target_heading = math.atan2(self.target_y - self.vehicle_y, self.target_x - self.vehicle_x)
+
+            # Deploy standoff precision kinetic munition if not already in flight
+            if not self.standoff_weapon_released:
+                self.standoff_weapon_released = True
+                self.standoff_weapon_active = True
+                self.standoff_weapon_x = self.vehicle_x
+                self.standoff_weapon_y = self.vehicle_y
+                self.standoff_weapon_alt = self.vehicle_altitude
+                self._log_event(
+                    "WEAPON_RELEASE",
+                    "STANDOFF WEAPON RELEASE: Precision kinetic munition launched at Sector 4 Bunker. Waverider initiating supersonic egress climb at Mach 5.2!"
+                )
+
+            # High-altitude egress climb into safe corridor (waverider climbs to 32,500m, never crashes)
+            climb_alt = min(32500.0, 29500.0 + (220.0 - dist_to_target) * 14.0)
+            self.vehicle_altitude = max(29500.0, climb_alt)
+
+            # Egress escape heading: bank smoothly toward outbound corridor
+            target_heading = 0.06
 
             self.g_load = max(1.8, rec_g)
-            self.bank_angle_deg = rec_roll * 0.4
-            self.angle_of_attack_deg = float(np.clip(rec_pitch + 2.0, 1.0, 8.0))
+            self.bank_angle_deg = 16.0  # Safe egress bank
+            self.angle_of_attack_deg = float(np.clip(rec_pitch + 5.0, 3.0, 10.0))  # Positive climb AoA
 
             vx = self.vehicle_speed * math.cos(self.vehicle_heading_rad)
             vy = self.vehicle_speed * math.sin(self.vehicle_heading_rad)
@@ -725,6 +750,32 @@ class TacticalSimulationEngine:
         self.vehicle_heading_rad += turn_applied
 
         self.flight_distance_km += (self.vehicle_speed * 0.25 * dt)
+
+    def _update_standoff_weapon(self, dt: float):
+        """Update trajectory and kinetic impact of deployed standoff strike munition."""
+        if not self.standoff_weapon_active:
+            return
+
+        dx = self.target_x - self.standoff_weapon_x
+        dy = self.target_y - self.standoff_weapon_y
+        dist = math.hypot(dx, dy)
+
+        if dist > 10.0:
+            speed = 195.0  # Hypersonic kinetic strike glide velocity
+            step = min(dist, speed * dt)
+            self.standoff_weapon_x += (dx / dist) * step
+            self.standoff_weapon_y += (dy / dist) * step
+            # Rapid kinetic steep descent from 29,500m to bunker at surface (0m)
+            self.standoff_weapon_alt = max(0.0, self.standoff_weapon_alt - (29500.0 / 1.35) * dt)
+        else:
+            self.standoff_weapon_active = False
+            self.standoff_weapon_alt = 0.0
+            self.target_destroyed = True
+            self.status = "completed"
+            self._log_event(
+                "TARGET_DESTROYED",
+                "KINETIC STANDOFF IMPACT CONFIRMED: Sector 4 Command Bunker destroyed. Waverider egressing safely at Mach 5.2 (Altitude: 31,500m)."
+            )
 
     def _update_missiles(self, dt: float):
         """Update positions and states of active surface-to-air missiles."""
@@ -760,13 +811,11 @@ class TacticalSimulationEngine:
                 self._log_event("MISSILE_DEFEATED", f"{m.id} detonated against RGPO false target echo. Evasion SUCCESS!")
 
     def _check_mission_terminal_conditions(self):
-        """Check if vehicle reached strategic command bunker target."""
-        dist = math.hypot(self.target_x - self.vehicle_x, self.target_y - self.vehicle_y)
-        if dist <= self.target_radius and not self.target_destroyed:
-            self.target_destroyed = True
+        """Check if standoff munition destroyed bunker or vehicle egressed combat zone."""
+        if self.target_destroyed and self.vehicle_x > self.target_x:
             self.status = "completed"
-            self._log_event("TARGET_DESTROYED", "DIRECT IMPACT CONFIRMED: Sector 4 Command Bunker destroyed. Mission SUCCESS.")
-        elif self.vehicle_x > self.target_x + 50.0 and not self.target_destroyed:
+            self._log_event("MISSION_ACCOMPLISHED", "MISSION ACCOMPLISHED: Target destroyed by kinetic standoff weapon. Aircraft egressed contested airspace safely.")
+        elif self.vehicle_x > self.target_x + 90.0 and not self.target_destroyed:
             self.status = "completed"
             self._log_event("CORRIDOR_EXIT", "Vehicle egressed contested combat zone. Mission COMPLETE.")
 
@@ -857,6 +906,13 @@ class TacticalSimulationEngine:
                 "distance_km": round(dist_to_target * 0.25, 1),
                 "progress_percent": round(progress_pct, 1),
                 "destroyed": self.target_destroyed,
+            },
+            "standoff_weapon": {
+                "released": self.standoff_weapon_released,
+                "active": self.standoff_weapon_active,
+                "x": round(self.standoff_weapon_x, 1),
+                "y": round(self.standoff_weapon_y, 1),
+                "altitude_m": round(self.standoff_weapon_alt, 1),
             },
             "radars": [
                 {

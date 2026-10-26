@@ -23,6 +23,13 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
+try:
+    import psutil
+except ImportError:
+    psutil = None
+
+SERVER_START_TIME = time.time()
+
 import h5py
 import numpy as np
 import torch
@@ -190,12 +197,27 @@ class SignalPredictRequest(BaseModel):
 @app.get("/api/health")
 def health():
     h5 = get_h5_handle()
+    gpu_name = torch.cuda.get_device_name(0) if torch.cuda.is_available() else "CPU"
+    gpu_mem = round(torch.cuda.memory_allocated(0) / (1024 * 1024), 1) if torch.cuda.is_available() else 0.0
+    
+    cpu_pct = psutil.cpu_percent(interval=None) if psutil else 0.0
+    ram_pct = psutil.virtual_memory().percent if psutil else 0.0
+    ram_used = round(psutil.virtual_memory().used / (1024**3), 1) if psutil else 0.0
+    ram_total = round(psutil.virtual_memory().total / (1024**3), 1) if psutil else 0.0
+    uptime_sec = round(time.time() - SERVER_START_TIME, 1)
+
     return {
         "status": "ok",
         "online": True,
         "device": str(DEVICE),
-        "gpu": (torch.cuda.get_device_name(0) if torch.cuda.is_available() else "CPU"),
+        "gpu": gpu_name,
         "cuda_available": torch.cuda.is_available(),
+        "gpu_memory_allocated_mb": gpu_mem,
+        "cpu_percent": cpu_pct,
+        "ram_percent": ram_pct,
+        "ram_used_gb": ram_used,
+        "ram_total_gb": ram_total,
+        "uptime_seconds": uptime_sec,
         "model_available": (rf_service is not None),
         "classes_count": 24,
         "tactical_simulation_active": (tactical_engine.status != "shot_down"),
@@ -208,10 +230,12 @@ def health():
 @app.get("/api/system")
 def system():
     h5 = get_h5_handle()
+    gpu_name = torch.cuda.get_device_name(0) if torch.cuda.is_available() else "CPU"
     return {
         "project": "COG-EW Cognitive Multi-Domain EW-Guidance Co-Designer",
         "device": str(DEVICE),
-        "gpu": (torch.cuda.get_device_name(0) if torch.cuda.is_available() else "CPU"),
+        "gpu": gpu_name,
+        "cuda_available": torch.cuda.is_available(),
         "classifier": "RadioML 2018.01A 24-Class Deep ResNet",
         "classes": RADIOML_24_CLASSES,
         "selected_model": "resnet_lr2.5e-4_wd5e-4_best.pt",
@@ -221,6 +245,11 @@ def system():
         "dataset_connected": (h5 is not None),
         "dataset_path": str(_H5_DATASET_PATH) if _H5_DATASET_PATH else "Render Cloud Fallback",
         "total_dataset_pulses": len(h5["X"]) if h5 is not None else 0,
+        "cpu_percent": psutil.cpu_percent(interval=None) if psutil else 0.0,
+        "ram_percent": psutil.virtual_memory().percent if psutil else 0.0,
+        "ram_used_gb": round(psutil.virtual_memory().used / (1024**3), 1) if psutil else 0.0,
+        "ram_total_gb": round(psutil.virtual_memory().total / (1024**3), 1) if psutil else 0.0,
+        "uptime_seconds": round(time.time() - SERVER_START_TIME, 1),
     }
 
 
@@ -239,7 +268,6 @@ def _load_json_file(path: Path) -> dict[str, Any]:
 
 
 @app.get("/api/model-summary")
-@app.get("/api/metrics")
 def model_summary():
     """Return locked RadioML 60/10/30 test evaluation benchmarks."""
     report = _load_json_file(FINALIST_REPORT_JSON)
@@ -270,6 +298,19 @@ def evaluation():
     if report:
         return report
     return _load_json_file(LEGACY_EVALUATION_JSON)
+
+
+@app.get("/api/metrics")
+@app.get("/api/benchmark/5class")
+def benchmark_5class():
+    """Return verified untouched 30,005 test split evaluation artifact."""
+    return _load_json_file(LEGACY_EVALUATION_JSON)
+
+
+@app.get("/api/benchmark/24class")
+def benchmark_24class():
+    """Return locked 24-class ResNet test split evaluation report."""
+    return _load_json_file(FINALIST_REPORT_JSON)
 
 
 @app.get("/api/signal-quality")
@@ -598,6 +639,12 @@ def select_telemetry_flight(request: FlightSelectRequest):
     return tactical_engine.select_training_flight(request.lap_id)
 
 
+@app.post("/api/simulation/select-flight")
+def select_simulation_flight(request: FlightSelectRequest):
+    """Alias for /api/telemetry/select-flight."""
+    return tactical_engine.select_training_flight(request.lap_id)
+
+
 @app.get("/api/telemetry/benchmark")
 def get_telemetry_benchmark():
     """Return comprehensive deep learning benchmark comparing modern architectures on 60/15/15 split."""
@@ -635,6 +682,14 @@ def dashboard_home():
     return FileResponse(DASHBOARD_DIR / "index.html")
 
 
+@app.get("/DOCUMENTATION.html")
+def dashboard_documentation():
+    doc_path = DASHBOARD_DIR / "DOCUMENTATION.html"
+    if doc_path.exists():
+        return FileResponse(doc_path)
+    return FileResponse(PAGES_DIR / "DOCUMENTATION.html")
+
+
 @app.get("/pages/{page_name}")
 def dashboard_page(page_name: str):
     allowed_pages = {
@@ -646,7 +701,17 @@ def dashboard_page(page_name: str):
         "performance.html",
         "simulation.html",
         "analytics.html",
+        "DOCUMENTATION.html",
+        "documentation.html",
     }
+
+    page_lower = page_name.lower()
+    if page_lower in ("documentation.html", "documentation"):
+        doc_path = PAGES_DIR / "DOCUMENTATION.html"
+        if not doc_path.exists():
+            doc_path = DASHBOARD_DIR / "DOCUMENTATION.html"
+        if doc_path.exists():
+            return FileResponse(doc_path)
 
     if page_name not in allowed_pages:
         raise HTTPException(status_code=404, detail="Dashboard page not found")
