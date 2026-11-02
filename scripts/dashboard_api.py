@@ -122,6 +122,8 @@ def get_h5_handle() -> h5py.File | None:
 # Initialize core services
 try:
     rf_service = RFInferenceService(device="auto")
+    _dummy = np.random.randn(2, 1024).astype(np.float32)
+    _ = rf_service.predict(_dummy)
 except Exception as e:
     print(f"[WARNING] RFInferenceService init error: {e}. Will lazily initialize.")
     rf_service = None

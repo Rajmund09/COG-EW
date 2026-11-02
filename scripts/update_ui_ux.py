@@ -312,3 +312,4 @@ def update_rf_classification_html():
 if __name__ == "__main__":
     update_index_html()
     update_rf_classification_html()
+
