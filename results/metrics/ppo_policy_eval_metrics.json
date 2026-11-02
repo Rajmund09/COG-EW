@@ -1,0 +1,15 @@
+{
+  "model_name": "PPO Actor-Critic Neural Policy",
+  "checkpoint": "models/rl/ppo_cogew_policy.pt",
+  "environment": "CogEWEnv-v1.0",
+  "training_timesteps": 50000,
+  "eval_episodes": 10,
+  "mean_episode_return": 599.35,
+  "std_episode_return": 0.73,
+  "target_bunker_strike_rate": 1.0,
+  "mission_survivability_rate": 1.0,
+  "max_g_load_experienced": 6.82,
+  "structural_g_violations": 0,
+  "rgpo_break_lock_rate": 1.0,
+  "terminal_cep_meters": 0.0
+}

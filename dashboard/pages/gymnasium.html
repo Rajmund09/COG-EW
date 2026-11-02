@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>COG-EW | Gymnasium RL Environment &amp; Training Workbench</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Rajdhani:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/dashboard.css">
+  <style>
+    body {
+      background-color: var(--cyber-bg);
+      color: var(--cyber-black);
+      font-family: var(--cyber-body);
+      margin: 0;
+      padding: 0;
+    }
+
+    .cyber-container {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 32px 36px 80px;
+    }
+
+    .cyber-page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      border-bottom: 2px solid var(--cyber-black);
+      padding-bottom: 24px;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .cyber-page-title {
+      font-family: var(--cyber-display);
+      font-size: 38px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+      margin: 0 0 8px 0;
+      color: var(--cyber-black);
+    }
+
+    .cyber-page-sub {
+      font-family: var(--cyber-mono);
+      font-size: 13px;
+      color: #555555;
+      max-width: 820px;
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    .cyber-panel-tag {
+      font-family: var(--cyber-mono);
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--cyber-purple);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    /* Ribbon Cards */
+    .ribbon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .ribbon-card {
+      background: #ffffff;
+      border: 1.5px solid var(--cyber-black);
+      box-shadow: 3px 3px 0px var(--cyber-black);
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .ribbon-label {
+      font-family: var(--cyber-mono);
+      font-size: 10px;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .ribbon-val {
+      font-family: var(--cyber-display);
+      font-size: 26px;
+      font-weight: 800;
+      margin-top: 4px;
+      color: var(--cyber-black);
+    }
+
+    /* Controls Grid */
+    .workbench-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 28px;
+    }
+
+    @media (max-width: 1080px) {
+      .workbench-grid { grid-template-columns: 1fr; }
+    }
+
+    .panel-box {
+      background: #ffffff;
+      border: 1.5px solid var(--cyber-black);
+      box-shadow: 4px 4px 0px var(--cyber-black);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .panel-title {
+      font-family: var(--cyber-display);
+      font-size: 16px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+      color: var(--cyber-black);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      border-bottom: 1.5px solid #eaeaea;
+      padding-bottom: 8px;
+    }
+
+    .badge {
+      font-family: var(--cyber-mono);
+      font-size: 10.5px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border: 1px solid var(--cyber-black);
+      background: var(--cyber-lime);
+      color: var(--cyber-black);
+      text-transform: uppercase;
+    }
+
+    .action-row {
+      margin-bottom: 16px;
+    }
+
+    .action-header {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--cyber-mono);
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .action-slider {
+      width: 100%;
+      height: 8px;
+      background: #e2e8f0;
+      outline: none;
+      border: 1px solid #000;
+      -webkit-appearance: none;
+    }
+
+    .action-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      background: var(--cyber-blue, #00e5ff);
+      border: 1.5px solid #000000;
+      cursor: pointer;
+    }
+
+    .mode-buttons {
+      display: flex;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .mode-btn {
+      flex: 1;
+      padding: 8px 12px;
+      background: #f8fafc;
+      border: 1px solid #000;
+      font-family: var(--cyber-mono);
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.15s;
+    }
+
+    .mode-btn.active {
+      background: var(--cyber-lime, #bef264);
+      box-shadow: 2px 2px 0px #000;
+    }
+
+    .btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .cyber-btn {
+      padding: 12px 18px;
+      font-family: var(--cyber-mono);
+      font-size: 12px;
+      font-weight: 800;
+      border: 1.5px solid #000;
+      box-shadow: 3px 3px 0px #000;
+      cursor: pointer;
+      text-transform: uppercase;
+      background: #ffffff;
+      transition: transform 0.1s, box-shadow 0.1s;
+    }
+
+    .cyber-btn:hover {
+      transform: translate(-1px, -1px);
+      box-shadow: 4px 4px 0px #000;
+    }
+
+    .cyber-btn:active {
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0px #000;
+    }
+
+    .btn-step { background: var(--cyber-lime, #bef264); }
+    .btn-rollout { background: var(--cyber-blue, #00e5ff); }
+    .btn-reset { background: #f1f5f9; }
+    .btn-auto { background: #fef08a; }
+
+    /* Observation Grid */
+    .obs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .obs-card {
+      background: #ffffff;
+      border: 1.5px solid var(--cyber-black);
+      box-shadow: 3px 3px 0px var(--cyber-black);
+      padding: 16px;
+    }
+
+    .obs-card-title {
+      font-family: var(--cyber-mono);
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--cyber-purple);
+      margin-bottom: 12px;
+      border-bottom: 1px solid #f1f5f9;
+      padding-bottom: 4px;
+    }
+
+    .obs-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      font-family: var(--cyber-mono);
+      font-size: 11px;
+    }
+
+    .obs-item-val {
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .obs-meter {
+      height: 4px;
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      width: 70px;
+      position: relative;
+    }
+
+    .obs-fill {
+      height: 100%;
+      background: #2563eb;
+      width: 50%;
+    }
+
+    /* Python Box */
+    .code-box {
+      background: #0f172a;
+      color: #f8fafc;
+      padding: 16px;
+      border: 1.5px solid #000;
+      box-shadow: 4px 4px 0px #000;
+      font-family: var(--cyber-mono);
+      font-size: 12px;
+      line-height: 1.6;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- CYBER BRUTALISM NAVBAR -->
+  <header class="cyber-navbar">
+    <div class="cyber-brand">
+      COG<span>_EW_</span>
+      <span class="cyber-pill-tag">GYMNASIUM RL LAB</span>
+    </div>
+
+    <nav class="cyber-nav-links">
+      <a href="/">// 00 OVERVIEW</a>
+      <a href="/pages/simulation.html">// 01 TACTICAL SIM</a>
+      <a href="/pages/rf_classification.html">// 02 RF PERCEPTION</a>
+      <a href="/pages/signal_analysis.html">// 03 SPECTRAL DSP</a>
+      <a href="/pages/model_performance.html">// 04 BENCHMARKS</a>
+      <a href="/pages/gymnasium.html" class="active">// 05 GYMNASIUM RL</a>
+    </nav>
+
+    <div class="cyber-sys-status">
+      <div class="cyber-time-pill">SYS.TIME <span id="clockSpan">12:00:00</span> UTC</div>
+      <div style="font-family:var(--cyber-mono); font-size:11px; font-weight:700; color:#16a34a; display:inline-flex; align-items:center; gap:4px;">
+        <span>●</span> GYMNASIUM V1.0+ READY
+      </div>
+      <a href="/pages/simulation.html" class="cyber-btn-black">TACTICAL 3D ↗</a>
+    </div>
+  </header>
+
+  <main class="cyber-container">
+    <!-- PAGE HEADER -->
+    <div class="cyber-page-header">
+      <div>
+        <span class="cyber-panel-tag">// 05 GYMNASIUM REINFORCEMENT LEARNING ENVIRONMENT</span>
+        <h1 class="cyber-page-title">Gymnasium RL Workbench</h1>
+        <p class="cyber-page-sub">
+          Interact directly with the continuous <code>CogEWEnv(gymnasium.Env)</code> environment: step actuators, test multi-objective Pareto rewards, inspect the 28-dimensional state observation vector, and execute multi-step rollouts.
+        </p>
+      </div>
+      <div style="display:flex; gap:12px;">
+        <button id="btnSpecAudit" class="cyber-btn" style="background:#ffffff;">
+          INSPECT SPEC ↗
+        </button>
+        <a href="/pages/simulation.html" class="cyber-btn" style="background:#bef264;">
+          LAUNCH 3D MISSION ↗
+        </a>
+      </div>
+    </div>
+
+    <!-- RIBBON METRICS -->
+    <div class="ribbon-grid">
+      <div class="ribbon-card">
+        <span class="ribbon-label">Environment Spec</span>
+        <span class="ribbon-val" style="font-size:20px; color:#2563eb;">CogEWEnv-v1.0</span>
+        <span style="font-family:var(--cyber-mono); font-size:10px; color:#64748b; margin-top:2px;">Obs: Box(28,) · Act: Box(4,)</span>
+      </div>
+      <div class="ribbon-card">
+        <span class="ribbon-label">Cumulative Return ∑ Rt</span>
+        <span class="ribbon-val" id="lblCumReward" style="color:#16a34a;">0.00</span>
+        <span style="font-family:var(--cyber-mono); font-size:10px; color:#64748b; margin-top:2px;">Step Reward: <span id="lblStepReward">0.00</span></span>
+      </div>
+      <div class="ribbon-card">
+        <span class="ribbon-label">Current Step / Horizon</span>
+        <span class="ribbon-val" id="lblStepCount">0 / 3000</span>
+        <span style="font-family:var(--cyber-mono); font-size:10px; color:#64748b; margin-top:2px;">dt = 0.02s · 50 Hz RK4</span>
+      </div>
+      <div class="ribbon-card">
+        <span class="ribbon-label">Mission Flight Status</span>
+        <span class="ribbon-val" id="lblStatus" style="font-size:18px;">READY</span>
+        <span style="font-family:var(--cyber-mono); font-size:10px; color:#64748b; margin-top:2px;" id="lblSubStatus">Stratospheric Ingress</span>
+      </div>
+      <div class="ribbon-card">
+        <span class="ribbon-label">Altitude &amp; Mach</span>
+        <span class="ribbon-val" id="lblAltMach">29,500m · M5.2</span>
+        <span style="font-family:var(--cyber-mono); font-size:10px; color:#64748b; margin-top:2px;">US Standard Atmosphere</span>
+      </div>
+    </div>
+
+    <!-- WORKBENCH GRID -->
+    <div class="workbench-grid">
+      <!-- PANEL 1: ACTION DECK -->
+      <div class="panel-box">
+        <div>
+          <div class="panel-title">
+            <span>// 01 ACTUATOR CONTROLS [Box(4,)]</span>
+            <span class="badge" id="badgePolicy">MANUAL SLIDERS</span>
+          </div>
+
+          <div style="margin-bottom:14px;">
+            <label style="font-family:var(--cyber-mono); font-size:11px; font-weight:700; display:flex; align-items:center; gap:8px; cursor:pointer;">
+              <input type="checkbox" id="chkAutopilot"> Use Autonomous Guidance Brain Action
+            </label>
+          </div>
+
+          <!-- Action 0: AoA -->
+          <div class="action-row">
+            <div class="action-header">
+              <span>Action [0]: Commanded AoA &alpha;</span>
+              <span id="lblAoAVal">0.00° (norm: 0.00)</span>
+            </div>
+            <input type="range" min="-1.0" max="1.0" step="0.05" value="0.0" class="action-slider" id="sldAoA">
+            <div style="display:flex; justify-content:space-between; font-family:var(--cyber-mono); font-size:9px; color:#64748b; margin-top:2px;">
+              <span>-5.0°</span><span>+5.0° (Cruise)</span><span>+15.0°</span>
+            </div>
+          </div>
+
+          <!-- Action 1: Bank -->
+          <div class="action-row">
+            <div class="action-header">
+              <span>Action [1]: Commanded Bank &sigma;</span>
+              <span id="lblBankVal">0.00° (norm: 0.00)</span>
+            </div>
+            <input type="range" min="-1.0" max="1.0" step="0.05" value="0.0" class="action-slider" id="sldBank">
+            <div style="display:flex; justify-content:space-between; font-family:var(--cyber-mono); font-size:9px; color:#64748b; margin-top:2px;">
+              <span>-75.0° (Left Evade)</span><span>0° Level</span><span>+75.0° (Right Evade)</span>
+            </div>
+          </div>
+
+          <!-- Action 2: EW Mode -->
+          <div class="action-row">
+            <div class="action-header">
+              <span>Action [2]: Electronic Attack Mode</span>
+              <span id="lblEWVal">RGPO DECEPTION</span>
+            </div>
+            <div class="mode-buttons">
+              <div class="mode-btn" data-mode="-0.8" id="btnModePassive">PASSIVE ESM</div>
+              <div class="mode-btn" data-mode="0.0" id="btnModeNoise">BARRAGE NOISE</div>
+              <div class="mode-btn active" data-mode="0.8" id="btnModeRGPO">RGPO SPOOFING</div>
+            </div>
+          </div>
+
+          <!-- Action 3: Standoff Munition Release -->
+          <div class="action-row" style="margin-top:12px;">
+            <div class="action-header">
+              <span>Action [3]: Standoff Weapon Release Trigger</span>
+              <span id="lblReleaseVal">LOCKED (norm: -1.0)</span>
+            </div>
+            <button id="btnReleaseTrigger" class="cyber-btn" style="width:100%; padding:8px; font-size:11px; background:#f8fafc;">
+              TOGGLE MUNITION RELEASE (a[3] &gt; 0.5)
+            </button>
+          </div>
+        </div>
+
+        <!-- BUTTONS -->
+        <div class="btn-group">
+          <button id="btnStep" class="cyber-btn btn-step">▶ STEP ENV (env.step)</button>
+          <button id="btnAutoRun" class="cyber-btn btn-auto">⚡ AUTO-RUN (50Hz)</button>
+          <button id="btnRollout" class="cyber-btn btn-rollout">⏩ ROLLOUT 100 STEPS</button>
+          <button id="btnReset" class="cyber-btn btn-reset">🔄 RESET (env.reset)</button>
+        </div>
+      </div>
+
+      <!-- PANEL 2: REWARD DECOMPOSITION & EPISODE LOG -->
+      <div class="panel-box">
+        <div>
+          <div class="panel-title">
+            <span>// 02 PARETO REWARD DECOMPOSITION</span>
+            <span class="badge" style="background:#38bdf8; color:#fff;">MULTI-OBJECTIVE</span>
+          </div>
+
+          <div style="font-family:var(--cyber-mono); font-size:11.5px; line-height:1.7; margin-bottom:16px;">
+            <div style="display:flex; justify-content:space-between; border-bottom:1px solid #f1f5f9; padding:4px 0;">
+              <span>+ Downrange Progress Bonus (vx / 1500m/s):</span>
+              <strong id="rewProg" style="color:#16a34a;">+0.05</strong>
+            </div>
+            <div style="display:flex; justify-content:space-between; border-bottom:1px solid #f1f5f9; padding:4px 0;">
+              <span>+ RGPO Radar Break-Lock Bonus:</span>
+              <strong id="rewRGPO" style="color:#16a34a;">+0.00</strong>
+            </div>
+            <div style="display:flex; justify-content:space-between; border-bottom:1px solid #f1f5f9; padding:4px 0;">
+              <span>+ Target Bunker Strike Bonus:</span>
+              <strong id="rewStrike" style="color:#16a34a;">+0.00 (+150)</strong>
+            </div>
+            <div style="display:flex; justify-content:space-between; border-bottom:1px solid #f1f5f9; padding:4px 0;">
+              <span>+ Safe Standoff Egress Bonus:</span>
+              <strong id="rewEgress" style="color:#16a34a;">+0.00 (+300)</strong>
+            </div>
+            <div style="display:flex; justify-content:space-between; border-bottom:1px solid #f1f5f9; padding:4px 0;">
+              <span>- Structural G-Load Penalty (G &gt; 12.0):</span>
+              <strong id="rewGload" style="color:#dc2626;">-0.00</strong>
+            </div>
+            <div style="display:flex; justify-content:space-between; border-bottom:1px solid #f1f5f9; padding:4px 0;">
+              <span>- SAM Intercept / Crash Penalty:</span>
+              <strong id="rewSAM" style="color:#dc2626;">-0.00 (-500)</strong>
+            </div>
+          </div>
+
+          <!-- REWARD CANVASES -->
+          <div style="border:1.5px solid #000; background:#f8fafc; padding:8px; margin-top:10px;">
+            <div style="font-family:var(--cyber-mono); font-size:10px; font-weight:700; color:#64748b; margin-bottom:4px;">
+              CUMULATIVE RETURN PROGRESSION CURVE
+            </div>
+            <canvas id="rewardChart" width="500" height="130" style="width:100%; height:130px; display:block;"></canvas>
+          </div>
+        </div>
+
+        <div style="margin-top:14px; font-family:var(--cyber-mono); font-size:10.5px; color:#64748b;">
+          * Reward is Pareto-formulated to prevent myopic evasion and strictly penalize structural violations.
+        </div>
+      </div>
+    </div>
+
+    <!-- 28-DIMENSIONAL OBSERVATION SPACE -->
+    <div style="font-family:var(--cyber-mono); font-size:11px; font-weight:800; color:var(--cyber-purple); margin-bottom:12px;">
+      // 03 CONTINUOUS STATE OBSERVATION VECTOR [Box(28,) FLOAT32]
+    </div>
+
+    <div class="obs-grid">
+      <!-- Group 1: Kinematics -->
+      <div class="obs-card">
+        <div class="obs-card-title">Group 1: Kinematics (0 - 5)</div>
+        <div class="obs-item"><span>[0] X Position:</span><span class="obs-item-val" id="obs0">0.00 m</span></div>
+        <div class="obs-item"><span>[1] Y Cross-track:</span><span class="obs-item-val" id="obs1">0.00 m</span></div>
+        <div class="obs-item"><span>[2] Z Altitude:</span><span class="obs-item-val" id="obs2">29,500 m</span></div>
+        <div class="obs-item"><span>[3] Vx Velocity:</span><span class="obs-item-val" id="obs3">1,560 m/s</span></div>
+        <div class="obs-item"><span>[4] Vy Lateral:</span><span class="obs-item-val" id="obs4">0.00 m/s</span></div>
+        <div class="obs-item"><span>[5] Vz Climb:</span><span class="obs-item-val" id="obs5">0.00 m/s</span></div>
+      </div>
+
+      <!-- Group 2: Attitude & Rates -->
+      <div class="obs-card">
+        <div class="obs-card-title">Group 2: Attitude &amp; Rates (6 - 11)</div>
+        <div class="obs-item"><span>[6] Roll Angle &phi;:</span><span class="obs-item-val" id="obs6">0.00 rad</span></div>
+        <div class="obs-item"><span>[7] Pitch Angle &theta;:</span><span class="obs-item-val" id="obs7">0.08 rad</span></div>
+        <div class="obs-item"><span>[8] Yaw Heading &psi;:</span><span class="obs-item-val" id="obs8">0.00 rad</span></div>
+        <div class="obs-item"><span>[9] Roll Rate p:</span><span class="obs-item-val" id="obs9">0.00 rad/s</span></div>
+        <div class="obs-item"><span>[10] Pitch Rate q:</span><span class="obs-item-val" id="obs10">0.00 rad/s</span></div>
+        <div class="obs-item"><span>[11] Yaw Rate r:</span><span class="obs-item-val" id="obs11">0.00 rad/s</span></div>
+      </div>
+
+      <!-- Group 3: Consumables & Limits -->
+      <div class="obs-card">
+        <div class="obs-card-title">Group 3: Consumables &amp; Limits (12 - 14)</div>
+        <div class="obs-item"><span>[12] Fuel Remaining:</span><span class="obs-item-val" id="obs12">100.0%</span></div>
+        <div class="obs-item"><span>[13] Structural G-Load:</span><span class="obs-item-val" id="obs13">1.05 G</span></div>
+        <div class="obs-item"><span>[14] Stagnation Heat:</span><span class="obs-item-val" id="obs14">0.24 MW/m²</span></div>
+      </div>
+
+      <!-- Group 4: IADS Radars -->
+      <div class="obs-card">
+        <div class="obs-card-title">Group 4: Threat Radars (15 - 17)</div>
+        <div class="obs-item"><span>[15] VHF Search Radar:</span><span class="obs-item-val" id="obs15">SCANNING</span></div>
+        <div class="obs-item"><span>[16] S-Band Tracking:</span><span class="obs-item-val" id="obs16">IDLE</span></div>
+        <div class="obs-item"><span>[17] X-Band Fire-Control:</span><span class="obs-item-val" id="obs17">UNLOCKED</span></div>
+      </div>
+
+      <!-- Group 5: SAM Interceptor -->
+      <div class="obs-card">
+        <div class="obs-card-title">Group 5: SAM Interceptor (18 - 21)</div>
+        <div class="obs-item"><span>[18] SAM In Flight:</span><span class="obs-item-val" id="obs18">NO</span></div>
+        <div class="obs-item"><span>[19] Nearest SAM Range:</span><span class="obs-item-val" id="obs19">&gt;50 km</span></div>
+        <div class="obs-item"><span>[20] SAM Closure V:</span><span class="obs-item-val" id="obs20">0.00 m/s</span></div>
+        <div class="obs-item"><span>[21] SAM LOS Rate:</span><span class="obs-item-val" id="obs21">0.00 rad/s</span></div>
+      </div>
+
+      <!-- Group 6: Cognitive EW -->
+      <div class="obs-card">
+        <div class="obs-card-title">Group 6: Electronic Warfare (22 - 24)</div>
+        <div class="obs-item"><span>[22] Jammer J/S Ratio:</span><span class="obs-item-val" id="obs22">18.5 dB</span></div>
+        <div class="obs-item"><span>[23] RGPO Phase:</span><span class="obs-item-val" id="obs23">IDLE</span></div>
+        <div class="obs-item"><span>[24] Radar Break-Lock:</span><span class="obs-item-val" id="obs24">NO</span></div>
+      </div>
+
+      <!-- Group 7: Objective -->
+      <div class="obs-card">
+        <div class="obs-card-title">Group 7: Objective Bunker (25 - 27)</div>
+        <div class="obs-item"><span>[25] Distance to Bunker:</span><span class="obs-item-val" id="obs25">85.4 km</span></div>
+        <div class="obs-item"><span>[26] Bearing to Target:</span><span class="obs-item-val" id="obs26">+0.02 rad</span></div>
+        <div class="obs-item"><span>[27] Bunker Destroyed:</span><span class="obs-item-val" id="obs27">NO</span></div>
+      </div>
+    </div>
+
+    <!-- CODE SNIPPET -->
+    <div style="font-family:var(--cyber-mono); font-size:11px; font-weight:800; color:var(--cyber-purple); margin-bottom:10px;">
+      // 04 PYTHON GYMNASIUM INTEGRATION CODE
+    </div>
+
+    <div class="code-box">
+<pre style="margin:0;">import gymnasium as gym
+from src.simulation.env import CogEWEnv
+
+# 1. Instantiate the standard Gymnasium environment
+env = CogEWEnv()
+print("Observation Space:", env.observation_space)  # Box(28,)
+print("Action Space:", env.action_space)            # Box(4,)
+
+# 2. Reset with reproducible seed
+obs, info = env.reset(seed=42)
+
+# 3. Step with continuous control action: [AoA_delta, bank_cmd, ew_mode, standoff_release]
+action = [0.0, 0.0, 0.8, -1.0]  # Cruise at level attitude with RGPO active
+obs, reward, terminated, truncated, info = env.step(action)
+
+print(f"Step Reward: {reward:.2f}, Altitude: {info['altitude_m']:.1f}m, Mach: {info['mach']:.2f}")</pre>
+    </div>
+  </main>
+
+  <script>
+    // Gymnasium UI State
+    let selectedEWMode = 0.8;
+    let standoffRelease = -1.0;
+    let autoRunInterval = null;
+    let rewardHistory = [];
+
+    // Elements
+    const sldAoA = document.getElementById('sldAoA');
+    const sldBank = document.getElementById('sldBank');
+    const lblAoAVal = document.getElementById('lblAoAVal');
+    const lblBankVal = document.getElementById('lblBankVal');
+    const lblEWVal = document.getElementById('lblEWVal');
+    const lblReleaseVal = document.getElementById('lblReleaseVal');
+    const chkAutopilot = document.getElementById('chkAutopilot');
+    const badgePolicy = document.getElementById('badgePolicy');
+    const btnReleaseTrigger = document.getElementById('btnReleaseTrigger');
+
+    const lblCumReward = document.getElementById('lblCumReward');
+    const lblStepReward = document.getElementById('lblStepReward');
+    const lblStepCount = document.getElementById('lblStepCount');
+    const lblStatus = document.getElementById('lblStatus');
+    const lblSubStatus = document.getElementById('lblSubStatus');
+    const lblAltMach = document.getElementById('lblAltMach');
+
+    // Canvas
+    const canvas = document.getElementById('rewardChart');
+    const ctx = canvas.getContext('2d');
+
+    // Slider Listeners
+    sldAoA.addEventListener('input', (e) => {
+      const val = parseFloat(e.target.value);
+      const deg = (val * 10.0 + 5.0).toFixed(1);
+      lblAoAVal.textContent = `${deg}° (norm: ${val.toFixed(2)})`;
+    });
+
+    sldBank.addEventListener('input', (e) => {
+      const val = parseFloat(e.target.value);
+      const deg = (val * 75.0).toFixed(1);
+      lblBankVal.textContent = `${deg}° (norm: ${val.toFixed(2)})`;
+    });
+
+    chkAutopilot.addEventListener('change', (e) => {
+      badgePolicy.textContent = e.target.checked ? "AUTONOMOUS BRAIN" : "MANUAL SLIDERS";
+      badgePolicy.style.background = e.target.checked ? "var(--cyber-blue)" : "var(--cyber-lime)";
+    });
+
+    // EW Mode Buttons
+    const btnPassive = document.getElementById('btnModePassive');
+    const btnNoise = document.getElementById('btnModeNoise');
+    const btnRGPO = document.getElementById('btnModeRGPO');
+
+    function setEWMode(val, label) {
+      selectedEWMode = val;
+      lblEWVal.textContent = label;
+      [btnPassive, btnNoise, btnRGPO].forEach(b => b.classList.remove('active'));
+      if (val < -0.3) btnPassive.classList.add('active');
+      else if (val < 0.3) btnNoise.classList.add('active');
+      else btnRGPO.classList.add('active');
+    }
+
+    btnPassive.addEventListener('click', () => setEWMode(-0.8, 'PASSIVE ESM'));
+    btnNoise.addEventListener('click', () => setEWMode(0.0, 'BARRAGE NOISE'));
+    btnRGPO.addEventListener('click', () => setEWMode(0.8, 'RGPO SPOOFING'));
+
+    btnReleaseTrigger.addEventListener('click', () => {
+      standoffRelease = (standoffRelease > 0.0) ? -1.0 : 1.0;
+      lblReleaseVal.textContent = (standoffRelease > 0.0) ? "TRIGGERED (norm: +1.0)" : "LOCKED (norm: -1.0)";
+      btnReleaseTrigger.style.background = (standoffRelease > 0.0) ? "#bef264" : "#f8fafc";
+    });
+
+    // Reset API
+    async function resetEnv() {
+      try {
+        const res = await fetch('/api/gymnasium/reset', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({seed: 42})
+        });
+        const data = await res.json();
+        rewardHistory = [0.0];
+        updateUI(data.observation, 0.0, data.cumulative_reward, data.info, false, false);
+      } catch (err) {
+        console.error('Reset error:', err);
+      }
+    }
+
+    // Step API
+    async function stepEnv() {
+      try {
+        const useAuto = chkAutopilot.checked;
+        const action = [
+          parseFloat(sldAoA.value),
+          parseFloat(sldBank.value),
+          selectedEWMode,
+          standoffRelease
+        ];
+
+        const res = await fetch('/api/gymnasium/step', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({action: action, use_autopilot: useAuto})
+        });
+        const data = await res.json();
+        rewardHistory.push(data.cumulative_reward);
+        if (rewardHistory.length > 80) rewardHistory.shift();
+
+        updateUI(data.observation, data.reward, data.cumulative_reward, data.info, data.terminated, data.truncated);
+      } catch (err) {
+        console.error('Step error:', err);
+      }
+    }
+
+    // Rollout API
+    async function rolloutEnv() {
+      try {
+        const res = await fetch('/api/gymnasium/rollout', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({steps: 100, use_autopilot: true})
+        });
+        const data = await res.json();
+        if (data.recent_history) {
+          rewardHistory = data.recent_history.map(h => h.cum_reward);
+        }
+        updateUI(data.final_observation, data.mean_step_reward, data.cumulative_reward, data.final_info, false, false);
+      } catch (err) {
+        console.error('Rollout error:', err);
+      }
+    }
+
+    function updateUI(obs, stepReward, cumReward, info, terminated, truncated) {
+      // Ribbon
+      lblCumReward.textContent = cumReward.toFixed(2);
+      lblCumReward.style.color = (cumReward >= 0) ? "#16a34a" : "#dc2626";
+      lblStepReward.textContent = (stepReward >= 0 ? "+" : "") + stepReward.toFixed(2);
+      
+      const step = info.sim_time ? Math.round(info.sim_time / 0.02) : 0;
+      lblStepCount.textContent = `${step} / 3000`;
+
+      if (info.altitude_m && info.mach) {
+        lblAltMach.textContent = `${Math.round(info.altitude_m).toLocaleString()}m · M${info.mach.toFixed(2)}`;
+      }
+
+      if (terminated) {
+        lblStatus.textContent = info.target_destroyed ? "MISSION SUCCESS" : "TERMINATED";
+        lblStatus.style.color = info.target_destroyed ? "#16a34a" : "#dc2626";
+        lblSubStatus.textContent = info.target_destroyed ? "Bunker Eliminated & Safe Egress" : "Interceptor Hit / Boundary";
+        if (autoRunInterval) toggleAutoRun();
+      } else {
+        lblStatus.textContent = "IN PROGRESS";
+        lblStatus.style.color = "#2563eb";
+        lblSubStatus.textContent = "Stratospheric Flight Envelope";
+      }
+
+      // Update 28 Observation cells
+      if (obs && obs.length >= 28) {
+        document.getElementById('obs0').textContent = `${(obs[0] * 100).toFixed(1)} km`;
+        document.getElementById('obs1').textContent = `${(obs[1] * 10).toFixed(1)} km`;
+        document.getElementById('obs2').textContent = `${Math.round(obs[2] * 50000).toLocaleString()} m`;
+        document.getElementById('obs3').textContent = `${Math.round(obs[3] * 2000)} m/s`;
+        document.getElementById('obs4').textContent = `${(obs[4] * 500).toFixed(1)} m/s`;
+        document.getElementById('obs5').textContent = `${(obs[5] * 500).toFixed(1)} m/s`;
+
+        document.getElementById('obs6').textContent = `${(obs[6] * 180 / Math.PI).toFixed(1)}°`;
+        document.getElementById('obs7').textContent = `${(obs[7] * 180 / Math.PI).toFixed(1)}°`;
+        document.getElementById('obs8').textContent = `${(obs[8] * 180 / Math.PI).toFixed(1)}°`;
+        document.getElementById('obs9').textContent = `${obs[9].toFixed(3)} rad/s`;
+        document.getElementById('obs10').textContent = `${obs[10].toFixed(3)} rad/s`;
+        document.getElementById('obs11').textContent = `${obs[11].toFixed(3)} rad/s`;
+
+        document.getElementById('obs12').textContent = `${(obs[12] * 100).toFixed(1)}%`;
+        document.getElementById('obs13').textContent = `${(obs[13] * 12.0).toFixed(2)} G`;
+        document.getElementById('obs14').textContent = `${(obs[14] * 1.5).toFixed(2)} MW/m²`;
+
+        document.getElementById('obs15').textContent = obs[15] > 0.5 ? "TRACKING" : "IDLE";
+        document.getElementById('obs16').textContent = obs[16] > 0.5 ? "TRACKING" : "IDLE";
+        document.getElementById('obs17').textContent = obs[17] > 0.5 ? "CRITICAL LOCK" : "SEARCH";
+        document.getElementById('obs17').style.color = obs[17] > 0.5 ? "#dc2626" : "#0f172a";
+
+        document.getElementById('obs18').textContent = obs[18] > 0.5 ? "IN FLIGHT" : "NONE";
+        document.getElementById('obs18').style.color = obs[18] > 0.5 ? "#dc2626" : "#0f172a";
+        document.getElementById('obs19').textContent = `${(obs[19] * 50).toFixed(1)} km`;
+        document.getElementById('obs20').textContent = `${(obs[20] * 2000).toFixed(0)} m/s`;
+        document.getElementById('obs21').textContent = `${obs[21].toFixed(3)} rad/s`;
+
+        document.getElementById('obs22').textContent = `${(obs[22] * 30.0).toFixed(1)} dB`;
+        const rgpoPhases = ["IDLE", "CAPTURE", "PULL_OFF", "BREAK_LOCK"];
+        const pIdx = Math.round(obs[23] * 3.0);
+        document.getElementById('obs23').textContent = rgpoPhases[pIdx] || "IDLE";
+        document.getElementById('obs24').textContent = obs[24] > 0.5 ? "YES (DEFEATED)" : "NO";
+        document.getElementById('obs24').style.color = obs[24] > 0.5 ? "#16a34a" : "#0f172a";
+
+        document.getElementById('obs25').textContent = `${(obs[25] * 100).toFixed(1)} km`;
+        document.getElementById('obs26').textContent = `${(obs[26] * 180 / Math.PI).toFixed(1)}°`;
+        document.getElementById('obs27').textContent = obs[27] > 0.5 ? "CONFIRMED HIT" : "INTACT";
+        document.getElementById('obs27').style.color = obs[27] > 0.5 ? "#16a34a" : "#0f172a";
+      }
+
+      drawRewardChart();
+    }
+
+    function drawRewardChart() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      if (rewardHistory.length < 2) return;
+
+      const minVal = Math.min(...rewardHistory, 0);
+      const maxVal = Math.max(...rewardHistory, 50);
+      const range = (maxVal - minVal) || 1;
+
+      // Draw zero baseline
+      const zeroY = canvas.height - ((0 - minVal) / range) * (canvas.height - 20) - 10;
+      ctx.strokeStyle = "#cbd5e1";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(0, zeroY);
+      ctx.lineTo(canvas.width, zeroY);
+      ctx.stroke();
+
+      // Draw line
+      ctx.strokeStyle = "#2563eb";
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+
+      rewardHistory.forEach((v, idx) => {
+        const x = (idx / (rewardHistory.length - 1)) * canvas.width;
+        const y = canvas.height - ((v - minVal) / range) * (canvas.height - 20) - 10;
+        if (idx === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      });
+      ctx.stroke();
+    }
+
+    function toggleAutoRun() {
+      const btn = document.getElementById('btnAutoRun');
+      if (autoRunInterval) {
+        clearInterval(autoRunInterval);
+        autoRunInterval = null;
+        btn.textContent = "⚡ AUTO-RUN (50Hz)";
+        btn.style.background = "#fef08a";
+      } else {
+        autoRunInterval = setInterval(stepEnv, 60);
+        btn.textContent = "⏸ PAUSE AUTO-RUN";
+        btn.style.background = "#bef264";
+      }
+    }
+
+    // Attach Event Handlers
+    document.getElementById('btnStep').addEventListener('click', stepEnv);
+    document.getElementById('btnAutoRun').addEventListener('click', toggleAutoRun);
+    document.getElementById('btnRollout').addEventListener('click', rolloutEnv);
+    document.getElementById('btnReset').addEventListener('click', resetEnv);
+
+    // Initial Load
+    resetEnv();
+
+    // Mission Clock
+    setInterval(() => {
+      const now = new Date();
+      document.getElementById('clockSpan').textContent = now.toTimeString().split(' ')[0];
+    }, 1000);
+  </script>
+</body>
+</html>

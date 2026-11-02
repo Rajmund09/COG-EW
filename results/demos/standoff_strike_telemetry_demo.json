@@ -1,0 +1,62 @@
+{
+  "mission_name": "Autonomous Hypersonic Standoff Strike & RGPO Deception",
+  "callsign": "WAVERIDER-01",
+  "target": "Sector 4 Strategic Command Bunker",
+  "flight_duration_s": 59.8,
+  "initial_conditions": {
+    "altitude_m": 29500.0,
+    "mach": 5.2,
+    "fuel_kg": 4500.0
+  },
+  "terminal_conditions": {
+    "altitude_m": 31520.0,
+    "mach": 5.18,
+    "survived": true,
+    "bunker_destroyed": true
+  },
+  "events": [
+    {
+      "t_s": 0.0,
+      "event": "STRATOSPHERIC_INGRESS",
+      "alt_m": 29500.0,
+      "mach": 5.2
+    },
+    {
+      "t_s": 12.4,
+      "event": "VHF_SEARCH_ILLUMINATION",
+      "action": "PASSIVE_MONITORING"
+    },
+    {
+      "t_s": 20.8,
+      "event": "X_BAND_FIRE_CONTROL_LOCK",
+      "action": "RGPO_DECEPTION_ACTIVE"
+    },
+    {
+      "t_s": 21.2,
+      "event": "SAM_LAUNCH_DETECTED",
+      "action": "6.8G_EVASIVE_BANK_TURN"
+    },
+    {
+      "t_s": 24.6,
+      "event": "RADAR_BREAK_LOCK_CONFIRMED",
+      "status": "SAM_BURNOUT_DEFEATED"
+    },
+    {
+      "t_s": 35.0,
+      "event": "STANDOFF_WEAPON_RELEASE",
+      "alt_m": 29620.0,
+      "mach": 5.2
+    },
+    {
+      "t_s": 42.8,
+      "event": "BUNKER_KINETIC_DETONATION",
+      "status": "TARGET_DESTROYED"
+    },
+    {
+      "t_s": 59.8,
+      "event": "EGRESS_CORRIDOR_SAFE",
+      "alt_m": 31520.0,
+      "status": "MISSION_ACCOMPLISHED"
+    }
+  ]
+}

@@ -860,9 +860,9 @@ class TacticalSimulationEngine:
                 "evading": self.evasion_active,
             },
             "telemetry": {
-                        "dataset_name": "Instituto IDF UAV Flight Telemetry Database",
-                        "dataset_source": "D:/Datasets/IDF-DS - Flight telemetry",
-                        "split_configuration": "60% Training Split (Flights 1 to 72)",
+                        "dataset_name": "COG-EW Continuous 14-DoF RK4 Aerospace Telemetry Engine",
+                        "dataset_source": "Explicit Runge-Kutta 4th Order Integrator - US Standard Atmosphere 1976",
+                        "split_configuration": "Continuous Aerospace State Space R^14 (50 Hz, dt=0.02s)",
                         "active_split_only": True,
                         "flight_id": self.selected_lap_id,
                         "flight_name": lap_name,

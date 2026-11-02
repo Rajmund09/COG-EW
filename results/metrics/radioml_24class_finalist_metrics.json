@@ -1,0 +1,214 @@
+{
+  "experiment": "RadioML 2018.01A 60/10/30 finalists",
+  "seed": 42,
+  "device": "cuda",
+  "training_samples": 1533541,
+  "validation_samples": 255591,
+  "test_evaluation_enabled": true,
+  "selection_metric": "validation macro-F1",
+  "candidates": [
+    {
+      "name": "resnet_lr2.5e-4_wd5e-4",
+      "hyperparameters": {
+        "name": "resnet_lr2.5e-4_wd5e-4",
+        "model": "resnet",
+        "learning_rate": 0.00025,
+        "weight_decay": 0.0005,
+        "batch_size": 32
+      },
+      "best_epoch": 8,
+      "best_validation_macro_f1": 0.6062869816251555,
+      "checkpoint": "D:\\COG-EW\\models\\experiments\\radioml_60_10_30_v1\\resnet_lr2.5e-4_wd5e-4_best.pt"
+    },
+    {
+      "name": "cnn_lr1e-3_wd1e-4",
+      "hyperparameters": {
+        "name": "cnn_lr1e-3_wd1e-4",
+        "model": "cnn",
+        "learning_rate": 0.001,
+        "weight_decay": 0.0001,
+        "batch_size": 64
+      },
+      "best_epoch": 8,
+      "best_validation_macro_f1": 0.543496002677439,
+      "checkpoint": "D:\\COG-EW\\models\\experiments\\radioml_60_10_30_v1\\cnn_lr1e-3_wd1e-4_best.pt"
+    }
+  ],
+  "selected_candidate": "resnet_lr2.5e-4_wd5e-4",
+  "selected_checkpoint": "D:\\COG-EW\\models\\experiments\\radioml_60_10_30_v1\\resnet_lr2.5e-4_wd5e-4_best.pt",
+  "final_test_evaluation": {
+    "loss": 1.310371715396026,
+    "accuracy": 0.5637777592296015,
+    "macro_f1": 0.6057934497672851,
+    "samples": 766772,
+    "classification_report": {
+      "0": {
+        "precision": 0.8733852778347345,
+        "recall": 0.5332540452567994,
+        "f1-score": 0.6621970889445967,
+        "support": 31951.0
+      },
+      "1": {
+        "precision": 0.8356123151014792,
+        "recall": 0.608250649472597,
+        "f1-score": 0.7040304320260846,
+        "support": 31949.0
+      },
+      "2": {
+        "precision": 0.6202051249882382,
+        "recall": 0.6189820321793026,
+        "f1-score": 0.6195929749800247,
+        "support": 31946.0
+      },
+      "3": {
+        "precision": 0.7803860593879176,
+        "recall": 0.6441091774132967,
+        "f1-score": 0.7057290327005847,
+        "support": 31948.0
+      },
+      "4": {
+        "precision": 0.8421445144182963,
+        "recall": 0.6361616224844293,
+        "f1-score": 0.7248025389127606,
+        "support": 31951.0
+      },
+      "5": {
+        "precision": 0.648732339849042,
+        "recall": 0.6295426800638557,
+        "f1-score": 0.6389934709050183,
+        "support": 31947.0
+      },
+      "6": {
+        "precision": 0.8803288090231314,
+        "recall": 0.4323943661971831,
+        "f1-score": 0.579938291039607,
+        "support": 31950.0
+      },
+      "7": {
+        "precision": 0.6815635704211163,
+        "recall": 0.529358372456964,
+        "f1-score": 0.5958953580551396,
+        "support": 31950.0
+      },
+      "8": {
+        "precision": 0.7414922691026169,
+        "recall": 0.620041949722944,
+        "f1-score": 0.6753503597367614,
+        "support": 31943.0
+      },
+      "9": {
+        "precision": 0.6053847520881465,
+        "recall": 0.6397383329681681,
+        "f1-score": 0.6220876261204364,
+        "support": 31949.0
+      },
+      "10": {
+        "precision": 0.7651036525172754,
+        "recall": 0.48522506730107057,
+        "f1-score": 0.593839788530054,
+        "support": 31946.0
+      },
+      "11": {
+        "precision": 0.6588151882779266,
+        "recall": 0.5235382496556905,
+        "f1-score": 0.5834379796288545,
+        "support": 31948.0
+      },
+      "12": {
+        "precision": 0.8655919153031761,
+        "recall": 0.5629733959311424,
+        "f1-score": 0.6822302294708894,
+        "support": 31950.0
+      },
+      "13": {
+        "precision": 0.774530481068595,
+        "recall": 0.4827996368986133,
+        "f1-score": 0.5948207709068472,
+        "support": 31947.0
+      },
+      "14": {
+        "precision": 0.5288534396809571,
+        "recall": 0.4150547730829421,
+        "f1-score": 0.4650942569048663,
+        "support": 31950.0
+      },
+      "15": {
+        "precision": 0.6869789298165833,
+        "recall": 0.425526587587243,
+        "f1-score": 0.5255305167948668,
+        "support": 31951.0
+      },
+      "16": {
+        "precision": 0.4976450494280834,
+        "recall": 0.3009107126091447,
+        "f1-score": 0.37504388188945664,
+        "support": 31953.0
+      },
+      "17": {
+        "precision": 0.12357065103412461,
+        "recall": 0.7745297486776627,
+        "f1-score": 0.21313685044591912,
+        "support": 31951.0
+      },
+      "18": {
+        "precision": 0.6171423327521336,
+        "recall": 0.4209439158738107,
+        "f1-score": 0.5005023629665464,
+        "support": 31952.0
+      },
+      "19": {
+        "precision": 0.5972520637792604,
+        "recall": 0.6612413534069924,
+        "f1-score": 0.6276199105776801,
+        "support": 31949.0
+      },
+      "20": {
+        "precision": 0.7288907950463732,
+        "recall": 0.4255665456366596,
+        "f1-score": 0.5373806841762021,
+        "support": 31948.0
+      },
+      "21": {
+        "precision": 0.8360655737704918,
+        "recall": 0.7981470468559266,
+        "f1-score": 0.8166663997822223,
+        "support": 31949.0
+      },
+      "22": {
+        "precision": 0.8283639848155383,
+        "recall": 0.7035402385200489,
+        "f1-score": 0.7608666215301286,
+        "support": 31947.0
+      },
+      "23": {
+        "precision": 0.8290665616384403,
+        "recall": 0.6589038094343757,
+        "f1-score": 0.7342553673892949,
+        "support": 31947.0
+      },
+      "accuracy": 0.5637777592296015,
+      "macro avg": {
+        "precision": 0.70196273546432,
+        "recall": 0.5637805962369525,
+        "f1-score": 0.6057934497672851,
+        "support": 766772.0
+      },
+      "weighted avg": {
+        "precision": 0.7019597671711295,
+        "recall": 0.5637777592296015,
+        "f1-score": 0.6057895666415767,
+        "support": 766772.0
+      }
+    }
+  },
+  "elapsed_before_test_seconds": 30607.81008560001,
+  "notes": [
+    "Finalist configurations came from a preliminary pilot CV.",
+    "Model selection uses only the separate validation partition.",
+    "The test partition is not used for training or selection."
+  ],
+  "test_confusion_matrix_csv": "D:\\COG-EW\\reports\\experiments\\radioml_60_10_30_v1\\selected_model_test_confusion_matrix.csv",
+  "test_used_for_training": false,
+  "test_used_for_selection": false,
+  "elapsed_total_seconds": 31356.271051600008
+}

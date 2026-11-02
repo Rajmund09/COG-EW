@@ -1,7 +1,11 @@
+import os
 import docx
 import html
 
-doc = docx.Document('COG_EW_Master_Project_Document.docx')
+root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+docx_path = os.path.join(root_dir, 'COG_EW_Master_Project_Document.docx')
+out_path = os.path.join(root_dir, 'dashboard', 'DOCUMENTATION.html')
+doc = docx.Document(docx_path)
 
 html_parts = []
 html_parts.append('''<!DOCTYPE html>
@@ -218,7 +222,7 @@ html_parts.append('''
 </html>
 ''')
 
-with open('dashboard/DOCUMENTATION.html', 'w', encoding='utf-8') as f:
+with open(out_path, 'w', encoding='utf-8') as f:
     f.write(''.join(html_parts))
 
 print("dashboard/DOCUMENTATION.html generated successfully!")

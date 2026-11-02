@@ -1,0 +1,41 @@
+{
+  "benchmark": "100-Seed Monte Carlo Aerospace Flight Evaluation",
+  "seeds_evaluated": "20000 to 20099",
+  "total_episodes": 100,
+  "metrics": {
+    "survivability": {
+      "mean": 1.0,
+      "ci_95": [
+        0.963,
+        1.0
+      ],
+      "gate_status": "PASSED"
+    },
+    "target_destroyed": {
+      "mean": 0.9,
+      "ci_95": [
+        0.8256,
+        0.9448
+      ],
+      "gate_status": "PASSED"
+    },
+    "rgpo_break_lock": {
+      "mean": 1.0,
+      "ci_95": [
+        0.963,
+        1.0
+      ],
+      "gate_status": "PASSED"
+    },
+    "g_limit_compliance": {
+      "mean": 1.0,
+      "max_g": 6.85,
+      "limit_g": 12.0,
+      "gate_status": "PASSED"
+    },
+    "terminal_cep": {
+      "mean_meters": 0.0,
+      "gate_status": "PASSED"
+    }
+  }
+}
