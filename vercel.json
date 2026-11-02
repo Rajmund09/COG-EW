@@ -1,0 +1,10 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "version": 2,
+  "outputDirectory": "dashboard",
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "buildCommand": null,
+  "installCommand": "echo 'Static dashboard deploy ready'",
+  "framework": null
+}
