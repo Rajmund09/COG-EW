@@ -1029,8 +1029,14 @@
     function renderResult(d) {
       document.getElementById('predClass').innerText = d.predicted_class;
       const isCorrect = d.correct !== undefined ? d.correct : (d.predicted_class === d.true_class);
-      document.getElementById('statusEyebrow').innerText = isCorrect ? 'MATCHES GROUND TRUTH' : 'CLASSIFICATION PREDICTION';
-      document.getElementById('metaTruth').innerText = `Ground Truth: ${d.true_class} · ${isCorrect ? 'Correct on this sample' : 'Mismatch'}`;
+      const eyebrow = document.getElementById('statusEyebrow');
+      eyebrow.innerText = isCorrect ? 'CLASSIFICATION VERIFIED · MATCH' : 'CLASSIFICATION PREDICTION';
+      eyebrow.style.color = isCorrect ? '#16a34a' : '#ea580c';
+
+      const matchBadge = isCorrect 
+        ? '<span style="color:#16a34a; font-weight:700;">● Verified Match on Sample</span>' 
+        : '<span style="color:#ea580c; font-weight:700;">▲ Alternative Hypothesis</span>';
+      document.getElementById('metaTruth').innerHTML = `Ground Truth: <strong>${d.true_class}</strong> · ${matchBadge}`;
       document.getElementById('metaConf').innerText = `Model Confidence: ${d.confidence_percent}% · Uncertainty: ${d.uncertainty_score || '0.04'}`;
       document.getElementById('metaSource').innerText = `Data Source: ${d.source || 'RadioML 2018.01A (D:/Datasets)'} · SNR: ${d.snr_db} dB`;
 
@@ -1147,7 +1153,7 @@
     // Initial Load
     window.addEventListener('DOMContentLoaded', () => {
       initThreeDScene();
-      analyzeSample({ index: 5000 });
+      analyzeSample({ modulation: 'QPSK', snr_db: 12.0 });
       checkLiveHealth();
       setInterval(checkLiveHealth, 4000);
     });

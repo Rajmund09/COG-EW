@@ -46,6 +46,7 @@ venv.bak/
 *.duckdb
 *.npy
 *.npz
+!data/processed/radioml/calibrated_prototypes.npz
 data/raw/*
 data/intermediate/*
 data/augmented/*

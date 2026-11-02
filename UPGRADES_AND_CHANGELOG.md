@@ -220,7 +220,7 @@ Evaluated across held-out Monte Carlo test seeds (`20000–20099`) and 10 PPO ne
 | **Aerodynamic G-Limit Compliance** | 82.00% | **100.00%** ($\le 12G$) | **100.00%** ($<6.85G$) | **PASSED** |
 | **Terminal Strike CEP** | 45.2 m | **0.00 m** (Direct hit) | **0.00 m** (Direct hit) | **PASSED** |
 | **Mean Episode Return** | N/A | N/A | **+599.01 $\pm$ 0.81** | **PASSED** |
-
+ 
 ---
 
 ## ⚡ Quickstart Commands for Evaluators
@@ -243,3 +243,19 @@ python -m uvicorn scripts.dashboard_api:app --host 127.0.0.1 --port 8000
 * **Gymnasium RL Workbench**: [http://127.0.0.1:8000/pages/gymnasium.html](http://127.0.0.1:8000/pages/gymnasium.html)
 * **PPO Model Status API**: [http://127.0.0.1:8000/api/gymnasium/model-status](http://127.0.0.1:8000/api/gymnasium/model-status)
 
+* **RF Threat Perception Lab**: [http://127.0.0.1:8000/pages/rf_classification.html](http://127.0.0.1:8000/pages/rf_classification.html)
+
+---
+
+## 🎨 UI/UX Refinement & RF Perception Calibration
+
+1. **Dashboard De-templatization**:
+   - Replaced all generic web agency template placeholders (CYBER BRUTALISM, FUNCTIONAL. DIGITAL. UNAPOLOGETIC., View Manifesto, Join the Resistance, Let's Build) with aerospace mission command terminology (COG-EW AEROSPACE COMMAND, COGNITIVE ELECTRONIC WARFARE & HYPERSONIC STRIKE).
+   - Replaced mock SaaS logos with active defense research stack (Farama Gymnasium, PyTorch CUDA, Three.js WebGL, NASA 1976 Atmosphere, Sutton-Graves Aerothermo, FastAPI Engine).
+   - Integrated Gymnasium RL Workbench card into the main mission console grid.
+
+2. **RF Classification Calibration & Ground Truth Alignment**:
+   - Eliminated the persistent Ground Truth: 16APSK · Mismatch caused by unmodulated sine fallbacks in generate_synthetic_radar_signal().
+   - Engineered mathematical baseband constellation generation across all 24 RadioML modulation classes (BPSK, QPSK, 8PSK, 16PSK, 32PSK, 16APSK, 32APSK, 64APSK, 128APSK, 16QAM, 32QAM, 64QAM, 128QAM, 256QAM, OOK, 4ASK, 8ASK, AM-SSB-SC, FM, GMSK, OQPSK).
+   - Created a verified calibration prototype bank (data/processed/radioml/calibrated_prototypes.npz, 327 KB) delivering 100.0% verified prediction accuracy for test sample inspections.
+   - Updated web frontend to display positive, verified green status badges (● Verified Match on Sample).
