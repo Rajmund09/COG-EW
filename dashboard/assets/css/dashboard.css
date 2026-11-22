@@ -705,3 +705,280 @@ body {
   font-family: var(--font-mono);
   font-size: 11px;
 }
+
+/* ======================================================================
+   FULL-SPECTRUM RESPONSIVE DESIGN SYSTEM (CYBER BRUTALISM MOBILE-FIRST)
+   Supports: 320px (Mobile) -> 768px (Tablet) -> 1200px (Desktop) -> 4K
+   ====================================================================== */
+
+/* Hamburger Button for Mobile / Tablet */
+.cyber-menu-toggle {
+  display: none;
+  background: var(--bg-white);
+  border: 1.5px solid var(--border-black);
+  box-shadow: 2px 2px 0px var(--border-black);
+  color: var(--text-black);
+  font-family: var(--font-mono);
+  font-size: 16px;
+  font-weight: 800;
+  padding: 6px 12px;
+  cursor: pointer;
+  align-items: center;
+  gap: 6px;
+  line-height: 1;
+}
+
+.cyber-menu-toggle:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0px var(--border-black);
+}
+
+/* Tablet & Mobile Nav Rules */
+@media (max-width: 1080px) {
+  .cyber-navbar {
+    height: auto;
+    min-height: 56px;
+    padding: 10px 16px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .cyber-menu-toggle {
+    display: inline-flex;
+    order: 2;
+  }
+
+  .brand-cyber, .cyber-brand {
+    order: 1;
+  }
+
+  .nav-actions-cyber, .cyber-sys-status {
+    order: 3;
+    margin-left: auto;
+  }
+
+  .nav-links-cyber, .cyber-nav-links {
+    display: none;
+    width: 100%;
+    order: 4;
+    flex-direction: column;
+    align-items: stretch;
+    background: var(--bg-white);
+    border: 1.5px solid var(--border-black);
+    box-shadow: var(--brutal-shadow);
+    padding: 10px;
+    margin-top: 6px;
+    gap: 4px;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+
+  .nav-links-cyber.active, .cyber-nav-links.active {
+    display: flex !important;
+  }
+
+  .nav-links-cyber a, .cyber-nav-links a {
+    display: block;
+    padding: 10px 14px;
+    font-size: 12px;
+    border: 1px solid var(--border-light);
+    background: #fafafa;
+  }
+
+  .nav-links-cyber a:hover, .nav-links-cyber a.active,
+  .cyber-nav-links a:hover, .cyber-nav-links a.active {
+    background: var(--text-black);
+    color: #ffffff;
+    border-color: var(--border-black);
+  }
+
+  .nav-slash {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .cyber-navbar {
+    padding: 8px 12px;
+  }
+
+  .brand-cyber, .cyber-brand {
+    font-size: 15px;
+  }
+
+  .cyber-pill-tag {
+    display: none;
+  }
+
+  .sys-time-box, .cyber-time-pill {
+    display: none;
+  }
+
+  .btn-cyber-black, .cyber-btn-black {
+    padding: 5px 8px;
+    font-size: 10px;
+  }
+}
+
+/* ======================================================================
+   RESPONSIVE UTILITIES & FLUID LAYOUT OVERRIDES
+   ====================================================================== */
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: 14px;
+  border: 1px solid var(--border-black);
+}
+
+.table-responsive table {
+  min-width: 600px;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* Fluid Container Padding */
+@media (max-width: 768px) {
+  .cyber-container, main {
+    padding: 12px 14px 40px !important;
+  }
+
+  .hero-title-massive {
+    font-size: clamp(2rem, 8vw, 3rem) !important;
+    line-height: 1.05 !important;
+  }
+
+  .hero-subtitle-caps {
+    font-size: 11px !important;
+  }
+
+  .hero-buttons-row {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .hero-buttons-row a, .hero-buttons-row button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .hero-cyber-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .principles-cyber-row {
+    grid-template-columns: 1fr !important;
+  }
+
+  .quad-cards-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .status-col {
+    padding: 16px !important;
+  }
+
+  .cyber-footer {
+    padding: 16px !important;
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+/* Simulation Specific Responsive Rules */
+@media (max-width: 1100px) {
+  .sim-layout {
+    grid-template-columns: 1fr !important;
+  }
+
+  .canvas-wrap {
+    height: 440px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .canvas-wrap {
+    height: 320px !important;
+  }
+
+  .hud-3d-overlay {
+    top: 6px;
+    left: 6px;
+    gap: 3px;
+    font-size: 9.5px;
+  }
+
+  .hud-tag {
+    padding: 2px 6px;
+  }
+
+  .cam-toolbar {
+    bottom: 6px;
+    padding: 4px 6px;
+    max-width: 98%;
+  }
+
+  .cam-toolbar-title {
+    display: none;
+  }
+
+  .cam-btn {
+    padding: 4px 6px;
+    font-size: 9.5px;
+  }
+
+  .theater-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .control-strip {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .control-strip .btn-group {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .control-strip .btn-group button, .control-strip .btn-group select {
+    flex: 1;
+    text-align: center;
+    font-size: 11px;
+    padding: 7px 6px;
+  }
+
+  .telemetry-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .victory-stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .canvas-wrap {
+    height: 260px !important;
+  }
+
+  .telemetry-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .victory-stats-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .rf-row {
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .rf-row .v {
+    text-align: left;
+  }
+}

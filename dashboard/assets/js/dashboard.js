@@ -651,3 +651,49 @@ async function refreshSignalAnalysis() {
 async function refreshDecisionReport() {
     await loadDecisionReport();
 }
+
+// ======================================================================
+// UNIVERSAL RESPONSIVE NAVBAR CONTROLLER (Mobile Drawer Toggle)
+// ======================================================================
+document.addEventListener('DOMContentLoaded', function() {
+    var navbars = document.querySelectorAll('.cyber-navbar');
+    navbars.forEach(function(navbar) {
+        var toggle = navbar.querySelector('.cyber-menu-toggle');
+        var navLinks = navbar.querySelector('.nav-links-cyber, .cyber-nav-links');
+
+        if (!toggle && navLinks) {
+            toggle = document.createElement('button');
+            toggle.className = 'cyber-menu-toggle';
+            toggle.type = 'button';
+            toggle.setAttribute('aria-label', 'Toggle navigation menu');
+            toggle.innerHTML = '&#9776; <small style="font-size:10px;">MENU</small>';
+            navbar.insertBefore(toggle, navLinks);
+        }
+
+        if (toggle && navLinks) {
+            toggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                navLinks.classList.toggle('active');
+                var isOpen = navLinks.classList.contains('active');
+                toggle.innerHTML = isOpen ? '&#10005; <small style="font-size:10px;">CLOSE</small>' : '&#9776; <small style="font-size:10px;">MENU</small>';
+            });
+
+            document.addEventListener('click', function(e) {
+                if (!navbar.contains(e.target) && navLinks.classList.contains('active')) {
+                    navLinks.classList.remove('active');
+                    toggle.innerHTML = '&#9776; <small style="font-size:10px;">MENU</small>';
+                }
+            });
+        }
+    });
+
+    document.querySelectorAll('table').forEach(function(table) {
+        if (!table.parentElement.classList.contains('table-responsive')) {
+            var wrapper = document.createElement('div');
+            wrapper.className = 'table-responsive';
+            table.parentNode.insertBefore(wrapper, table);
+            wrapper.appendChild(table);
+        }
+    });
+});
+
